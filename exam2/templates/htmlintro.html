@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Introduction</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+       <style>
+        .navbar {
+            background: rgb(124,123,123);
+            background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);
+            color: white;
+            overflow: hidden;
+            padding: 20px ; /* Adjust navbar padding */
+            line-height: 2; /* Adjust navbar height */
+        }
+
+        /* Rest of the CSS styles remain unchanged */
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            font-size: 17px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Styling for the toggle button */
+        #toggleButton {
+            background-color: #f85a40;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #toggleButton:hover {
+            background-color: #d83c22;
+        }
+
+        /* Styling for the sections */
+        .section {
+            display: none;
+            padding: 20px;
+            border: 1px solid #060606;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(250, 248, 248, 0.1);
+        }
+        .active {
+            display: block; /* Show the active section */
+        }
+
+        .dropdown .dropbtn {
+            font-size: 16px;
+            border: none; /* Remove the border */
+            border-radius: 0.50rem;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+
+        }
+        .dropdown-content  {
+            right: 0;
+            display: none;
+            position: absolute;
+            background-color:white;
+            width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            cursor: pointer;
+            transition: width 2s, height 4s;
+            opacity: 0.8;
+            border-radius: 0.5rem;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-radius: 0.50rem;
+        }
+
+        /* Change color of dropdown links on hover */
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+
+        }
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+
+        }
+        ul li a:hover{
+            color: gray;
+
+        }
+
+        .vstack > div {
+            background-color: #e0e0e0; /* Light gray background color */
+            border-radius: 0px; /* Rounded corners for a better appearance */
+            padding: 10px; /* Adjusted padding for spacing inside the items */
+            margin-bottom: 5px; /* Reduced margin between items for spacing */
+            transition: background-color 0.3s ease; /* Smooth transition for background color change */
+            max-width: 300px; /* Reduced maximum width for each item */
+            overflow: hidden; /* Hide overflowing content */
+            text-overflow: ellipsis; /* Show ellipsis for overflow text */
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
+
+        .vstack > div:hover {
+            background-color: #33cbd6; /* Darker gray background color on hover */
+        }
+                          .center-align {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+    {% load static %}
+    {% load static %}
+
+<section id="one">
+    <nav class="navbar">
+        <div class="nav-logo">
+             <a href="{% url 'h' %}"><h2>E-Learning</h2></a>
+            <div class="hamburger">
+                <a href="#"><i class="far fa-moon white"></i></a>
+                <a href="#"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+        <!-- <ul class="nav-links" style="padding-right: 150px;">
+
+            <li class="dropdown">
+                <button class="dropbtn"><a href="{% url 'pythonintro' %}" style="text-decoration: none;">Python</a></button>
+                <div class="dropdown-content">
+                    <a class="nav-link" href="{% url 'basic' %}">Basic Section</a>
+                    {% for i in data %}
+                        {% if i.section == 'Basic' and i.score > 7 %}
+                            <a href="{% url 'inter' %}">Intermediate Section</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% for i in data %}
+                        {% if i.score > 7 and i.section == 'Intermediate' %}
+                            <a href="{% url 'adv' %}">Advanced Section</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </li>
+            <li class="dropdown">
+                <button class="dropbtn"><a href="{% url 'basichtml' %}" style="text-decoration: none;">HTML</a></button>
+                <div class="dropdown-content">
+                    <a class="nav-link" href="{% url 'basichtml' %}">Basic Section</a>
+                    {% for i in data %}
+                        {% if i.section == 'BasicHTML' and i.score > 7 %}
+                            <a href="{% url 'interhtml' %}">Intermediate Section</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% for i in data %}
+                        {% if i.section == 'IntermediateHTML' and i.score > 7 %}
+                            <a href="{% url 'advhtml' %}">Advanced Section</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </li>
+            <li class="dropdown">
+                <button class="dropbtn"><a href="{% url 'basicphp' %}" style="text-decoration: none;">PHP</a></button>
+                <div class="dropdown-content">
+                    <a class="nav-link" href="{% url 'basicphp' %}">Basic Section</a>
+                    {% for i in data %}
+                        {% if i.section == 'BasicPHP' and i.score > 7 %}
+                            <a href="{% url 'interphp' %}">Intermediate Section</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% for i in data %}
+                        {% if i.section == 'IntermediatePHP' and i.score > 7 %}
+                            <a href="{% url 'advphp' %}">Advanced Section</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </li>
+            <li class="dropdown">
+                <button class="dropbtn"><a href="#" style="text-decoration: none;">CERTIFICATE</a></button>
+                <div class="dropdown-content">
+                    {% for i in data %}
+                        {% if i.score > 7 and i.section == 'Advanced' %}
+                            <a href="{% url 'pythoncertificate' %}">PYTHON</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% for i in data %}
+                        {% if i.section == 'AdvancedHTML' and i.score > 7 %}
+                            <a href="{% url 'htmlcertificate' %}">HTML Section</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% for i in data %}
+                        {% if i.section == 'AdvancedPHP' and i.score > 7 %}
+                            <a href="{% url 'htmlcertificate' %}">php certificate</a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </li> -->
+        <!-- </ul> -->
+    </nav>
+</section>
+
+
+<!--    <div class="navbar">-->
+<!--      <h2>E-Learning</h2>-->
+
+<!--                 &lt;!&ndash; Dropdown &ndash;&gt;-->
+<!--                <ul class="nav-links" style="padding-right: 200px;">-->
+<!--            <li class="dropdown">-->
+<!--                <button class="dropbtn"><a href="{% url 'pythonintro' %}" style="text-decoration: none;">PYTHON</a></button>-->
+<!--                <div class="dropdown-content">-->
+<!--                    <a class="nav-link" href="{% url 'basic' %}">Basic Section</a>-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.section == 'Basic' and i.score > 7 %}-->
+<!--                            <a href="{% url 'inter' %}">Intermediate Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.score > 7 and i.section == 'Intermediate' %}-->
+<!--                            <a href="{% url 'adv' %}">Advanced Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                </div>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--        &lt;!&ndash; End of Dropdown &ndash;&gt;-->
+
+
+<!--    </div>-->
+
+
+    <div class="ml-3">
+        <div id="section1" class="section active mr-2 mb-2">
+            <link rel="stylesheet" href="{% static 'js/home.js' %}">
+
+       <h1 style="text-align: center;">Introduction to HTML</h1>
+
+    <p style=" color: black; font-size:20px; padding: 40px; ">HTML (Hypertext Markup Language) is the standard markup language used to create and structure web pages on the internet.
+        Developed by Tim Berners-Lee in the early 1990s, HTML provides a set of elements and tags that define the structure and content of a web document.
+    <br><br>HTML documents consist of a series of elements, each enclosed in tags, which define the structure of the page and its content. These elements include headings, paragraphs, lists, links, images, tables, forms, and more.
+        By arranging and nesting these elements, developers can create visually appealing and interactive web pages.
+    </p>
+            <p style=" color: black; font-size:18px; padding: 40px; ">Here is a video to start your learning on html language</p>
+                <video controls class="mt-3 mb-3 mx-auto d-block" style="width: 60%;">
+                      <source src="{% static 'videos/HTML_Basics.mp4' %}" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video><br>
+        <div style="padding: 40px;">
+        <h4 > Unraveling the Core Concepts of HTML</h4><br>
+            <p style=" color: black; font-size: 18px;" >
+                In the ever-evolving landscape of web development, HTML (Hypertext Markup Language) stands as the bedrock upon which the digital realm is built. It serves as the backbone of every web page, defining its structure, content, and functionality.
+                A deep understanding of HTML is indispensable for anyone venturing into the world of web development, as it forms the basis for crafting compelling and interactive online experiences.<br><br>
+
+                At its essence, HTML is a markup language that utilizes a system of tags to delineate various elements within a web page. These tags encapsulate different types of content, such as text, images, links, and multimedia, allowing developers to organize and present information in a coherent manner. Each tag carries specific attributes that further define its behavior and appearance, offering developers a high degree of control over the presentation and functionality of their web pages.<br><br>
+
+                One of the fundamental aspects of HTML is its ability to create hyperlinks, or simply, links. The <strong>&lt;a&gt;</strong> tag, short for anchor, is the cornerstone of hyperlink creation in HTML. By specifying the destination URL within the "href" attribute of the <strong>&lt;a&gt;</strong> tag, developers can seamlessly connect different web pages, enabling users to navigate through the vast expanse of the internet with ease.<br><br>
+
+                In addition to links, HTML empowers developers to structure content using lists, both ordered and unordered. The <strong>&lt;ul&gt;</strong> tag denotes an unordered list, wherein items are presented without any specific sequence or hierarchy, while the <strong>&lt;ol&gt;</strong> tag signifies an ordered list, where items are enumerated in a specified order. Each list item is encapsulated within the <strong>&lt;li&gt;</strong> tag, facilitating the organization of information into digestible chunks.<br><br>
+
+                HTML also offers mechanisms for formatting and styling content to enhance its visual appeal and accessibility. The <strong>&lt;br&gt;</strong> tag, for instance, inserts a line break within the content, allowing developers to control the flow of text and maintain readability. Moreover, semantic elements such as <strong>&lt;strong&gt;</strong> and <strong>&lt;em&gt;</strong> provide emphasis and importance to specific text, enriching the user experience and conveying meaning more effectively.<br><br>
+
+                Furthermore, HTML enables developers to embed multimedia elements, such as images and videos, seamlessly into their web pages. The <strong>&lt;img&gt;</strong> tag facilitates the inclusion of images, with the image source specified by the <strong>&lt;src&gt;</strong> attribute. Similarly, the <strong>&lt;video&gt;</strong> tag allows for the integration of video content, ushering in a new era of multimedia-rich web experiences.<br><br>
+            </p><br>
+
+            <h4 >Exploring Intermediate HTML Concepts: Enhancing Web Development Proficiency</h4><br>
+
+            <p style=" color: black; font-size: 18px; ">As the digital landscape continues to evolve, so too does the complexity and sophistication of web development.
+                Intermediate HTML concepts play a pivotal role in elevating developers' proficiency, enabling them to create more dynamic, accessible, and interactive web experiences.
+                Let's delve into some of these key concepts and understand their significance in modern web development.<br>
+
+            </p>
+            <ol style=" color: black; font-size: 18px;">
+                <li ><strong> HTML5 "canvas" Element:</strong>
+                    The canvas element in HTML5 revolutionizes web development by providing a platform for dynamic graphic rendering and animation.
+                    By harnessing the power of JavaScript, developers can create immersive visual experiences on the fly, ranging from interactive charts and graphs to complex animations and games.
+                    This element empowers developers to push the boundaries of creativity and interactivity on the web.</li><br>
+
+                <li> <strong>HTML5 Semantic Elements:</strong> <strong>&lt;article&gt;</strong>, <strong>&lt;section&gt;</strong>, <strong>&lt;header&gt;</strong>, <strong>&lt;footer&gt;</strong>, <strong>&lt;nav&gt;</strong>, <strong>&lt;aside&gt;</strong>:
+                    Semantic elements introduced in HTML5, such as <strong>&lt;article&gt;</strong>, <strong>&lt;section&gt;</strong>, <strong>&lt;header&gt;</strong>, <strong>&lt;footer&gt;</strong>, <strong>&lt;nav&gt;</strong>, and <strong>&lt;aside&gt;</strong>, enhance the structural clarity and accessibility of web content.
+                        These elements provide meaningful hooks for search engines and assistive technologies, improving the overall user experience and facilitating content comprehension. By adopting semantic markup, developers contribute to a more inclusive and navigable web environment.</li><br>
+
+                <li><strong>HTML5 Form Elements:</strong> <strong>&lt;details&gt;</strong>, <strong>&lt;datalist&gt;</strong>, <strong>&lt;output&gt;</strong>, <strong>&lt;progress&gt;</strong>:
+                    HTML5 introduces a suite of form elements that streamline user input and interaction on the web. The <strong>&lt;details&gt;</strong> element creates collapsible sections, ideal for organizing lengthy content or creating accordion-style widgets.
+                    The <strong>&lt;datalist&gt;</strong> element offers a predefined list of options for input controls, enhancing usability and input accuracy.
+                    The <strong>&lt;output&gt;</strong> element displays the result of calculations or scripts dynamically, while the <strong>&lt;progress&gt;</strong> element visualizes the progress of tasks, such as file uploads or form submissions, in real-time.</li><br>
+
+                <li><strong>HTML5 Multimedia Elements:</strong> <strong>&lt;figure&gt;</strong>, <strong>&lt;figcaption&gt;</strong>, <strong>&lt;audio&gt;</strong>,<strong>&lt;video&gt;</strong>:
+                    Multimedia elements in HTML5, such as <strong>&lt;figure&gt;</strong> and <strong>&lt;figcaption&gt;</strong>, facilitate the integration of images, videos, and other multimedia content into web pages. These elements provide descriptive captions and contextual information, enhancing content comprehension and accessibility.
+                    Moreover, the <strong>&lt;audio&gt;</strong> and <strong>&lt;video&gt;</strong> elements enable seamless embedding of audio and video files, empowering developers to create rich, multimedia-driven experiences on the web.</li><br>
+                <li><strong>HTML5 Semantic Inline Elements:</strong> <strong>&lt;abbr&gt;</strong>, <strong>&lt;mark&gt;</strong>, <strong>&lt;cite&gt;</strong>, <strong>&lt;kbd&gt;</strong>, <strong>&lt;s&gt;</strong>:
+                    Semantic inline elements in HTML5, including <strong>&lt;abbr&gt;</strong>, <strong>&lt;mark&gt;</strong>, <strong>&lt;cite&gt;</strong>, <strong>&lt;kbd&gt;</strong>, and <strong>&lt;s&gt;</strong>, imbue textual content with additional meaning and context. The <strong>&lt;abbr&gt;</strong> element defines abbreviations or acronyms, enhancing content clarity and comprehension.
+                    The <strong>&lt;mark&gt;</strong> element highlights text or sections of content, drawing attention to key information. Similarly, the <strong>&lt;cite&gt;</strong> element denotes citations or references, while the <strong>&lt;kbd&gt;</strong> element represents keyboard input, improving content accessibility and understanding. Additionally, the <strong>&lt;s&gt;</strong> element strikes through text, indicating changes or deletions within content.</li>
+
+            </ol>
+            <p style=" color: black; font-size: 18px; ">In conclusion, intermediate HTML concepts serve as the building blocks for creating robust, interactive, and accessible web experiences.
+                By mastering these concepts, developers can elevate their proficiency and unlock new possibilities for innovation and creativity in web development.
+                Embracing HTML5's semantic markup, multimedia integration, and form enhancements empowers developers to craft web experiences that resonate with users and drive engagement in the digital age.
+            </p><br>
+                <h4 >Exploring Advanced HTML Concepts: Enhancing Web Development Proficiency</h4><br>
+            <p style=" color: black; font-size: 18px; ">As web development continues to evolve, understanding advanced HTML concepts becomes increasingly crucial for developers aiming to create robust, accessible, and user-friendly web experiences.
+                Let's delve into some of these key concepts and their significance in modern web development:</p>
+
+
+            <ol style=" color: black; font-size: 18px;">
+                <li ><strong> Benefits of HTML5 Semantic Elements:</strong>
+HTML5 introduced semantic elements such as <strong>&lt;header&gt;</strong>, <strong>&lt;footer&gt;</strong>, <strong>&lt;nav&gt;</strong>, <strong>&lt;article&gt;</strong>, <strong>&lt;section&gt;</strong>, and more, offering developers a clearer, more structured way to define web content. These elements enhance accessibility, improve SEO, and provide better clarity and meaning to the content compared to traditional <strong>&lt;div&gt;</strong> and <strong>&lt;span&gt;</strong> elements. By leveraging semantic markup, developers create websites that are more navigable, understandable, and search engine friendly.
+                </li><br>
+                <li ><strong>Importance of the HTML5 &lt;time&gt; Element:</strong>The HTML5 <strong>&lt;time&gt;</strong> element plays a vital role in displaying date and time information on webpages. It allows developers to specify a specific date or time with styling options, making it ideal for representing events, publication dates, or any time-related content. Additionally, the <strong>&lt;time&gt;</strong> element aids in accessibility by providing machine-readable date and time information, benefiting both users and search engines.
+                </li><br>
+                <li ><strong> Purpose of the HTML5 &lt;progress&gt; Element:</strong>In form design and user experience, the HTML5 <strong>&lt;progress&gt;</strong> element serves to represent the progress of a task or process visually. It offers a way to convey completion status, such as file uploads or form submissions, enhancing user understanding and engagement. By incorporating the <strong>&lt;progress&gt;</strong> element, developers provide users with valuable feedback on their interactions, improving overall usability and satisfaction.
+                </li><br>
+                <li ><strong> Usage of the HTML5 &lt;datalist&gt; Element:</strong>The HTML5 <strong>&lt;datalist&gt;</strong> element enhances user input within forms by providing a predefined list of options for input controls. This feature improves input accuracy and efficiency while reducing user errors. By offering suggestions as users type, the <strong>&lt;datalist&gt;</strong> element streamlines the form-filling process, resulting in a smoother and more intuitive user experience.
+                </li><br>
+                <li ><strong> Role of HTML5 &lt;ddetails&gt; and &lt;summary&gt; Elements:</strong>The HTML5 <strong>&lt;details&gt;</strong> and <strong>&lt;summary&gt;</strong> elements work together to create disclosure widgets that allow users to obtain additional information when needed. The <strong>&lt;details&gt;</strong> element defines the container for hidden content, while the <strong>&lt;summary&gt;</strong> element provides a visible label or summary for the content. This combination enables developers to create collapsible sections, FAQs, or expandable content areas, enhancing usability and content organization on webpages.
+                </li>
+            </ol><br>
+            </div>
+            <div class="center-align">
+                <a href="{% url 'basichtml' %}" class="btn btn-danger col-3 mx-auto" tabindex="-1" role="button" aria-disabled="true">Click here to START TEST</a>
+            </div>
+
+    <div class="vstack gap-3">
+        <div class="p-2"><a href="{% url 'basichtml' %}">Basic Section</a></div>
+        {% for i in data %}
+            {% if i.section == 'BasicHTML' and i.score > 7 %}
+                <div class="p-2"><a href="{% url 'interhtml' %}">Intermediate</a></div>                  
+            {% endif %}
+
+            {% if i.section == 'IntermediateHTML' and i.score > 7 %}
+                <div class="p-2"><a href="{% url 'advhtml' %}">Advanced</a></div>
+            {% endif %}
+            {% if i.section == 'AdvancedHTML' and i.score > 7 %}
+                <div class="p-2"><a href="{% url 'htmlcoding' %}">Coding</a></div>
+                <div class="p-2"><a href="{% url 'upload_project2' %}">Project</a></div> 
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

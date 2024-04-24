@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css" integrity="sha512-d0olNN35C6VLiulAobxYHZiXJmq+vl+BGIgAxQtD5+kqudro/xNMvv2yIHAciGHpExsIbKX3iLg+0B6d0k4+ZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha256-xyz" crossorigin="anonymous">
+
+  <title>PyCompiler</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 20px;
+      background-color: #9fc5d6;
+      color: #333;
+      text-align:center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: auto;
+    }
+
+    .question-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .question-item {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 5px;
+    }
+
+    .form-control {
+      margin-bottom: 10px;
+    }
+
+    .output-container {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .btn-group {
+      margin-top: 20px;
+    }
+            /* Styling for chatbot container */
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 300px; /* Adjust width as needed */
+    height: 400px; /* Adjust height as needed */
+    background-color: #fff; /* Adjust background color */
+    border: 1px solid #9a9999; /* Adjust border */
+    display: none;
+    /* Other styles */
+}
+
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* background-color: rgba(0, 0, 0, 0.6); */
+            z-index: -1;
+        }
+        .chat-container {
+            max-width: 900px;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px 15px;
+            background-color: #f9f9f9;
+        }
+        .chat-box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            height: 325px;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            overflow-y: scroll;
+            max-height: 325px;
+        }
+        .user-message {
+            text-align: right;
+            color: #0d6efd;
+        }
+        .bot-message {
+            text-align: left;
+            color: #212529;
+        }
+        #inputText {
+            width: calc(100% - 70px);
+            margin-right: 10px;
+        }
+        #sendBtn {
+            width:30px;
+            }
+#open-chat-btn {
+    color: white;
+    background-color: transparent; /* Set background color to transparent */
+    border: none;
+    padding: 15px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+              /* Add your styles for the close button here */
+        #close-chat-btn {
+
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+      .chatbot-message {
+    text-align: right;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0; /* Initially hide the message */
+    animation: fadeInBounce 4s ease infinite; /* Apply the animation */
+      text-align:center;
+
+}
+
+@keyframes fadeInBounce {
+    0%, 100% {
+        opacity: 0; /* Start and end with opacity 0 */
+        transform: translateY(-20px); /* Move up slightly */
+    }
+    50% {
+        opacity: 1; /* Fade in */
+        transform: translateY(5px); /* Move down slightly */
+    }
+}
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="text-center">HTML Programming Questions</h1>
+
+  <ol class="question-list" style="text-align:left;">
+    <li class="question-item">
+      <p>1. Write a HTML program to design a form which should allow entering personal data.</p>
+      <p>Hint: make use of text field, password field, email, lists, radio buttons, checkboxes, submit button.</p>
+    </li>
+
+    <li class="question-item">
+      <p>2. Write HTML code to generate the following output:</p>
+      <ul>
+        <li>Coffee</li>
+        <li>Tea
+          <ul>
+            <li>Black Tea</li>
+            <li>Green Tea</li>
+          </ul>
+        </li>
+        <li>Milk</li>
+      </ul>
+    </li>
+
+    <li class="question-item">
+      <p>3. Create an HTML page with 7 separate lines in different colors. State the color of each line in its text.</p>
+    </li>
+
+    <li class="question-item">
+      <p>4. Create an HTML page with the following specifications:</p>
+      <ul>
+        <li>Title should be about myCity</li>
+        <li>Place your city name at the top of the page in large text and in blue color</li>
+        <li>Add names of landmarks in your city, each in a different color, style, and typeface</li>
+        <li>One of the landmarks, your college name, should be blinking</li>
+        <li>Add scrolling text with a message of your choice.</li>
+      </ul>
+    </li>
+    <li class="question-item">
+      <p>5. Create a simple webpage with a title "My Favorite Things" and list at least three of your favorite things using an unordered list.</p>
+    </li>
+    <li class="question-item">
+      <p>6. Design a webpage that contains an image of your favorite animal. Add a caption below the image describing the animal.</p>
+    </li>
+    <li class="question-item">
+      <p>7. Create a webpage with a table that displays the following information:</p>
+      <ul>
+        <li>Name</li>
+        <li>Age</li>
+        <li>Gender</li>
+        <li>Country</li>
+        <li>Email Address</li>
+      </ul>
+    </li>
+    <li class="question-item">
+      <p>8. Design a webpage with a button that, when clicked, displays an alert with the message "Hello, World!".</p>
+    </li>
+    <li class="question-item">
+        <p>9. Create a webpage with a form that allows users to input their name and email address. Add a submit button that, when clicked, displays an alert with the message "Form submitted successfully!".</p>
+      </li>
+    <li class="question-item">
+      <p>10. Design a webpage with a header containing the title "Welcome to My Website" and a paragraph below it describing the purpose of the website. Add a footer with your name and the current year.</p>
+    </li>
+
+  </ol>
+
+  <h3 class="text-center">HTML Compiler</h3>
+
+  <form method="post" action="{% url 'compile_html' %}">
+    <label for="code">Code Area</label>
+    {% csrf_token %}
+    <textarea name="markdown_text" class="form-control" id="code" rows="10"></textarea>
+    <input type="submit" class="btn btn-primary" value="Compile">
+  </form>
+ <h4 class="text-center">Output:</h4>
+  <div class="output-container">
+
+    {% if html_output %}
+
+      <div>{{ html_output|safe }}</div>
+    {% endif %}
+  </div>
+
+  <div class="btn-group d-flex justify-content-center">
+    <a href="{% url 'htmlintro' %}" class="btn btn-secondary">Back</a>
+     <a href="{% url 'htmlcoding' %}" class="btn btn-secondary">Retry</a>
+    <a href="{% url 'htmlanswers' %}" class="btn btn-secondary">Check Answers</a>
+
+
+  </div>
+</div>
+                    <div style="margin-left: 95%;" >
+
+                        <div style="position: fixed; bottom: 20px; right: 20px;">
+
+                            <div id="chatbot-widget">
+                                <div class="chatbot-message">Hi, how can I help you?</div>
+                                <button id="open-chat-btn">
+                                     <i class="fa-solid fa-message fa-2x fa-bounce fa-2xl" style="color: #7691c8;"></i>
+
+                                </button>
+                                <div id="chat-container" class="chat-container" style="display: none;">
+                                    <div class="chat-box" id="chatBox">
+                                        <div class="bot-message">
+                                            <p>Welcome to Chatbot. How can I assist you?</p>
+                                        </div>
+                                    </div>
+                                    <form id="chatForm">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="inputText" placeholder="Type your message">
+
+                                            <a href="{% url 'htmlcoding' %}" type="submit" class="btn btn-primary"><span class="material-symbols-rounded">
+                                                close
+                                                </span></a>
+                                            <br>
+
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                </div>
+</body>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Handling form submission for chat
+        $('#chatForm').submit(function(event) {
+            event.preventDefault();
+            var inputText = $('#inputText').val();
+            if (inputText.trim() === '') return;
+
+            // Display user message
+            $('#chatBox').append('<div class="user-message"><p>' + inputText + '</p></div>');
+            $('#inputText').val('');
+            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+
+            // Send user message to server
+            $.ajax({
+                url: '{% url "chatbot" %}',
+                type: 'POST',
+                data: {input_text: inputText},
+                success: function(response) {
+                    // Display bot response
+                    $('#chatBox').append('<div class="bot-message"><p>' + response.response + '</p></div>');
+                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+
+        // Handling the toggle of the chat widget
+        const openChatBtn = document.getElementById('open-chat-btn');
+        const chatContainer = document.getElementById('chat-container');
+
+        openChatBtn.addEventListener('click', function() {
+            chatContainer.style.display = chatContainer.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PHP Introduction</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+       <style>
+        .navbar {
+            background: rgb(124,123,123);
+            background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);
+            color: white;
+            overflow: hidden;
+            padding: 20px ; /* Adjust navbar padding */
+            line-height: 2; /* Adjust navbar height */
+        }
+
+        /* Rest of the CSS styles remain unchanged */
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            font-size: 17px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Styling for the toggle button */
+        #toggleButton {
+            background-color: #f85a40;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #toggleButton:hover {
+            background-color: #d83c22;
+        }
+
+        /* Styling for the sections */
+        .section {
+            display: none;
+            padding: 20px;
+            border: 1px solid #060606;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(250, 248, 248, 0.1);
+        }
+        .active {
+            display: block; /* Show the active section */
+        }
+
+        .dropdown .dropbtn {
+            font-size: 16px;
+            border: none; /* Remove the border */
+            border-radius: 0.50rem;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+
+        }
+        .dropdown-content  {
+            right: 0;
+            display: none;
+            position: absolute;
+            background-color:white;
+            width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            cursor: pointer;
+            transition: width 2s, height 4s;
+            opacity: 0.8;
+            border-radius: 0.5rem;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-radius: 0.50rem;
+        }
+
+        /* Change color of dropdown links on hover */
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+
+        }
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+
+        }
+        ul li a:hover{
+            color: gray;
+
+        }
+
+        .vstack > div {
+            background-color: #e0e0e0; /* Light gray background color */
+            border-radius: 0px; /* Rounded corners for a better appearance */
+            padding: 10px; /* Adjusted padding for spacing inside the items */
+            margin-bottom: 5px; /* Reduced margin between items for spacing */
+            transition: background-color 0.3s ease; /* Smooth transition for background color change */
+            max-width: 300px; /* Reduced maximum width for each item */
+            overflow: hidden; /* Hide overflowing content */
+            text-overflow: ellipsis; /* Show ellipsis for overflow text */
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
+
+        .vstack > div:hover {
+            background-color: #33cbd6; /* Darker gray background color on hover */
+        }
+         .center-align {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+    {% load static %}
+    {% load static %}
+
+<section id="one">
+    <nav class="navbar">
+        <div class="nav-logo">
+             <a href="{% url 'h' %}"><h2>E-Learning</h2></a>
+            <div class="hamburger">
+                <a href="#"><i class="far fa-moon white"></i></a>
+                <a href="#"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+<!--        <ul class="nav-links" style="padding-right: 150px;">-->
+
+<!--            <li class="dropdown">-->
+<!--                <button class="dropbtn"><a href="{% url 'pythonintro' %}" style="text-decoration: none;">Python</a></button>-->
+<!--                <div class="dropdown-content">-->
+<!--                    <a class="nav-link" href="{% url 'basic' %}">Basic Section</a>-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.section == 'Basic' and i.score > 7 %}-->
+<!--                            <a href="{% url 'inter' %}">Intermediate Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.score > 7 and i.section == 'Intermediate' %}-->
+<!--                            <a href="{% url 'adv' %}">Advanced Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li class="dropdown">-->
+<!--                <button class="dropbtn"><a href="{% url 'basichtml' %}" style="text-decoration: none;">HTML</a></button>-->
+<!--                <div class="dropdown-content">-->
+<!--                    <a class="nav-link" href="{% url 'basichtml' %}">Basic Section</a>-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.section == 'BasicHTML' and i.score > 7 %}-->
+<!--                            <a href="{% url 'interhtml' %}">Intermediate Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.section == 'IntermediateHTML' and i.score > 7 %}-->
+<!--                            <a href="{% url 'advhtml' %}">Advanced Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li class="dropdown">-->
+<!--                <button class="dropbtn"><a href="{% url 'basicphp' %}" style="text-decoration: none;">PHP</a></button>-->
+<!--                <div class="dropdown-content">-->
+<!--                    <a class="nav-link" href="{% url 'basicphp' %}">Basic Section</a>-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.section == 'BasicPHP' and i.score > 7 %}-->
+<!--                            <a href="{% url 'interphp' %}">Intermediate Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.section == 'IntermediatePHP' and i.score > 7 %}-->
+<!--                            <a href="{% url 'advphp' %}">Advanced Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                </div>-->
+<!--            </li>-->
+<!--            <li class="dropdown">-->
+<!--                <button class="dropbtn"><a href="#" style="text-decoration: none;">CERTIFICATE</a></button>-->
+<!--                <div class="dropdown-content">-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.score > 7 and i.section == 'Advanced' %}-->
+<!--                            <a href="{% url 'pythoncertificate' %}">PYTHON</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.section == 'AdvancedHTML' and i.score > 7 %}-->
+<!--                            <a href="{% url 'htmlcertificate' %}">HTML Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.section == 'AdvancedPHP' and i.score > 7 %}-->
+<!--                            <a href="{% url 'htmlcertificate' %}">php certificate</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                </div>-->
+<!--            </li>-->
+<!--        </ul>-->
+    </nav>
+</section>
+
+
+<!--    <div class="navbar">-->
+<!--      <h2>E-Learning</h2>-->
+
+<!--                 &lt;!&ndash; Dropdown &ndash;&gt;-->
+<!--                <ul class="nav-links" style="padding-right: 200px;">-->
+<!--            <li class="dropdown">-->
+<!--                <button class="dropbtn"><a href="{% url 'pythonintro' %}" style="text-decoration: none;">PYTHON</a></button>-->
+<!--                <div class="dropdown-content">-->
+<!--                    <a class="nav-link" href="{% url 'basic' %}">Basic Section</a>-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.section == 'Basic' and i.score > 7 %}-->
+<!--                            <a href="{% url 'inter' %}">Intermediate Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                    {% for i in data %}-->
+<!--                        {% if i.score > 7 and i.section == 'Intermediate' %}-->
+<!--                            <a href="{% url 'adv' %}">Advanced Section</a>-->
+<!--                        {% endif %}-->
+<!--                    {% endfor %}-->
+<!--                </div>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--        &lt;!&ndash; End of Dropdown &ndash;&gt;-->
+
+
+<!--    </div>-->
+
+
+    <div class="ml-3">
+        <div id="section1" class="section active mr-2 mb-2">
+            <link rel="stylesheet" href="{% static 'js/home.js' %}">
+
+      <h1 style="text-align: center;">Welcome to the world of PHP!</h1>
+        <p style=" color: black; font-size:20px; padding: 40px; ">
+
+PHP (Hypertext Preprocessor) is a widely-used open-source server-side scripting language that is particularly suited for web development and can be embedded into HTML.
+            Originally created by Rasmus Lerdorf in 1994, PHP has since evolved into a powerful tool for creating dynamic and interactive web pages.
+        <br><br>
+            PHP scripts are executed on the server, generating HTML content that is then sent to the client's browser.
+                It is compatible with various databases, web servers, and operating systems, making it highly versatile.
+                PHP supports a wide range of features, including database integration, session management, XML parsing, and more.
+        <br><br>One of PHP's key strengths is its ease of use and flexibility, making it accessible to beginners while still providing advanced functionality for experienced developers.
+            Its extensive documentation and large community of users contribute to its popularity and ongoing development.
+            PHP remains one of the most widely-used programming languages for web development, powering millions of websites and applications on the internet.</p>
+<p style=" color: black; font-size:18px; padding: 40px; ">Here is a video to start your learning on PHP Programming language</p>
+         <video controls class="mt-3 mb-3 mx-auto d-block" style="width: 50%;">
+                    <source src="{% static 'videos/Php-basics.mp4' %}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video><br>
+
+            <div style="padding: 40px;">
+            <h4 > Mastering PHP Fundamentals: Strengthening Your Web Development Skills</h4><br>
+
+            <p style=" color: black; font-size: 18px; ">Mastering PHP Fundamentals: Strengthening Your Web Development Skills
+
+                PHP, an acronym for Hypertext Preprocessor, serves as a cornerstone in the realm of web development, offering developers a robust scripting language for building dynamic and interactive websites.
+                In this essay, we delve into key PHP concepts and best practices, exploring how mastering these fundamentals can empower developers to create efficient, scalable, and secure web applications.<br><br>
+                <strong>Understanding the Origins of PHP:</strong>
+                PHP's journey began with humble origins, initially standing for "Personal Home Page." Originally conceived as a tool for managing personal websites, PHP quickly evolved into "Hypertext Preprocessor," reflecting its transformation into a server-side scripting language capable of processing dynamic content.
+                Over the years, PHP has grown in popularity and functionality, becoming a staple in web development due to its versatility and ease of use.<br><br>
+
+                <strong>Exploring String Manipulation with PHP:</strong>
+                Strings are fundamental data types in PHP, and developers frequently encounter tasks that involve manipulating and analyzing string data.
+                One essential function in the PHP arsenal is <strong>strlen()</strong>, which enables developers to determine the length of a string.
+                Whether validating user inputs, truncating text for display, or performing string comparisons, understanding and leveraging string functions is essential for effective PHP programming.<br><br>
+
+                <strong>Initiating PHP Scripts:</strong>
+                Starting a PHP script involves using the <strong>&lt;?php opening tag, followed by the script's logic, and concluding with the ?&gt;</strong> closing tag.
+                This syntax allows PHP code to be seamlessly integrated with HTML, facilitating the creation of dynamic web pages that respond to user interactions and server-side processing.
+                By embedding PHP within HTML, developers can harness the full power of both languages to deliver engaging and interactive web experiences.<br><br>
+
+
+                <strong>Harnessing the Power of PHP Output Functions:</strong>
+                Central to PHP's utility is its ability to generate dynamic content and interact with users through output functions.
+                The <strong>echo()</strong> function stands as a primary means of outputting data to the browser, enabling developers to display text, variables, and HTML elements dynamically.
+                Whether rendering user-generated content, displaying database query results, or generating HTML forms, mastering output functions is crucial for creating dynamic web applications.<br><br>
+
+                <strong>Navigating Form Data with PHP Superglobals:</strong>
+                Forms serve as a primary means for user interaction on websites, and PHP provides mechanisms for handling form submissions efficiently.
+                By accessing the $_POST superglobal variable, developers can retrieve form data submitted via HTTP POST requests.
+                This data can then be processed, validated, and sanitized to ensure application security and data integrity.
+                Proper form handling is essential for building interactive web applications that respond to user inputs effectively.<br><br>
+
+                <strong>Embracing File Inclusion and Code Reusability:</strong>
+                PHP facilitates code organization and reusability through file inclusion mechanisms such as the include() function.
+                This feature allows developers to modularize their codebase, breaking it into smaller, manageable components that can be included wherever needed.
+                By adopting modular development practices and separating concerns, developers can enhance code maintainability, scalability, and collaboration across development teams.<br><br>
+
+                <strong>Integrating HTML and PHP for Dynamic Content Generation:</strong>
+                The seamless integration of PHP within HTML documents empowers developers to create dynamic web pages that adapt to user interactions and server-side processing.
+                By embedding PHP code within HTML tags using the <strong>&lt;?php ... ?&gt;</strong> syntax, developers can generate dynamic content, execute conditional logic, and interact with databases seamlessly.
+                This integration facilitates the creation of dynamic user interfaces, personalized content delivery, and data-driven web applications.<br><br>
+
+                <strong>Conclusion:</strong>
+                In conclusion, mastering the fundamentals of PHP empowers developers to create dynamic, interactive, and feature-rich web applications that meet the evolving demands of modern users.
+                By understanding PHP's origins, exploring essential functions and syntax, and embracing best practices for code organization and security, developers can unlock the full potential of this versatile scripting language.
+                With PHP as a foundational tool in their arsenal, developers can embark on a journey of innovation, creativity, and excellence in web development.
+
+
+            </p><br>
+
+
+            <h4 > Exploring Intermediate PHP Concepts: Enhancing Your Development Skills</h4><br>
+            <p style=" color: black; font-size: 18px; ">
+                In this essay, we delve into intermediate-level PHP concepts that expand upon the fundamentals, providing developers with deeper insights into the language's capabilities and best practices.
+                From understanding advanced functions to exploring object-oriented programming principles, mastering these concepts empowers developers to build robust, scalable, and maintainable web applications.
+            </p>
+            <ol style=" color: black; font-size: 18px;">
+                <li><strong>Understanding Comparison Operators in PHP:</strong>
+                In PHP, the == operator is used for value comparison, while the === operator is used for both value and type comparison.
+                    This distinction is crucial when comparing variables, as it ensures accurate evaluations based on both value and data type.</li><br>
+                <li><strong>Harnessing the Power of implode() Function:</strong>
+                The implode() function in PHP is invaluable for joining array elements into a single string using a specified delimiter.
+                    For example, implode(", ", $array) joins array elements with a comma followed by a space, creating a comma-separated list of values.</li><br>
+                <li><strong>Exploring PHP Sessions:</strong>
+                PHP sessions are essential for maintaining stateful information across multiple requests, allowing developers to store and retrieve user data as they navigate through a website.
+                    Sessions are initiated with session_start() and can be terminated using session_destroy(), ensuring proper management of user sessions and data security.</li><br>
+                <li><strong>Understanding File Inclusion and Code Reusability:</strong>
+                In PHP, include and require are used to include external files into a PHP script.
+                    While both serve a similar purpose, require terminates the script if the file is not found, whereas include continues script execution.
+                    Understanding this difference is crucial for efficient code organization and reuse.</li><br>
+                <li><strong>Exploring the Significance of Namespaces:</strong>
+                    Namespaces in PHP provide a mechanism for organizing and grouping classes, interfaces, functions, and constants, thereby preventing naming collisions and improving code maintainability.
+                    By defining namespaces, developers can ensure code modularity and scalability across large codebases.</li><br>
+                <li><strong>Understanding Magic Methods in PHP:</strong>
+                    Magic methods such as __construct() and __destruct() play pivotal roles in object-oriented PHP programming.
+                    __construct() is invoked upon object instantiation, facilitating initialization, while __destruct() is called when an object is destroyed, allowing for cleanup tasks.</li><br>
+                <li><strong> Exploring the Difference Between GET and POST Methods:</strong>
+                    In PHP, the GET method appends form data to the URL, making it suitable for small data sets, while the POST method submits data in the request body, ideal for larger data sets and sensitive information.
+                    Understanding when to use each method ensures efficient and secure data transmission.</li><br>
+                <li><strong> Embracing Autoloading and Code Efficiency:</strong>
+                Autoloading in PHP simplifies the inclusion of class files by automatically loading classes when they are needed, eliminating the need for manual include or require statements.
+                    By adopting autoloading, developers can streamline code maintenance and improve application performance.</li><br>
+                <li><strong>Ensuring Security with Session Management:</strong>
+                PHP session management involves handling session IDs securely to prevent session fixation and session hijacking attacks.
+                    By utilizing cookies and implementing proper session handling techniques, developers can enhance application security and protect user data from unauthorized access.</li><br>
+                <li><strong>Preventing SQL Injection:</strong>
+                    SQL injection is a common security vulnerability in web applications, allowing attackers to manipulate SQL queries by injecting malicious code. PHP prevents SQL injection by using prepared statements or parameterized queries, ensuring safe and secure database interactions.</li>
+
+
+            </ol>
+
+            <p style=" color: black; font-size: 18px; "><strong>Conclusion:</strong>In conclusion, mastering intermediate PHP concepts empowers developers to elevate their web development skills, creating robust, scalable, and secure applications.
+                By understanding advanced functions, object-oriented principles, and security best practices, developers can build resilient web solutions that meet the demands of modern users and businesses.
+                With a solid foundation in intermediate PHP concepts, developers are poised to tackle complex challenges and drive innovation in the ever-evolving landscape of web development.</p>
+            <br>
+            <h4 > Advancing PHP: Exploring Key Concepts and Best Practices</h4>
+            <p style=" color: black; font-size: 18px; ">PHP, a server-side scripting language renowned for its versatility and robustness, powers a significant portion of the web.
+                As developers delve into more complex projects and seek to optimize their code, mastering advanced concepts becomes imperative.
+                In this essay, we explore several advanced topics in PHP, shedding light on their purpose, significance, and best practices.<br><br>
+
+                Namespaces serve as our gateway into organizing and encapsulating code effectively. By grouping logically related classes, interfaces, functions, and constants under a unique identifier, namespaces mitigate naming conflicts and enhance code readability.
+                They provide a structured approach to managing dependencies and facilitate autoloading, streamlining the development process in large-scale projects.<br><br>
+
+                Sessions and cookies, fundamental components of web development, play distinct roles in storing data. Sessions store data on the server side, offering security and scalability, while cookies store data on the client side, enabling personalization and user tracking.
+                Understanding their differences empowers developers to make informed decisions based on the specific requirements of their applications, balancing security, performance, and user experience.<br><br>
+
+                The __construct method in PHP classes serves as the cornerstone of object-oriented programming. Automatically invoked upon object instantiation, this method initializes object properties and orchestrates essential setup tasks.
+                Leveraging dependency injection, developers can pass dependencies to the constructor, promoting flexibility, testability, and maintainability in their codebase. The __construct method exemplifies encapsulation and ensures that objects are instantiated in a consistent and coherent state.<br><br>
+
+                Traits emerge as a powerful tool for code reuse and modular design in PHP. By encapsulating reusable behavior, traits enable developers to compose functionality across multiple classes without the constraints of traditional inheritance.
+                This approach promotes code organization, reduces redundancy, and enhances maintainability. Traits represent a paradigm shift in PHP development, empowering developers to craft more flexible and scalable solutions.<br><br>
+
+                The PDO extension revolutionizes database interaction in PHP, offering a unified interface for accessing various database systems.
+                With features such as prepared statements and parameterized queries, PDO enhances security and mitigates SQL injection vulnerabilities. Its abstraction layer shields developers from database-specific intricacies, fostering portability and interoperability across different platforms.
+                PDO embodies best practices in database management, underlining the importance of secure and standardized approaches in PHP development.<br><br>
+
+                Anonymous functions, closures, and the yield keyword introduce functional programming concepts to PHP, enabling developers to write more expressive and concise code.
+                Anonymous functions provide flexibility in defining callbacks and one-time-use functions, while closures encapsulate behavior and state within a function. The yield keyword facilitates lazy evaluation and generator-based iteration, optimizing memory usage and enhancing performance in PHP applications.<br><br>
+
+                The array functions in PHP, including array_map, array_filter, and array_reduce, empower developers to manipulate arrays efficiently.
+                These functions offer a functional programming approach to array manipulation, enabling developers to transform, filter, and reduce arrays with ease. By leveraging these functions, developers can write cleaner, more expressive code and embrace the principles of functional programming in PHP.<br><br>
+
+                Exception handling, a critical aspect of robust application development, ensures graceful error recovery and fault tolerance.
+                By employing try, catch, and finally blocks, developers can manage exceptional conditions and maintain the integrity of their applications. Exception handling promotes code reliability and fosters a proactive approach to error management, enhancing the overall stability and resilience of PHP applications.<br><br>
+
+                In conclusion, advancing in PHP entails mastering a diverse array of concepts and best practices. From namespaces and object-oriented programming to database interaction and functional programming, each topic plays a crucial role in building scalable, maintainable, and secure PHP applications.
+                By embracing these advanced concepts and adhering to best practices, developers can elevate their skills and craft exceptional solutions in the ever-evolving landscape of web development.
+
+            </p>
+        </div>
+            <div class="center-align">
+                <a href="{% url 'basicphp' %}" class="btn btn-danger col-3 mx-auto" tabindex="-1" role="button" aria-disabled="true">Click here to START TEST</a>
+            </div>
+<br>
+        <div class="vstack gap-3">
+            <div class="p-2"><a href="{% url 'basicphp' %}">Basic Section</a></div>
+            {% for i in data %}
+                {% if i.section == 'BasicPHP' and i.score > 7 %}
+                    <div class="p-2"><a href="{% url 'interphp' %}">Intermediate</a></div>                  
+                {% endif %}
+                {% if i.section == 'IntermediatePHP' and i.score > 7 %}
+                    <div class="p-2"><a href="{% url 'advphp' %}">Advanced</a></div>
+                {% endif %}
+                {% if i.section == 'AdvancedPHP' and i.score > 7 %}
+                    <div class="p-2"><a href="{% url 'phpcoding' %}">Coding</a></div>
+                    <div class="p-2"><a href="{% url 'upload_project3' %}">Project</a></div> 
+                {% endif %}        
+            {% endfor %}
+    
+        </div>
+
+<!--        {% if data.section != 'BasicPHP' and i.score < 7 %}-->
+<!--        <div class="p-2"><a href="#">Intermediate</a></div>-->
+<!--        {% endif %}-->
+
+<!--    {% if i.section != 'IntermediatePHP' and i.score < 7 %}-->
+<!--        <div class="p-2"><a href="#">Advanced</a></div>-->
+<!--    {% endif %}-->
+
+
+
+</div>
+    </div>
+
+</body>
+</html>

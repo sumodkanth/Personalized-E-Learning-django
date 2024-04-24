@@ -1,0 +1,230 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <title>Materials</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+ <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <style>
+     .navbar {
+            background-color: #333;
+            color: white;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            /* padding: 14px 16px; */
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+    #toggleButton {
+            background-color: #f85a40;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #toggleButton:hover {
+            background-color: #d83c22;
+        }
+                /* Styling for the sections */
+                .section {
+            display: none;
+            padding: 20px;
+            border: 1px solid #060606;
+            border-radius: 5px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(250, 248, 248, 0.1);
+        }
+        .active {
+            display: block; /* Show the active section */
+        }
+            /* CSS styles for chat container and messages */
+        .chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 250px;
+            height: 350px;
+            background-color: #ededed;
+            border: 1px solid #9a9999;
+            border-radius: 5px;
+            overflow: hidden; /* Hide overflow */
+        }
+        .chat-box {
+            overflow-y: auto; /* Enable vertical scrolling */
+            padding: 10px;
+            height: calc(100% - 40px); /* Adjust height */
+        }
+        .message {
+            padding: 5px 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            max-width: 70%; /* Limit message width */
+        }
+        .user-message {
+            background-color: #0d6efd;
+            color: #fff;
+            text-align: right;
+            align-self: flex-end;
+            border-radius: 3px;
+        }
+        .bot-message {
+            background-color: #f8f9fa;
+            color: #212529;
+            text-align: left;
+            align-self: flex-start;
+        }
+        .input-group {
+            display: flex;
+            margin-top: auto; /* Align input group at the bottom */
+        }
+        #inputText {
+            flex: 1; /* Take remaining space */
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        #sendBtn {
+            width: 50px;
+            background-color: #0d6efd;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+  </style>
+  <body>
+    {% load static %}
+      <div class="navbar">
+      <h2>Learning Materials</h2>
+      <!-- <a href="#">Home</a>-->
+      <a href="{% url 'basichtml' %}" class="btn btn-info" style="margin-left: 60%;padding: 9px;">Take the test again</a> 
+
+      </div>
+      <link rel="stylesheet" href="{% static 'js/home.js' %}">
+      <div class="ml-3">
+        <div id="section1" class="section active mr-2 mb-2">
+      <h1  style="font-family: Pacifico; color: black;">Introduction to HTML</h1>
+
+      <img class=mb-3 mt-3 src="{% static 'images/html-tagst.jpg' %}" alt="basic" style="width: 50%; max-width: 750px;padding-left:100px;">  
+
+      <p style="font-family: Pacifico; color: black; font-size: 20px;">
+        HTML stands for Hyper Text Markup Language which is the most widely used language on the Web to develop web pages and web applications. It is the very first step towards learning Web development. HTML is used by the browser to manipulate text, images, and other content, in order to display it in the required format. Since 1990, HTML is used by the World-Wide Web (WWW) global information initiative. HTML is the skeleton of a web page. It is the first language learned by developers and is core to front-end development work.
+        Now, Lets kick start your journey with the Introduction to latest version of HTML5 towards Web development.</p>
+      
+      <h3 style="font-family: Pacifico; color: black; font-size: 20px;">What is HTML?</h3>  
+      <ul>
+        <li>It describes the structure of a Web page.</li>
+        <li>It consists of a series of elements.</li>
+        <li>Its elements tell the browser how to display the content.</li>
+      </ul>
+
+      <h3 style="font-family: Pacifico; color: black; font-size: 20px;">Features of HTML</h3>
+      <ul>
+        <li>Easy to learnand quite easy to use.</li>
+        <li>It is platform-dependent.</li>
+        <li>Images,Videos and audios can be added to a web page using HTML5.</li>
+        <li>It is a markup language.</li>
+      </ul>
+      <p>Some other featues of HTML are:</p>
+      <img class="mb-3 mt-3" src="{% static 'images/htmlf.webp' %}" alt="WordCloud" style="width: 100%; max-width: 700px;padding-left: 100px;">
+
+      <h3 style="font-family: Pacifico; color: black; font-size: 20px;">HTML - Basic Structure</h3>
+
+      <p>An HTML document starts with DOCTYPE html to declare its HTML5 version. It's wrapped in html and divided into sections: head holds metadata like title, character encoding, and styles, while body encompasses visible content—headers, navigation in header and nav, main content in main, and footers in footer. Various elements like paragraphs, headings, lists, images, links, and forms structure the content. Comments (<!-- -->) aid in notes or explanations within the code. This structure organizes and separates content, metadata, and visual elements, forming the backbone of a web page.</p>
+
+          <img class="mb-3 mt-3" src="{% static 'images/htmlstructure.png' %}" alt="WordCloud" style="width: 100%; max-width: 700px;padding-left: 100px;">
+
+
+
+            <div>
+                  <video controls class="mt-3 mb-3 mx-auto d-block" style="width: 50%;">
+                      <source src="{% static 'videos/HTML_Basics.mp4' %}" type="video/mp4">
+                      Your browser does not support the video tag.
+                  </video><br>
+            <div>
+                <a href="{% url 'basichtml' %}" class="btn btn-info mt-3 ml-3 mb-3">Take the test again</a>
+            </div>
+            </div>
+
+    </div>
+
+      </div>
+  <div id="chat-container" class="chat-container">
+    <div class="chat-box" id="chatBox">
+        <div class="message bot-message">
+            <p>Welcome to Chatbot. How can I assist you?</p>
+        </div>
+    </div>
+    <form id="chatForm">
+        <div class="input-group">
+            <input type="text" class="form-control" id="inputText" placeholder="Type your message">
+            <button type="submit" id="sendBtn">Send</button>
+        </div>
+    </form>
+</div>
+  </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Handling form submission for chat
+        $('#chatForm').submit(function(event) {
+            event.preventDefault();
+            var inputText = $('#inputText').val();
+            if (inputText.trim() === '') return;
+
+            // Display user message
+            $('#chatBox').append('<div class="user-message"><p>' + inputText + '</p></div>');
+            $('#inputText').val('');
+            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+
+            // Send user message to server
+            $.ajax({
+                url: '{% url "chatbot" %}',
+                type: 'POST',
+                data: {input_text: inputText},
+                success: function(response) {
+                    // Display bot response
+                    $('#chatBox').append('<div class="bot-message"><p>' + response.response + '</p></div>');
+                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+
+</script>
+</html>

@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css" integrity="sha512-d0olNN35C6VLiulAobxYHZiXJmq+vl+BGIgAxQtD5+kqudro/xNMvv2yIHAciGHpExsIbKX3iLg+0B6d0k4+ZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha256-xyz" crossorigin="anonymous">
+
+    <title>PyCompiler</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #9fc5d6;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        ol {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            text-align: left;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .container {
+      max-width: 100%;
+      margin: auto;
+        }
+    .question-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .question-item {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 5px;
+    }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .terminal {
+
+ margin: 0 50px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+
+
+    .btn-group {
+      margin-top: 20px;
+    }
+                   /* Styling for chatbot container */
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 300px; /* Adjust width as needed */
+    height: 400px; /* Adjust height as needed */
+    background-color: #fff; /* Adjust background color */
+    border: 1px solid #9a9999; /* Adjust border */
+    display: none;
+    /* Other styles */
+}
+
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* background-color: rgba(0, 0, 0, 0.6); */
+            z-index: -1;
+        }
+        .chat-container {
+            max-width: 900px;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px 15px;
+            background-color: #f9f9f9;
+        }
+        .chat-box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            height: 325px;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            overflow-y: scroll;
+            max-height: 325px;
+        }
+        .user-message {
+            text-align: right;
+            color: #0d6efd;
+        }
+        .bot-message {
+            text-align: left;
+            color: #212529;
+        }
+        #inputText {
+            width: calc(100% - 70px);
+            margin-right: 10px;
+        }
+        #sendBtn {
+            width:30px;
+            }
+#open-chat-btn {
+    color: white;
+    background-color: transparent; /* Set background color to transparent */
+    border: none;
+    padding: 15px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+              /* Add your styles for the close button here */
+        #close-chat-btn {
+
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+.chatbot-message {
+    text-align: right;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0; /* Initially hide the message */
+    animation: fadeInBounce 4s ease infinite; /* Apply the animation */
+}
+
+@keyframes fadeInBounce {
+    0%, 100% {
+        opacity: 0; /* Start and end with opacity 0 */
+        transform: translateY(-20px); /* Move up slightly */
+    }
+    50% {
+        opacity: 1; /* Fade in */
+        transform: translateY(5px); /* Move down slightly */
+    }
+}
+    </style>
+</head>
+<body style="font-family: Verdana;">
+
+<div class="questions">
+    <h1>PHP Programming Questions</h1>
+    <ol >
+        <li >1.Palindrome Checker: Write a PHP function that takes a string as input and checks whether it is a
+            palindrome or not. A palindrome is a word, phrase, or sequence of characters that reads the same backward
+            as forward (ignoring spaces, punctuation, and capitalization).
+        </li>
+        <li>2.Write a PHP program that prints the numbers from 1 to 100. But for multiples of three, print "Fizz" instead
+            of the number, and for the multiples of five, print "Buzz". For numbers that are multiples of both three and
+            five, print "FizzBuzz".
+        </li>
+        <li>3.Write a PHP script that reads the contents of a text file and outputs the number of lines, words, and
+            characters in the file. You can use any text file for testing.
+        </li>
+        <li>4.Factorial Calculator: Write a PHP function to calculate the factorial of a given non-negative integer.
+        </li>
+        <li>5.Write a PHP function that checks if a given number is a prime number.
+        </li>
+        <li>6.Write a PHP function to reverse a string without using the strrev() function.
+        </li>
+        <li>7.Write a PHP function that takes an array of numbers as input and calculates the sum and average of the
+            numbers.
+        </li>
+        <li>8.Write a PHP function that checks if a given year is a leap year.
+        </li>
+        <li>9.Write a PHP function that takes an array as input and returns a new array containing only the unique
+            elements.
+        </li>
+        <li>10Write a PHP function that parses a URL into its components (scheme, host, path, query parameters, etc.).
+        </li>
+    </ol>
+</div>
+
+<div class="container">
+    <h4>PHP Compiler</h4>
+    <form method="post" action="{% url 'compile_php' %}">
+        {% csrf_token %}
+        <label for="code">Code Area</label>
+        <textarea  class="form-control code-editor" id="code" name="code" rows="10"
+                  onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{{ code }}</textarea>
+        <br>
+        <button class="button" type="submit">Compile</button>
+    </form>
+    <br>
+    {% if errors %}
+        <div class="terminal">
+            <h2>Error:</h2>
+            <pre>{{ errors }}</pre>
+        </div>
+    {% endif %}
+<!-- <h5 class="text-center">Output:</h5>-->
+        <div class="terminal">
+            <label for="output">Output</label>
+            <textarea type="text" class="form-control" id="output" name="output" rows="4"
+                      disabled>{{ output }}</textarea>
+        </div>
+  <div class="btn-group d-flex justify-content-center">
+    <a href="{% url 'phpintro' %}" class="btn btn-secondary">Back</a>
+     <a href="{% url 'phpcoding' %}" class="btn btn-secondary">Retry</a>
+    <a href="{% url 'phpanswers' %}" class="btn btn-secondary">Check Answers</a>
+
+
+  </div>
+</div>
+
+                        <div style="margin-left: 95%;" >
+                            <div style="position: fixed; bottom: 20px; right: 20px;">
+
+                                <div id="chatbot-widget">
+                                    <div class="chatbot-message">Hi, how can I help you?</div>
+                                    <button id="open-chat-btn">
+                                         <i class="fa-solid fa-message fa-2x fa-bounce fa-2xl" style="color: #7691c8;"></i>
+
+                                    </button>
+                                    <div id="chat-container" class="chat-container" style="display: none;">
+                                        <div class="chat-box" id="chatBox">
+                                            <div class="bot-message">
+                                                <p>Welcome to Chatbot. How can I assist you?</p>
+                                            </div>
+                                        </div>
+                                        <form id="chatForm">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="inputText" placeholder="Type your message">
+
+                                                <a href="{% url 'phpcoding' %}" type="submit" class="btn btn-primary"><span class="material-symbols-rounded">
+                                                    close
+                                                    </span></a>
+                                                <br>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+
+</body>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Handling form submission for chat
+        $('#chatForm').submit(function(event) {
+            event.preventDefault();
+            var inputText = $('#inputText').val();
+            if (inputText.trim() === '') return;
+
+            // Display user message
+            $('#chatBox').append('<div class="user-message"><p>' + inputText + '</p></div>');
+            $('#inputText').val('');
+            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+
+            // Send user message to server
+            $.ajax({
+                url: '{% url "chatbot" %}',
+                type: 'POST',
+                data: {input_text: inputText},
+                success: function(response) {
+                    // Display bot response
+                    $('#chatBox').append('<div class="bot-message"><p>' + response.response + '</p></div>');
+                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+
+        // Handling the toggle of the chat widget
+        const openChatBtn = document.getElementById('open-chat-btn');
+        const chatContainer = document.getElementById('chat-container');
+
+        openChatBtn.addEventListener('click', function() {
+            chatContainer.style.display = chatContainer.style.display === 'block' ? 'none' : 'block';
+        });
+    });
+</script>
+</html>
