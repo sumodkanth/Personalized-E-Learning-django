@@ -3,10 +3,11 @@
 {% load static %}
 <html lang="en">
   <head>
+       <title>Admin Portal</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Admin Portal</title>
+
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}">
@@ -29,7 +30,7 @@
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top" style="background-color: #bec7d4;">
-          <a href="{% url 'admin_indexpage' %}">
+          <a href="">
           <h4 style="color: blue;">C-JOBS-ADMIN</h4></a>
 <!--          <a class="sidebar-brand brand-logo" href="index.html"><img src="{% static 'assets/images/logo.svg' %}" alt="logo" /></a>-->
           <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="{% static 'assets/images/logo-mini.svg' %}" alt="logo" /></a>
@@ -37,7 +38,7 @@
         <ul class="nav" >
           <li class="nav-item profile">
             <div class="profile-desc">
-              {% if request.session.username %}
+<!--              {% if request.session.username %}-->
               <div class="profile-pic">
                 <div class="count-indicator">
                   <img class="img-xs rounded-circle " src="{% static 'assets/images/faces/face15.jpg' %}" alt="">
@@ -99,7 +100,7 @@
               </div>
             </div>
           </li>
-          {% if request.session.username %}
+<!--          {% if request.session.username %}-->
           <li class="nav-item nav-category">
             <span class="nav-link">Navigation</span>
           </li>
@@ -256,7 +257,7 @@
 
           {% else %}
           <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'main-login2' %}">
+            <a class="nav-link" href="">
               <span class="menu-icon">
                 <i class="mdi mdi-login"></i>
               </span>
@@ -312,7 +313,7 @@
                     </div>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item" href="{% url 'faculty_logout' %}">
+                  <a class="dropdown-item preview-item" href="">
                     <div class="preview-thumbnail">
                       <div class="preview-icon bg-dark rounded-circle">
                         <i class="mdi mdi-logout text-danger"></i>
