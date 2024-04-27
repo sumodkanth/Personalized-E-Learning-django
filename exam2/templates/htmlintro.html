@@ -150,107 +150,10 @@
                 <a href="#"><i class="fas fa-bars"></i></a>
             </div>
         </div>
-        <!-- <ul class="nav-links" style="padding-right: 150px;">
 
-            <li class="dropdown">
-                <button class="dropbtn"><a href="{% url 'pythonintro' %}" style="text-decoration: none;">Python</a></button>
-                <div class="dropdown-content">
-                    <a class="nav-link" href="{% url 'basic' %}">Basic Section</a>
-                    {% for i in data %}
-                        {% if i.section == 'Basic' and i.score > 7 %}
-                            <a href="{% url 'inter' %}">Intermediate Section</a>
-                        {% endif %}
-                    {% endfor %}
-                    {% for i in data %}
-                        {% if i.score > 7 and i.section == 'Intermediate' %}
-                            <a href="{% url 'adv' %}">Advanced Section</a>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </li>
-            <li class="dropdown">
-                <button class="dropbtn"><a href="{% url 'basichtml' %}" style="text-decoration: none;">HTML</a></button>
-                <div class="dropdown-content">
-                    <a class="nav-link" href="{% url 'basichtml' %}">Basic Section</a>
-                    {% for i in data %}
-                        {% if i.section == 'BasicHTML' and i.score > 7 %}
-                            <a href="{% url 'interhtml' %}">Intermediate Section</a>
-                        {% endif %}
-                    {% endfor %}
-                    {% for i in data %}
-                        {% if i.section == 'IntermediateHTML' and i.score > 7 %}
-                            <a href="{% url 'advhtml' %}">Advanced Section</a>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </li>
-            <li class="dropdown">
-                <button class="dropbtn"><a href="{% url 'basicphp' %}" style="text-decoration: none;">PHP</a></button>
-                <div class="dropdown-content">
-                    <a class="nav-link" href="{% url 'basicphp' %}">Basic Section</a>
-                    {% for i in data %}
-                        {% if i.section == 'BasicPHP' and i.score > 7 %}
-                            <a href="{% url 'interphp' %}">Intermediate Section</a>
-                        {% endif %}
-                    {% endfor %}
-                    {% for i in data %}
-                        {% if i.section == 'IntermediatePHP' and i.score > 7 %}
-                            <a href="{% url 'advphp' %}">Advanced Section</a>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </li>
-            <li class="dropdown">
-                <button class="dropbtn"><a href="#" style="text-decoration: none;">CERTIFICATE</a></button>
-                <div class="dropdown-content">
-                    {% for i in data %}
-                        {% if i.score > 7 and i.section == 'Advanced' %}
-                            <a href="{% url 'pythoncertificate' %}">PYTHON</a>
-                        {% endif %}
-                    {% endfor %}
-                    {% for i in data %}
-                        {% if i.section == 'AdvancedHTML' and i.score > 7 %}
-                            <a href="{% url 'htmlcertificate' %}">HTML Section</a>
-                        {% endif %}
-                    {% endfor %}
-                    {% for i in data %}
-                        {% if i.section == 'AdvancedPHP' and i.score > 7 %}
-                            <a href="{% url 'htmlcertificate' %}">php certificate</a>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </li> -->
-        <!-- </ul> -->
     </nav>
 </section>
 
-
-<!--    <div class="navbar">-->
-<!--      <h2>E-Learning</h2>-->
-
-<!--                 &lt;!&ndash; Dropdown &ndash;&gt;-->
-<!--                <ul class="nav-links" style="padding-right: 200px;">-->
-<!--            <li class="dropdown">-->
-<!--                <button class="dropbtn"><a href="{% url 'pythonintro' %}" style="text-decoration: none;">PYTHON</a></button>-->
-<!--                <div class="dropdown-content">-->
-<!--                    <a class="nav-link" href="{% url 'basic' %}">Basic Section</a>-->
-<!--                    {% for i in data %}-->
-<!--                        {% if i.section == 'Basic' and i.score > 7 %}-->
-<!--                            <a href="{% url 'inter' %}">Intermediate Section</a>-->
-<!--                        {% endif %}-->
-<!--                    {% endfor %}-->
-<!--                    {% for i in data %}-->
-<!--                        {% if i.score > 7 and i.section == 'Intermediate' %}-->
-<!--                            <a href="{% url 'adv' %}">Advanced Section</a>-->
-<!--                        {% endif %}-->
-<!--                    {% endfor %}-->
-<!--                </div>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--        &lt;!&ndash; End of Dropdown &ndash;&gt;-->
-
-
-<!--    </div>-->
 
 
     <div class="ml-3">
@@ -269,6 +172,11 @@
                       <source src="{% static 'videos/HTML_Basics.mp4' %}" type="video/mp4">
                       Your browser does not support the video tag.
                   </video><br>
+
+            <div class="center-align">
+                <a href="{% url 'watch_html_videos' %}" class="btn btn-primary col-3 mx-auto" tabindex="-1" role="button" aria-disabled="true">Watch More Videos</a>
+            </div>
+
         <div style="padding: 40px;">
         <h4 > Unraveling the Core Concepts of HTML</h4><br>
             <p style=" color: black; font-size: 18px;" >

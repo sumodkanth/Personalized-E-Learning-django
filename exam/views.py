@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 import random
 from django.contrib.auth.decorators import login_required
 from .models import *
+from Faculty.models import Video, Comment, Like
+from django.db.models import Count
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from random import sample
 import random
@@ -1286,3 +1288,64 @@ class pythonintro(TemplateView):
         context = super().get_context_data(**kwargs)
         context['data'] = TestResult.objects.filter(user=self.request.user)
         return context
+
+
+# def watch_python_videos(request):
+#     # Retrieve all videos from the database
+#     videos = Video.objects.all().order_by('-uploaded_at')
+#     return render(request, 'watch_python_videos.html', {'videos': videos})
+# def watch_python_videos(request):
+#     # Get all videos ordered by uploaded_at in descending order (latest first)
+#     all_videos = Video.objects.order_by('-uploaded_at')
+#
+#     # Get the latest video (first item in the queryset)
+#     latest_video = all_videos.first()
+#
+#     # Exclude the latest video from the list of all videos
+#     other_videos = all_videos[1:]
+#
+#     context = {
+#         'latest_video': latest_video,
+#         'other_videos': other_videos
+#     }
+#
+#     return render(request, 'watch_python_videos.html', context)
+def watch_python_videos(request):
+    all_videos = Video.objects.filter(course="Python").annotate(like_count=Count('likes')).order_by('-uploaded_at')
+
+    latest_video = all_videos.first()
+
+    other_videos = all_videos[1:]
+
+    next_video_url = None
+    if other_videos:
+        next_video_url = other_videos[0].video_file.url
+
+    context = {
+        'latest_video': latest_video,
+        'other_videos': other_videos,
+        'next_video_url': next_video_url
+    }
+
+    return render(request, 'watch_python_videos.html', context)
+
+
+def add_comment(request, video_id):
+    if request.method == 'POST':
+        video = get_object_or_404(Video, pk=video_id)
+        user = request.user
+        text = request.POST.get('comment_text', '')
+        Comment.objects.create(video=video, user=user, text=text)
+    return redirect('watch_python_videos')
+
+
+def toggle_like(request, video_id):
+    if request.method == 'POST':
+        video = get_object_or_404(Video, pk=video_id)
+        user = request.user
+        # Check if the user has already liked the video
+        if Like.objects.filter(video=video, user=user).exists():
+            Like.objects.filter(video=video, user=user).delete()
+        else:
+            Like.objects.create(video=video, user=user)
+    return redirect('watch_python_videos')

@@ -21,6 +21,8 @@ class RegForm(UserCreationForm):
         attrs={"placeholder": "Password", "class": "form-control", "style": "border-radius: 0.75rem; "}))
     password2 = forms.CharField(widget=forms.PasswordInput(
         attrs={"placeholder": "Confirm Password", "class": "form-control", "style": "border-radius: 0.75rem; "}))
+    is_student = forms.BooleanField(required=False)
+    is_faculty = forms.BooleanField(required=False)
 
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')

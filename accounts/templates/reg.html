@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>{% if val == 'student' %}Student Registration{% elif val == 'faculty' %}Faculty Registration{% else %}Registration{% endif %}</title>
     {% load static %}
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -29,6 +29,7 @@
         {% csrf_token %}
         <div class="form-header">
           <img src="{% static 'images/demo.png' %}" alt="logo">
+           <h4>{% if val == 'student' %}Student Registration{% elif val == 'faculty' %}Faculty Registration{% else %}Registration{% endif %}</h4>
           <!-- <img src="https://assets.codepen.io/1584356/codepen.png" alt="logo"> -->
         </div>
         {% for field in form %}

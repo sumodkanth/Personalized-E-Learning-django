@@ -3,11 +3,12 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 import random
 from .models import *
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from accounts.forms import FeedbackForm, ProjectUploadForm
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
-
+from Faculty.models import Video, Comment, Like
+from django.db.models import Count
 # Create your views here.
 
 html_questions = [
@@ -824,12 +825,6 @@ def save_correct_answers(user, correct_answers, section):
 #     return render(request, 'basic_html.html', {'random_questions': random_questions})
 
 
-
-
-
-
-
-
 # def basichtml_section(request):
 #     if 'random_questionshtml' in request.session:
 #         del request.session['random_questionshtml']
@@ -981,11 +976,11 @@ def advancedhtml_section(request):
         basichtml_correct_answers = correct_answers_basichtml.correct_answers.split(',')
 
     # Retrieve correct answers for the intermediate section
-    correct_answers_intermediatehtml = CorrectAnswers.objects.filter(user=request.user, section="IntermediateHTML").first()
+    correct_answers_intermediatehtml = CorrectAnswers.objects.filter(user=request.user,
+                                                                     section="IntermediateHTML").first()
     intermediatehtml_correct_answers = []
     if correct_answers_intermediatehtml:
         intermediatehtml_correct_answers = correct_answers_intermediatehtml.correct_answers.split(',')
-
 
     if request.method == 'POST':
         total_marks = 0
@@ -1085,3 +1080,44 @@ def upload_project2(request):
     else:
         form = ProjectUploadForm()  # Create a new form instance if not a POST request
     return render(request, 'upload_project2.html', {'form': form})  # Render the form template
+
+
+def watch_html_videos(request):
+    all_videos = Video.objects.filter(course="HTML").annotate(like_count=Count('likes')).order_by('-uploaded_at')
+
+    latest_video = all_videos.first()
+
+    other_videos = all_videos[1:]
+
+    next_video_url = None
+    if other_videos:
+        next_video_url = other_videos[0].video_file.url
+
+    context = {
+        'latest_video': latest_video,
+        'other_videos': other_videos,
+        'next_video_url': next_video_url
+    }
+
+    return render(request, 'watch_html_videos.html', context)
+
+
+def add_comment_html(request, video_id):
+    if request.method == 'POST':
+        video = get_object_or_404(Video, pk=video_id)
+        user = request.user
+        text = request.POST.get('comment_text', '')
+        Comment.objects.create(video=video, user=user, text=text)
+    return redirect('watch_html_videos')
+
+
+def toggle_like_html(request, video_id):
+    if request.method == 'POST':
+        video = get_object_or_404(Video, pk=video_id)
+        user = request.user
+        # Check if the user has already liked the video
+        if Like.objects.filter(video=video, user=user).exists():
+            Like.objects.filter(video=video, user=user).delete()
+        else:
+            Like.objects.create(video=video, user=user)
+    return redirect('watch_html_videos')

@@ -14,6 +14,8 @@ class CustUser(AbstractUser):
     )
     gender = models.CharField(max_length=100, choices=options, null=True, default='Male')
     age = models.IntegerField(null=True)
+    is_student = models.BooleanField(null=True,blank=True,default=False)
+    is_faculty = models.BooleanField(null=True,blank=True,default=False)
     is_active_basic = models.BooleanField(default=False, null=True, blank=True)
     is_active_inter = models.BooleanField(default=False, null=True, blank=True)
     is_active_adv = models.BooleanField(default=False, null=True, blank=True)
@@ -44,3 +46,5 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.name
+
+

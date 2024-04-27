@@ -17,6 +17,9 @@ urlpatterns = [
     path('upload3/', upload_project3, name='upload_project3'),
     path('project_list/', project_list, name='project_list'),
     path('download/<int:project_id>/', download_project, name='download_project'),
+    path('watch-php-videos/', watch_php_videos, name='watch_php_videos'),
+    path('add_comment_php/<int:video_id>/', add_comment_php, name='add_comment_php'),
+    path('toggle_like_php/<int:video_id>/', toggle_like_php, name='toggle_like_php'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

@@ -1,388 +1,241 @@
+  <!DOCTYPE html>
+  <!-- Coding By CodingNepal - codingnepalweb.com -->
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>Faculty</title>
+      <!-- CSS -->
+<!--      <link rel="stylesheet" href="css/style.css" />-->
+      <!-- Boxicons CSS -->
+      <link
+        href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+        rel="stylesheet"
+      />
+      <style>
+/* Google Fonts - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Admin Portal</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <link rel="stylesheet" href="{% static 'assets/vendors/jvectormap/jquery-jvectormap.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" />
-  </head>
-  <body>
-    <div class="container-scroller">
-      <!-- partial:partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top" style="background-color: #bec7d4;">
-          <a href="{% url 'admin_indexpage' %}">
-          <h4 style="color: blue;">C-JOBS-ADMIN</h4></a>
-<!--          <a class="sidebar-brand brand-logo" href="index.html"><img src="{% static 'assets/images/logo.svg' %}" alt="logo" /></a>-->
-          <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="{% static 'assets/images/logo-mini.svg' %}" alt="logo" /></a>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    min-height: 100%;
+    background: #fff;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 70px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: grey;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+nav .logo {
+    display: flex;
+    align-items: center;
+    margin: 0 24px;
+}
+
+.logo .menu-icon {
+    color: #333;
+    font-size: 24px;
+    margin-right: 14px;
+    cursor: pointer;
+}
+
+.logo .logo-name {
+    color: #000;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+nav .sidebar {
+    position: fixed;
+    top: 70px; /* Adjust the top value to align under the navbar */
+    left: 0;
+    height: calc(100% - 70px); /* Calculate the height to fill remaining space */
+    width: 230px;
+    padding: 20px 0;
+    background-color: #cacccf;
+    box-shadow: 0 5px 1px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+}
+
+nav.open .sidebar {
+    left: 0;
+}
+
+.sidebar .sidebar-content {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 16px;
+}
+
+.sidebar-content .list {
+    list-style: none;
+}
+
+.list .nav-link {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+    padding: 14px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.lists .nav-link:hover {
+    background-color: #4070f4;
+}
+
+.nav-link .icon {
+    margin-right: 14px;
+    font-size: 20px;
+    color: #707070;
+}
+
+.nav-link .link {
+    font-size: 16px;
+    color: #707070;
+    font-weight: 400;
+}
+
+.lists .nav-link:hover .icon,
+.lists .nav-link:hover .link {
+    color: #fff;
+}
+.nav-link:hover .icon,.nav-link:hover .link{
+    color: red; /* Change color to red on hover */
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    height: 1000vh;
+    width: 200%;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s ease;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+nav.open ~ .overlay {
+    opacity: 1;
+    left: 260px;
+    pointer-events: auto;
+}
+
+      </style>
+    </head>
+    <body>
+    <div>
+      <nav>
+        <div class="logo">
+            <a href="{% url 'facultyindex' %}" style=" text-decoration: none;">
+
+          <span class="logo-name">Faculty-</span>
+                <span class="logo-name">{{ request.user }}</span>
+            </a>
         </div>
-        <ul class="nav" >
-          <li class="nav-item profile">
-            <div class="profile-desc">
-              {% if request.session.username %}
-              <div class="profile-pic">
-                <div class="count-indicator">
-                  <img class="img-xs rounded-circle " src="{% static 'assets/images/faces/face15.jpg' %}" alt="">
-                  <span class="count bg-success"></span>
-                </div>
-
-                <div class="profile-name">
-                  <h5 class="mb-0 font-weight-normal" style="color: black;">{{name.Name}}</h5>
-                  <span>Gold Member</span>
-                </div>
-                </div>
-                {% else %}
-              <div class="profile-pic">
-                <div class="count-indicator">
-                  <img class="img-xs rounded-circle " src="{% static 'assets/images/faces/face28.jpg' %}" alt="">
-                  <span class="count bg-success"></span>
-                </div>
-                <div class="profile-name">
-                  <h5 class="mb-0 font-weight-normal" style="color: black;">No user</h5>
-                  <span>Gold Member</span>
-                </div>
-              </div>
-                {% endif %}
-
-              <a href="#" id="profile-dropdown" data-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
-              <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
-                <a href="#" class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-settings text-primary"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">Account settings</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-onepassword  text-info"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i class="mdi mdi-calendar-today text-success"></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">To-do list</p>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </li>
-          {% if request.session.username %}
-          <li class="nav-item nav-category">
-            <span class="nav-link">Navigation</span>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'statussearch' %}">
-              <span class="menu-icon">
-                <i class="mdi mdi-speedometer"></i>
-              </span>
-              <span class="menu-title">Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <span class="menu-icon">
-                <i class="mdi mdi-account-multiple"></i>
-              </span>
-              <span class="menu-title">Students</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-basic">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'add_student' %}" >Add Students</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'add_student2' %}">Add Students using Excel</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'view_students' %}">View Students</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item menu-items">
-              <a class="nav-link" data-toggle="collapse" href="#ui-faculty" aria-expanded="false" aria-controls="ui-basic">
-                <span class="menu-icon">
-                  <i class="mdi mdi-account-star"></i>
-                </span>
-                <span class="menu-title">Faculties</span>
-                <i class="menu-arrow"></i>
-              </a>
-            <div class="collapse" id="ui-faculty">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'add_faculty' %}">Add Faculty</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'view_faculties' %}">View Faculties</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item menu-items">
-              <a class="nav-link" data-toggle="collapse" href="#ui-courses" aria-expanded="false" aria-controls="ui-basic">
-                <span class="menu-icon">
-                  <i class="mdi mdi-book-multiple"></i>
-                </span>
-                <span class="menu-title">Courses</span>
-                <i class="menu-arrow"></i>
-              </a>
-            <div class="collapse" id="ui-courses">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'add_course' %}">Add Course</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'view_course' %}">View Course</a></li>
-<!--                <li class="nav-item"> <a class="nav-link" href="{% static 'pages/ui-features/typography.html' %}">Typography</a></li>-->
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item menu-items">
-              <a class="nav-link" data-toggle="collapse" href="#ui-dept" aria-expanded="false" aria-controls="ui-basic">
-                <span class="menu-icon">
-                  <i class="mdi mdi-grid"></i>
-                </span>
-                <span class="menu-title">Department</span>
-                <i class="menu-arrow"></i>
-              </a>
-            <div class="collapse" id="ui-dept">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'add_dept' %}">Add New Department</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'view_dept' %}">List Departments</a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="nav-item menu-items">
-              <a class="nav-link" data-toggle="collapse" href="#ui-jobportal" aria-expanded="false" aria-controls="ui-basic">
-                <span class="menu-icon">
-                  <i class="mdi mdi-briefcase"></i>
-                </span>
-                <span class="menu-title">Job Portal</span>
-                <i class="menu-arrow"></i>
-              </a>
-            <div class="collapse" id="ui-jobportal">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'add_job' %}">Add Job Post</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'view_jobs' %}">View Jobs</a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-jobportal3" aria-expanded="false" aria-controls="ui-basic">
-              <span class="menu-icon">
-                <i class="mdi mdi-briefcase"></i>
-              </span>
-              <span class="menu-title">Training</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-jobportal3">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'add_news' %}">Add Training</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'news_view' %}">View Training</a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-jobportal1" aria-expanded="false" aria-controls="ui-basic">
-              <span class="menu-icon">
-                <i class="mdi mdi-briefcase"></i>
-              </span>
-              <span class="menu-title">Placement</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-jobportal1">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'placed' %}">Add Placement</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'display_placed' %}">View Placement</a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-jobportal4" aria-expanded="false" aria-controls="ui-basic">
-              <span class="menu-icon">
-                <i class="mdi mdi-briefcase"></i>
-              </span>
-              <span class="menu-title">Alerts</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-jobportal4">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'add_marquee' %}">Add Alerts</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'marquee_list' %}">View Alerts</a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-jobportal5" aria-expanded="false" aria-controls="ui-basic">
-              <span class="menu-icon">
-                <i class="mdi mdi-briefcase"></i>
-              </span>
-              <span class="menu-title">News</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-jobportal5">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'add_news2' %}">Add News</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'news_view2' %}">View News</a></li>
-              </ul>
-            </div>
-          </li>
-
-          {% else %}
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="{% url 'main-login2' %}">
-              <span class="menu-icon">
-                <i class="mdi mdi-login"></i>
-              </span>
-              <span class="menu-title">Login</span>
-            </a>
-          </li>
-          {% endif %}
-
-        </ul>
-      </nav>
-      <!-- partial -->
-      <div class="container-fluid page-body-wrapper">
-        <!-- partial:partials/_navbar.html -->
-        <nav class="navbar p-0 fixed-top d-flex flex-row" style="background-color: #bec7d4;">
-          <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-            <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{% static 'assets/images/logo-mini.svg' %}" alt="logo" /></a>
-          </div>
-          <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
-            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-              <span class="mdi mdi-menu"></span>
-            </button>
-<!--            <ul class="navbar-nav w-100">-->
-<!--              <li class="nav-item w-100">-->
-<!--                <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">-->
-<!--                  <input type="text" class="form-control" placeholder="Search products">-->
-<!--                </form>-->
+        <div class="sidebar">
+<!--          <div class="logo">-->
+<!--            <i class="bx bx-menu menu-icon"></i>-->
+<!--            <span class="logo-name">Faculty</span>-->
+<!--          </div>-->
+          <div class="sidebar-content">
+            <ul class="lists">
+<!--              <li class="list">-->
+<!--                <a href="#" class="nav-link">-->
+<!--                  <i class="bx bx-home-alt icon"></i>-->
+<!--                  <span class="link">Dashboard</span>-->
+<!--                </a>-->
 <!--              </li>-->
-<!--            </ul>-->
-            <ul class="navbar-nav navbar-nav-right">
-
-              <li class="nav-item dropdown">
-                <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
-              {% if request.session.username %}
-                  <div class="navbar-profile">
-                    <img class="img-xs rounded-circle" src="{% static 'assets/images/faces/face15.jpg' %}" alt="">
-                    <p class="mb-0 d-none d-sm-block navbar-profile-name"  style="color:#000000;">{{name.FirstName}}</p>
-                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
-                  </div>
-
-              {% endif %}
+<!--              <li class="list">-->
+<!--                <a href="#" class="nav-link">-->
+<!--                  <i class="bx bx-bar-chart-alt-2 icon"></i>-->
+<!--                  <span class="link">Revenue</span>-->
+<!--                </a>-->
+<!--              </li>-->
+<!--              <li class="list">-->
+<!--                <a href="#" class="nav-link">-->
+<!--                  <i class="bx bx-bell icon"></i>-->
+<!--                  <span class="link">Notifications</span>-->
+<!--                </a>-->
+<!--              </li>-->
+              <li class="list">
+                <a href="#" class="nav-link">
+                  <i class="bx bx-message-rounded icon"></i>
+                  <span class="link">Messages</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-                  <h6 class="p-3 mb-0">Profile</h6>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-settings text-success"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject mb-1">Settings</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item" href="{% url 'faculty_logout' %}">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-logout text-danger"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject mb-1">Log out</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <p class="p-3 mb-0 text-center">Advanced settings</p>
-                </div>
               </li>
+<!--              <li class="list">-->
+<!--                <a href="#" class="nav-link">-->
+<!--                  <i class="bx bx-pie-chart-alt-2 icon"></i>-->
+<!--                  <span class="link">Analytics</span>-->
+<!--                </a>-->
+<!--              </li>-->
+<!--              <li class="list">-->
+<!--                <a href="#" class="nav-link">-->
+<!--                  <i class="bx bx-heart icon"></i>-->
+<!--                  <span class="link">Likes</span>-->
+<!--                </a>-->
+<!--              </li>-->
+<!--              <li class="list">-->
+<!--                <a href="#" class="nav-link">-->
+<!--                  <i class="bx bx-folder-open icon"></i>-->
+<!--                  <span class="link">Files</span>-->
+<!--                </a>-->
+<!--              </li>-->
+              <li class="list">
+                  <a href="{% url 'index' %}" class="nav-link">
+                      <i class="bx bx-video-plus icon"></i>
+                      <span class="link">Upload Videos</span>
+                  </a>
+              </li>
+
+            <li class="list">
+                <a href="{% url 'videos' %}" class="nav-link">
+                    <i class="bx bx-video icon"></i>
+                    <span class="link">View Videos</span>
+                </a>
+            </li>
             </ul>
-            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-              <span class="mdi mdi-format-line-spacing"></span>
-            </button>
-          </div>
-        </nav>
-        <!-- partial -->
-        <div class="main-panel">
-          <div class="content-wrapper">
-
-            {% block content %}
-
-{% if request.session.username %}
- <div class="col-lg-8">
-    <p class="lead" style="color: black;">A job portal on a college website is a valuable resource for students and alumni in their job search and career development. It aims to bridge the gap between education and the professional world by providing access to job opportunities and career-related support.</p>
-
-</div>
-{% else %}
-            <p style="color:black; font-size:30px;">Please Login to Access this page</p>
-{% endif %}
-
-            {% endblock %}
-
-          </div>
-          <!-- content-wrapper ends -->
-          <!-- partial:partials/_footer.html -->
-          <footer class="footer">
-            <div class="d-sm-flex justify-content-center justify-content-sm-between">
-              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">College Management System</span>
+            <div class="bottom-cotent">
+  <!--            <li class="list">-->
+  <!--              <a href="#" class="nav-link">-->
+  <!--                <i class="bx bx-cog icon"></i>-->
+  <!--                <span class="link">Settings</span>-->
+  <!--              </a>-->
+  <!--            </li>-->
+                <ul>
+              <li class="list">
+                <a href="{% url 'logout' %}" class="nav-link">
+                  <i class="bx bx-log-out icon"></i>
+                  <span class="link">Logout</span>
+                </a>
+              </li></ul>
             </div>
-          </footer>
-          <!-- partial -->
+          </div>
         </div>
-        <!-- main-panel ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
-    </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
-    <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="{% static 'assets/vendors/chart.js/Chart.min.js' %}"></script>
-    <script src="{% static 'assets/vendors/progressbar.js/progressbar.min.js' %}"></script>
-    <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
-    <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
-    <script src="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.js' %}"></script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="{% static 'assets/js/off-canvas.js' %}"></script>
-    <script src="{% static 'assets/js/hoverable-collapse.js' %}"></script>
-    <script src="{% static 'assets/js/misc.js' %}"></script>
-    <script src="{% static 'assets/js/settings.js' %}"></script>
-    <script src="{% static 'assets/js/todolist.js' %}"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <script src="{% static 'assets/js/dashboard.js' %}"></script>
-    <!-- End custom js for this page -->
-  </body>
-</html>
+      </nav>
+      {% block content %}
+      {% endblock %}
+      <section class="overlay"></section>
+<!--      <script src="script.js"></script>-->
+
+        </div>
+    </body>
+  </html>

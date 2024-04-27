@@ -43,8 +43,12 @@ class LoginView(FormView):
             ps = log_form.cleaned_data.get('password')
             user = authenticate(request, username=un, password=ps)
             if user:
-                login(request, user)
-                return redirect('h')
+                if user.is_student == True:
+                    login(request, user)
+                    return redirect('h')
+                if user.is_faculty == True:
+                    login(request, user)
+                    return redirect('facultyindex')
             else:
                 return render(request, 'login.html', {"form": log_form, 'error': "Invalid credentials"})
         return render(request, 'login.html', {"form": log_form})
@@ -57,6 +61,7 @@ class LoginView(FormView):
 #         context = super().get_context_data(**kwargs)
 #         context['data'] = TestResult.objects.filter(user=self.request.user)
 #         return context
+
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -78,7 +83,18 @@ class RegView(CreateView):
     form_class = RegForm
     success_url = reverse_lazy('log')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['val'] = self.kwargs.get('val')
+        return context
+
     def form_valid(self, form):
+        val = self.kwargs.get('val')
+
+        if val == 'student':
+            form.instance.is_student = True
+        if val == 'faculty':
+            form.instance.is_faculty = True
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -130,6 +146,7 @@ class ChangePasswordView(FormView):
 class LogOut(View):
     def get(self, request, *args, **kwargs):
         logout(request)
+
         return redirect("log")
 
 

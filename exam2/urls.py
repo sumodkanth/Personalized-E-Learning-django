@@ -16,6 +16,9 @@ urlpatterns = [
     path('upload2/', upload_project2, name='upload_project2'),
     path('project_list/', project_list, name='project_list'),
     path('download/<int:project_id>/', download_project, name='download_project'),
+    path('watch-python-videos/', watch_html_videos, name='watch_html_videos'),
+    path('add_comment/<int:video_id>/', add_comment_html, name='add_comment_html'),
+    path('toggle_like/<int:video_id>/', toggle_like_html, name='toggle_like_html'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

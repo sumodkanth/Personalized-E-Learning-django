@@ -196,7 +196,7 @@
                 <div class="dropdown">
                 <li><a   href="#" style="text-decoration: none;color: inherit;">Projects</a></li>
                     <div class="dropdown-content">
-                        <a href="{% url 'upload_projectmain' %}">Upload Project</a>
+<!--                        <a href="{% url 'upload_projectmain' %}">Upload Project</a>-->
                         <a href="{% url 'project_list' %}">View Projects</a>
                     </div>
                 </div>
@@ -223,7 +223,7 @@
 
                 <li><a   href="{% url 'feedback' %}" style="text-decoration: none;color: inherit;">Feedback</a></li>
                 <li><a   href="{% url 'contact' %}" style="text-decoration: none;color: inherit;">Contact</a></li>
-                <li><a href="{% url 'log' %}"><span class="material-symbols-outlined" style="color: red;">logout</span></a></li>
+                <li><a href="{% url 'logout' %}"><span class="material-symbols-outlined" style="color: red;">logout</span></a></li>
 
 
 
@@ -297,7 +297,7 @@
 
             // Send user message to server
             $.ajax({
-                url: '{% url "chatbot" %}',
+                url: '',
                 type: 'POST',
                 data: {input_text: inputText},
                 success: function(response) {

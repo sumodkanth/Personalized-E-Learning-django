@@ -4,7 +4,8 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns =[
     path('home/',HomeView.as_view(),name='h'),
-    path('Registration/',RegView.as_view(),name="reg"),
+    path('Registration/<str:val>/',RegView.as_view(),name="reg"),
+    path('logout/',LogOut.as_view(),name="logout"),
     path('profile/',Profile.as_view(),name='pro'),
     path('proupdate/<int:pk>/',ProfileUpdateView.as_view(),name="proupd"),
     path('score_table/', ScoreTable.as_view(), name='ScoreTable'),

@@ -5,9 +5,10 @@ from Faculty import views
 from django.conf.urls.static import static
 urlpatterns = [
     path('facultyindex/', views.facultyindex, name='facultyindex'),
-
-    
-
+    path('videoupload', views.index, name='index'),
+    path('add_video/', add_video, name='add_video'),
+    path('viewall', views.viewvideos, name='videos'),
+    path('delete_video/<int:video_id>/', views.delete_video, name='delete_video'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

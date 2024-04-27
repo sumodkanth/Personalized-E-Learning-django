@@ -22,12 +22,17 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/',include("accounts.urls")),
-    path('python/',include("exam.urls")),
-    path('html/',include("exam2.urls")),
-    path('php/',include("exam3.urls")),
-    path('chatbot/',include("chatbot.urls")),
-    path('Compiler/',include("Compiler.urls")),
-    path('',LoginView.as_view(),name='log')
+    path('accounts/', include("accounts.urls")),
+    path('python/', include("exam.urls")),
+    path('html/', include("exam2.urls")),
+    path('php/', include("exam3.urls")),
+    path('chatbot/', include("chatbot.urls")),
+    path('Compiler/', include("Compiler.urls")),
+    path('',LoginView.as_view(),name='log'),
+    path('Faculty/', include("Faculty.urls")),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
