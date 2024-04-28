@@ -1,0 +1,110 @@
+{% extends 'facultyindex.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Videos</title>
+    <!-- Add your CSS links here -->
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center; /* Horizontally center align */
+            align-items: center; /* Vertically center align */
+            min-height: 90vh; /* Ensure full viewport height */
+            margin: 0; /* Remove default margin */
+            background-color: #f0f0f0; /* Background color */
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto ;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical; /* Allow vertical resizing */
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Add Video</h2>
+            <form method="post" action="{% url 'add_video' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="course">Course:</label>
+                    <select id="course" name="course" required>
+                        <option value="">Select Course</option>
+                        <option value="Python">Python</option>
+                        <option value="PHP">PHP</option>
+                        <option value="HTML">HTML</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="video_file">Choose Video:</label>
+                    <input type="file" id="video_file" name="video_file" accept="video/*" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload Video</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add your JavaScript links here -->
+</body>
+
+{% endblock %}
