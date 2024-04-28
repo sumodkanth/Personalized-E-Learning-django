@@ -1321,23 +1321,23 @@ class phpintro(TemplateView):
 
 
 def watch_php_videos(request):
-    all_videos = Video.objects.filter(course="PHP").annotate(like_count=Count('likes')).order_by('-uploaded_at')
+    videos = Video.objects.filter(course="PHP").annotate(like_count=Count('likes')).order_by('-uploaded_at')
 
-    latest_video = all_videos.first()
+    # latest_video = all_videos.first()
+    #
+    # other_videos = all_videos[1:]
+    #
+    # next_video_url = None
+    # if other_videos:
+    #     next_video_url = other_videos[0].video_file.url
+    #
+    # context = {
+    #     'latest_video': latest_video,
+    #     'other_videos': other_videos,
+    #     'next_video_url': next_video_url
+    # }
 
-    other_videos = all_videos[1:]
-
-    next_video_url = None
-    if other_videos:
-        next_video_url = other_videos[0].video_file.url
-
-    context = {
-        'latest_video': latest_video,
-        'other_videos': other_videos,
-        'next_video_url': next_video_url
-    }
-
-    return render(request, 'watch_php_videos.html', context)
+    return render(request, 'watch_php_videos.html', {'videos':videos})
 
 
 def add_comment_php(request, video_id):

@@ -48,7 +48,7 @@ class LoginView(FormView):
                     return redirect('h')
                 if user.is_faculty == True:
                     login(request, user)
-                    return redirect('facultyindex')
+                    return redirect('comments')
             else:
                 return render(request, 'login.html', {"form": log_form, 'error': "Invalid credentials"})
         return render(request, 'login.html', {"form": log_form})

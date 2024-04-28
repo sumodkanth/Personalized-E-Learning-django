@@ -122,9 +122,6 @@
   .logo:hover {
     color: #f85a40;
   }
-  .nav-links li a{
-  color: black;
-  }
   
   .nav-links .fa-moon {
     display: none;
@@ -136,7 +133,7 @@
   }
   
   .nav-heading {
-    font-size: 20px;
+    font-size: 30px;
     font-family: "Raleway", sans-serif;
     font-weight: bolder;
     align-items: center;

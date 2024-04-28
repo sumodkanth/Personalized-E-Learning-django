@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect,get_object_or_404
-
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import ReplyForm
 # from .forms import VideoForm
-from .models import Video
+from .models import Video, Comment, Like
 
 
 # Create your views here.
@@ -33,7 +33,7 @@ def add_video(request):
         course = request.POST.get('course')
 
         # Create a new Video object and save it to the database
-        video = Video(title=title, description=description, video_file=video_file,faculty=user,course=course)
+        video = Video(title=title, description=description, video_file=video_file, faculty=user, course=course)
         video.save()
 
         return redirect(viewvideos)  # Redirect to a success page after saving the video
@@ -55,3 +55,23 @@ def delete_video(request, video_id):
     video = get_object_or_404(Video, id=video_id)
     video.delete()
     return redirect(viewvideos)
+
+
+def comments(request):
+    videos = Video.objects.all()
+    return render(request, 'comments.html', {'videos': videos})
+
+
+def video_comments(request, video_id):
+    video = get_object_or_404(Video, pk=video_id)
+    print(video)
+    comments = video.comments.all()  # Retrieve all comments for the video
+
+    if request.method == 'POST':
+        if request.user.is_authenticated:  # Ensure user is authenticated
+            comment_text = request.POST.get('comment_text')
+            print(comment_text)
+            if comment_text:  # Ensure comment text is not empty
+                Comment.objects.create(video=video, user=request.user, text=comment_text)
+
+    return redirect('comments')

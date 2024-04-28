@@ -9,6 +9,8 @@ urlpatterns = [
     path('add_video/', add_video, name='add_video'),
     path('viewall', views.viewvideos, name='videos'),
     path('delete_video/<int:video_id>/', views.delete_video, name='delete_video'),
+    path('comments/', views.comments, name='comments'),
+    path('videos/<int:video_id>/', views.video_comments, name='video_comments'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

@@ -33,10 +33,10 @@
 
       .last {
           text-align: center;
-
-
+          margin-top: 100px;
+          margin-bottom: 10px;
       }
-        .bg-img {
+                .bg-img {
         bottom:0px;
         width:100%;
             position: fixed;
@@ -47,11 +47,11 @@
 
 </head>
 <body>
-
     <div class="bg-img">
         <img src="{% static 'images/peakpx.jpg' %}" alt="no image" width="100%">
     </div>
 
+    <!-- Testimonials Section -->
     <div id="testimonials" class="testimonials">
         <div class="container" >
             <div class="quote-icon">
@@ -72,18 +72,21 @@
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
+<!--            <div class="call-to-action-container">-->
+<!--              <div style="height: 300px;">-->
+<!--                  <div style="text-align: center;">-->
+<!--                      <a href="{% url 'feedbacks' %}" class="btn btn-outline-warning">Add your feedback</a>-->
+<!--                      -->
+<!--                  </div>-->
+<!--              </div>-->
+<!--          -->
+<!--            </div>-->
             <div class="last">
               <h2>Your feedbacks are important to us!</h2>
             </div>
-
         </div>
-
-            </div>
-
-
-
-
-            <div class="call-to-action-container">
+    </div>
+                <div class="call-to-action-container">
                 <div style="height: 300px;">
                   <div style="text-align: center;">
                       <a href="{% url 'feedbacks' %}" class="btn btn-outline-warning" role="button">Add your feedback</a><br><br><br>
