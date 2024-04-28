@@ -845,144 +845,6 @@ import random
 from django.views.generic import TemplateView
 
 
-# def basicphp_section(request):
-#     random_questions = request.session.get('random_questionsphp')
-#     print(random_questions)
-#     if not random_questions:
-#         random_questions = random.sample(php_questions, 10)
-#         request.session['random_questionsphp'] = random_questions
-#     else:
-#         random.shuffle(random_questions)
-#
-#     if request.method == 'POST':
-#         total_marks = 0
-#         correct_answers = []
-#         clicked_buttons = request.session.get('clicked_buttons', [False] * len(random_questions))
-#         finish_button_clicked = request.session.get('finish_button_clicked', False)
-#
-#         if not finish_button_clicked:
-#             for i, question_data in enumerate(random_questions):
-#                 user_answer = request.POST.get(f"question_{i + 1}", "")
-#                 clicked_button = request.POST.get("check_answers", "")
-#                 print(user_answer)
-#                 if clicked_button:
-#                     clicked_buttons[i] = True
-#
-#                     correct_answer_index = question_data['answer']
-#                     print(correct_answer_index)
-#                     correct_answer = question_data['options'][correct_answer_index ]
-#                     print(correct_answer)
-#                     if user_answer == correct_answer:
-#                         total_marks += question_data['mark']
-#                         request.session['total_marks'] = total_marks
-#                     correct_answers.append(correct_answer)
-#
-#             request.session['clicked_buttons'] = clicked_buttons
-#             max_marks = sum(question_data['mark'] for question_data in random_questions)
-#             percentage = (total_marks / max_marks) * 100 if max_marks > 0 else 0
-#             print(total_marks)
-#             # TestResult.objects.create(user=request.user, score=total_marks,section="BasicPHP")
-#         if total_marks :
-#             save_correct_answers(request.user, correct_answers, "BasicPHP")
-#
-#             test_result = TestResult.objects.filter(user=request.user.id,section="BasicPHP").first()
-#             if test_result:
-#                 if total_marks > test_result.score:
-#                     test_result.score = total_marks
-#                     test_result.save()
-#             else:
-#                 TestResult.objects.create(user=request.user, score=total_marks,section="BasicPHP")
-#             return render(request, 'basic_php.html', {
-#                 'random_questions': random_questions,
-#                 'total_marks': total_marks,
-#                 'correct_answers': correct_answers,
-#             })
-#         else:
-#             return render(request, 'basic_php.html', {
-#                 'random_questions': random_questions,
-#                 'total_marks': total_marks,
-#                 'correct_answers': correct_answers,
-#             })
-#
-#     return render(request, 'basic_php.html', {'random_questions': random_questions})
-#
-#
-# def save_correct_answers(user, correct_answers, section):
-#     correct_answers_str = ','.join(correct_answers)
-#
-#     # Check if there is already an entry for the user and section
-#     existing_entry = CorrectAnswers.objects.filter(user=user, section=section).first()
-#
-#     if existing_entry:
-#         # If entry exists, delete it
-#         existing_entry.delete()
-#
-#     # Create a new entry with the updated correct_answers
-#     CorrectAnswers.objects.create(user=user, section=section, correct_answers=correct_answers_str)
-
-# if not random_questions:
-#     # Assuming php_questions is defined somewhere in your code
-#     random_questions = random.sample(php_questions, 10)
-#     request.session['random_questionsphp'] = random_questions
-# else:
-#     random.shuffle(random_questions)
-
-# last
-# def basicphp_section(request):
-#     random_questions = request.session.get('random_questionsphp')
-#     if random_questions is not None:
-#         random.shuffle(random_questions)
-#
-#     if request.method == 'POST':
-#         # random_questions = request.POST.getlist('question_data')
-#         # print(random_questions.question)
-#         total_marks = 0
-#         correct_answers = []
-#
-#         clicked_buttons = request.session.get('clicked_buttons', [False] * len(random_questions))
-#         finish_button_clicked = request.session.get('finish_button_clicked', False)
-#
-#         if not finish_button_clicked:
-#             for i, question_data in enumerate(random_questions):
-#                 user_answer = request.POST.get(f"question_{i + 1}", "")
-#                 clicked_button = request.POST.get("check_answers", "")
-#
-#                 if clicked_button:
-#                     clicked_buttons[i] = True
-#
-#                     correct_answer_index = question_data['answer']
-#                     correct_answer = question_data['options'][correct_answer_index]
-#                     print(correct_answer)
-#                     if user_answer == correct_answer:
-#                         total_marks += question_data['mark']
-#
-#                     correct_answers.append(correct_answer)
-#
-#             request.session['clicked_buttons'] = clicked_buttons
-#             max_marks = sum(question_data['mark'] for question_data in random_questions)
-#             percentage = (total_marks / max_marks) * 100 if max_marks > 0 else 0
-#
-#             # Save total_marks in session
-#             request.session['total_marks'] = total_marks
-#
-#             # Saving correct answers in database
-#             save_correct_answers(request.user, correct_answers, "BasicPHP")
-#
-#             # Update or create test result
-#             test_result, created = TestResult.objects.get_or_create(user=request.user, section="BasicPHP")
-#             if total_marks > test_result.score:
-#                 test_result.score = total_marks
-#                 test_result.save()
-#
-#             return render(request, 'basic_php.html', {
-#                 'random_questions': random_questions,
-#                 'total_marks': total_marks,
-#                 'correct_answers': correct_answers,
-#             })
-#
-#
-#
-#     return render(request, 'basic_php.html', {'random_questions': random_questions})
 
 
 def basicphp_section(request):
@@ -1233,64 +1095,8 @@ def advancedphp_section(request):
     return render(request, 'advanced_php.html', {'random_questions': random_questions})
 
 
-# def advancedphp_section(request):
-#     scores = TestResult.objects.filter(user=request.user)
-#     random_questions = request.session.get('random_questions_advancedphp')
-#
-#     if not random_questions:
-#         random_questions = random.sample(php_advanced_questions, 10)
-#         request.session['random_questions_advancedphp'] = random_questions
-#
-#     # Define the correct answers (replace with your logic)
-#     correct_answers = ['answer1', 'answer2', 'answer3', ...]
-#
-#     if request.method == 'POST':
-#         total_marks = 0
-#         clicked_buttons = request.session.get('clicked_htmlbuttons', [False] * len(random_questions))
-#         finish_button_clicked = request.session.get('finish_htmlbutton_clicked', False)
-#
-#         if not finish_button_clicked:
-#             for i, question_data in enumerate(random_questions):
-#                 user_answer = request.POST.get(f"question_{i + 1}", "")
-#                 clicked_button = request.POST.get("check_answers", "")
-#                 if clicked_button:
-#                     clicked_buttons[i] = True
-#
-#                     correct_answer_index = question_data['answer']
-#                     correct_answer = question_data['options'][correct_answer_index]
-#
-#                     if user_answer == correct_answer:
-#                         total_marks += question_data['mark']
-#                         request.session['total_marks'] = total_marks
-#
-#             request.session['clicked_buttons'] = clicked_buttons
-#             max_marks = sum(question_data['mark'] for question_data in random_questions)
-#             percentage = (total_marks / max_marks) * 100 if max_marks > 0 else 0
-#
-#         if total_marks:
-#             test_result = TestResult.objects.filter(user=request.user, section="AdvancedPHP").first()
-#             if test_result:
-#                 if total_marks > test_result.score:
-#                     test_result.score = total_marks
-#                     test_result.save()
-#             else:
-#                 TestResult.objects.create(user=request.user, score=total_marks, section="AdvancedPHP")
-#             return render(request, 'advanced_php.html', {
-#                 'random_questions': random_questions,
-#                 'total_marks': total_marks,
-#                 'correct_answers': correct_answers,  # Pass correct answers to the template context
-#             })
-#         else:
-#             return render(request, 'advanced_php.html', {
-#                 'random_questions': random_questions,
-#                 'total_marks': total_marks,
-#                 'correct_answers': correct_answers,  # Pass correct answers to the template context
-#             })
-#
-#     return render(request, 'advanced_php.html', {'random_questions': random_questions, 'score': scores})
 
-# class Intermediatelearn(TemplateView):
-#     template_name='advanced_htmlhtml_learn.html'
+
 
 class Intermediatelearn(TemplateView):
     template_name = 'intermediatephp_learn.html'
@@ -1308,8 +1114,6 @@ class phplearnadv(TemplateView):
     template_name = "advlearn_php.html"
 
 
-# def phpintro(request):
-#     return render(request, "phpintro.html")
 class phpintro(TemplateView):
     template_name = 'phpintro.html'
 
@@ -1323,21 +1127,7 @@ class phpintro(TemplateView):
 def watch_php_videos(request):
     videos = Video.objects.filter(course="PHP").annotate(like_count=Count('likes')).order_by('-uploaded_at')
 
-    # latest_video = all_videos.first()
-    #
-    # other_videos = all_videos[1:]
-    #
-    # next_video_url = None
-    # if other_videos:
-    #     next_video_url = other_videos[0].video_file.url
-    #
-    # context = {
-    #     'latest_video': latest_video,
-    #     'other_videos': other_videos,
-    #     'next_video_url': next_video_url
-    # }
-
-    return render(request, 'watch_php_videos.html', {'videos':videos})
+    return render(request, 'watch_php_videos.html', {'videos': videos})
 
 
 def add_comment_php(request, video_id):

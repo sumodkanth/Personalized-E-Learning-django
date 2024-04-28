@@ -1,14 +1,14 @@
-from django.shortcuts import render
-from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
-import random
-from .models import *
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from accounts.forms import FeedbackForm, ProjectUploadForm
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from Faculty.models import Video, Comment, Like
 from django.db.models import Count
+from exam.models import TestResult, CorrectAnswers
+import random
+from django.views.generic import TemplateView
+from accounts.models import CustUser
+
 # Create your views here.
 
 html_questions = [
@@ -685,11 +685,6 @@ html_advanced_questions = [
 
 ]
 
-from exam.models import TestResult, CorrectAnswers
-import random
-from django.views.generic import TemplateView
-from accounts.models import CustUser
-
 
 def basichtml_section(request):
     random_questions = request.session.get('random_questionshtml')
@@ -763,123 +758,6 @@ def save_correct_answers(user, correct_answers, section):
 
     # Create a new entry with the updated correct_answers
     CorrectAnswers.objects.create(user=user, section=section, correct_answers=correct_answers_str)
-
-
-# code2
-# def basichtml_section(request):
-#     random_questions = request.session.get('random_questionshtml')
-#
-#     if not random_questions:
-#         random_questions = random.sample(html_questions, 10)
-#         request.session['random_questionshtml'] = random_questions
-#     else:
-#         # Clear previous questions if user returns to the section
-#         del request.session['random_questionshtml']
-#         random_questions = random.sample(html_questions, 10)
-#         request.session['random_questionshtml'] = random_questions
-#
-#     if request.method == 'POST':
-#         total_marks = 0
-#         clicked_buttons = request.session.get('clicked_htmlbuttons', [False] * len(random_questions))
-#         finish_button_clicked = request.session.get('finish_htmlbutton_clicked', False)
-#
-#         if not finish_button_clicked:
-#             for i, question_data in enumerate(random_questions):
-#                 user_answer = request.POST.get(f"question_{i + 1}", "")
-#                 clicked_button = request.POST.get("check_answers", "")
-#
-#                 if clicked_button:
-#                     clicked_buttons[i] = True
-#
-#                     correct_answer_index = question_data['answer']
-#
-#                     correct_answer = question_data['options'][correct_answer_index]
-#
-#                     if user_answer == correct_answer:
-#                         total_marks += question_data['mark']
-#                         request.session['total_marks'] = total_marks
-#             request.session['clicked_buttons'] = clicked_buttons
-#             max_marks = sum(question_data['mark'] for question_data in random_questions)
-#             percentage = (total_marks / max_marks) * 100 if max_marks > 0 else 0
-#             print(total_marks)
-#
-#         if total_marks:
-#             test_result = TestResult.objects.filter(user=request.user, section="BasicHTML").first()
-#             if test_result:
-#                 if total_marks > test_result.score:
-#                     test_result.score = total_marks
-#                     test_result.save()
-#             else:
-#                   # Assuming request.user is the user ID
-#                 TestResult.objects.create(user=request.user, score=total_marks, section="BasicHTML")
-#             return render(request, 'basic_html.html', {
-#                 'random_questions': random_questions,
-#                 'total_marks': total_marks,
-#             })
-#         else:
-#             return render(request, 'basic_html.html', {
-#                 'random_questions': random_questions,
-#                 'total_marks': total_marks,
-#             })
-#
-#     return render(request, 'basic_html.html', {'random_questions': random_questions})
-
-
-# def basichtml_section(request):
-#     if 'random_questionshtml' in request.session:
-#         del request.session['random_questionshtml']
-#
-#     if request.method == 'POST':
-#         total_marks = 0
-#         random_questions = request.session.get('random_questionshtml')
-#         clicked_buttons = request.session.get('clicked_htmlbuttons', [False] * len(random_questions) if random_questions else [])
-#         finish_button_clicked = request.session.get('finish_htmlbutton_clicked', False)
-#
-#         if not finish_button_clicked and random_questions:
-#             for i, question_data in enumerate(random_questions):
-#                 user_answer = request.POST.get(f"question_{i + 1}", "")
-#                 clicked_button = request.POST.get("check_answers", "")
-#
-#                 if clicked_button:
-#                     clicked_buttons[i] = True
-#
-#                     correct_answer_index = question_data['answer']
-#
-#                     correct_answer = question_data['options'][correct_answer_index]
-#
-#                     if user_answer == correct_answer:
-#                         total_marks += question_data['mark']
-#             request.session['total_marks'] = total_marks
-#             request.session['clicked_buttons'] = clicked_buttons
-#             max_marks = sum(question_data['mark'] for question_data in random_questions)
-#             percentage = (total_marks / max_marks) * 100 if max_marks > 0 else 0
-#             print(total_marks)
-#
-#         if total_marks:
-#             test_result = TestResult.objects.filter(user=request.user.id, section="BasicHTML").first()
-#             if test_result:
-#                 if total_marks > test_result.score:
-#                     test_result.score = total_marks
-#                     test_result.save()
-#             else:
-#                 user_instance = CustUser.objects.get(id=request.user.id)  # Assuming request.user is the user ID
-#                 TestResult.objects.create(user=user_instance, score=total_marks, section="BasicHTML")
-#             return render(request, 'basic_html.html', {
-#                 'random_questions': random_questions,
-#                 'total_marks': total_marks,
-#             })
-#         else:
-#             return render(request, 'basic_html.html', {
-#                 'random_questions': random_questions,
-#                 'total_marks': total_marks,
-#             })
-#
-#     random_questions = request.session.get('random_questionshtml')
-#     if not random_questions:
-#         random_questions = random.sample(html_questions, 10)
-#         request.session['random_questionshtml'] = random_questions
-#
-#     return render(request, 'basic_html.html', {'random_questions': random_questions})
 
 
 def intermediatehtml_section(request):
@@ -1056,8 +934,6 @@ def advanced_text_material(request):
     return render(request, "advancedhtml_learn.html")
 
 
-# def htmlintro(request):
-#     return render(request, "htmlintro.html")
 class htmlintro(TemplateView):
     template_name = 'htmlintro.html'
 
@@ -1084,22 +960,8 @@ def upload_project2(request):
 
 def watch_html_videos(request):
     videos = Video.objects.filter(course="HTML").annotate(like_count=Count('likes')).order_by('-uploaded_at')
-    #
-    # latest_video = all_videos.first()
-    #
-    # other_videos = all_videos[1:]
-    #
-    # next_video_url = None
-    # if other_videos:
-    #     next_video_url = other_videos[0].video_file.url
-    #
-    # context = {
-    #     'latest_video': latest_video,
-    #     'other_videos': other_videos,
-    #     'next_video_url': next_video_url
-    # }
 
-    return render(request, 'watch_html_videos.html', {'videos':videos})
+    return render(request, 'watch_html_videos.html', {'videos': videos})
 
 
 def add_comment_html(request, video_id):
