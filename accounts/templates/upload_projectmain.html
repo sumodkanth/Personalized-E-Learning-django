@@ -9,10 +9,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            background-color: #d4d9d9;
         }
+        #id1 {
+            position: absolute;
+            left: 350px;
+            top: 90px;
+            background-color: rgb(255, 255, 255);
+        }
+
 
         .bg-img {
             position: fixed;
@@ -30,13 +35,14 @@
         }
 
         .navbar {
-            background: linear-gradient(90deg, rgba(124, 123, 123, 0.9501050420168067) 33%, rgba(237, 237, 237, 1) 98%);
+            background: rgb(124,123,123);
+            background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);
             color: white;
             overflow: hidden;
             padding: 20px;
             line-height: 2;
         }
-                /* Rest of the CSS styles remain unchanged */
+
         .navbar a {
             float: left;
             display: block;
@@ -45,6 +51,8 @@
             font-size: 17px;
             text-decoration: none;
         }
+
+
         .navbar h2 {
             margin: 0;
             color: white;
@@ -55,18 +63,6 @@
             color: red;
         }
 
-        .navbar .hamburger {
-            float: right;
-        }
-
-        .navbar .hamburger a {
-            color: white;
-            margin-left: 10px;
-        }
-
-        .hamburger a:hover {
-            color: lightgray;
-        }
 
         .container {
             display: flex;
@@ -177,14 +173,14 @@
             <br><br>
             <label>Project coding Language:</label>
 
-            <input type="radio" id="python" name="project_language" value="python">
-            <label for="python">Python</label>
+            <input type="radio" id="Python" name="project_language" value="Python">
+            <label for="Python">Python</label>
 
-            <input type="radio" id="html" name="project_language" value="html">
-            <label for="html">HTML</label>
+            <input type="radio" id="HTML" name="project_language" value="HTML">
+            <label for="HTML">HTML</label>
 
-            <input type="radio" id="php" name="project_language" value="php">
-            <label for="php">PHP</label>
+            <input type="radio" id="PHP" name="project_language" value="PHP">
+            <label for="PHP">PHP</label>
             <br><br>
             <label for="id_git_link">Git Link:</label>
             {{ form.git_link }}

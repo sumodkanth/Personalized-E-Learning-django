@@ -1,10 +1,7 @@
 from typing import Any
-
-from django.db.models import Sum
-from django.forms.models import BaseModelForm
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView, CreateView, UpdateView, View
+from django.urls import reverse
 from .models import *
 from .forms import *
 from django.urls import reverse_lazy
@@ -12,13 +9,8 @@ from django.contrib.auth import authenticate, login, logout
 from exam.models import *
 from exam2.models import *
 from exam3.models import *
-from django.core.mail import send_mail, EmailMessage
-from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
 from django.core.mail import send_mail, EmailMessage
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
@@ -27,6 +19,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .forms import FeedbackForm, ProjectUploadForm
+from django.db.models import Sum
 
 
 # Create your views here.
@@ -43,12 +36,18 @@ class LoginView(FormView):
             ps = log_form.cleaned_data.get('password')
             user = authenticate(request, username=un, password=ps)
             if user:
-                if user.is_student == True:
+                if user.is_superuser:
+                    login(request, user)
+                    return redirect('admin:index')
+                if user.is_student:
                     login(request, user)
                     return redirect('h')
-                if user.is_faculty == True:
+                if user.is_faculty:
                     login(request, user)
                     return redirect('comments')
+                if user.is_hr:
+                    login(request, user)
+                    return redirect('HRindex')
             else:
                 return render(request, 'login.html', {"form": log_form, 'error': "Invalid credentials"})
         return render(request, 'login.html', {"form": log_form})
@@ -63,6 +62,19 @@ class LoginView(FormView):
 #         return context
 
 
+# class HomeView(TemplateView):
+#     template_name = 'home.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         user = self.request.user
+#         context['data'] = TestResult.objects.filter(user=user)
+#         # Fetch the project languages associated with the user's uploaded files
+#         uploaded_files = user.uploadedfile_set.all()  # Assuming UploadedFile is related to the user model
+#         project_languages = set(uploaded_files.values_list('project_language', flat=True))
+#         context['project_languages'] = project_languages
+#         return context
+
 class HomeView(TemplateView):
     template_name = 'home.html'
 
@@ -70,10 +82,11 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context['data'] = TestResult.objects.filter(user=user)
-        # Fetch the project languages associated with the user's uploaded files
-        uploaded_files = user.uploadedfile_set.all()  # Assuming UploadedFile is related to the user model
-        project_languages = set(uploaded_files.values_list('project_language', flat=True))
-        context['project_languages'] = project_languages
+
+        # Fetch uploaded files along with their project languages and scores
+        uploaded_files = UploadedFile.objects.filter(student=user).values('project_language', 'score').distinct()
+        context['uploaded_files'] = uploaded_files
+
         return context
 
 
@@ -95,6 +108,8 @@ class RegView(CreateView):
             form.instance.is_student = True
         if val == 'faculty':
             form.instance.is_faculty = True
+        if val == 'hr':
+            form.instance.is_hr = True
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -209,12 +224,27 @@ def phpcertificate(request):
     return render(request, 'phpcertificate.html')
 
 
-# html section
 @login_required
 def generate_certificate(request):
     # Your existing code for generating the certificate
     user = request.user
+    # Calculate total scores for Basic, Intermediate, and Advanced sections
+    basichtml_score = \
+        TestResult.objects.filter(user=user, section__startswith='BasicHTML').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
+    intermediatehtml_score = \
+        TestResult.objects.filter(user=user, section__startswith='IntermediateHTML').aggregate(
+            total_score=Sum('score'))[
+            'total_score'] or 0
+    advancedhtml_score = \
+        TestResult.objects.filter(user=user, section__startswith='AdvancedHTML').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
 
+    # Calculate total score and percentage
+    total_score = basichtml_score + intermediatehtml_score + advancedhtml_score
+    # total_questions = TestResult.objects.filter(user=user).count()  # Assuming each test has equal weight
+    total_percentage = int((total_score / 30) * 100)
+    print(total_score)
     # Load the existing certificate PNG template
     template_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/htmlcertificate.png'  # Replace with the path to your font file
 
@@ -226,32 +256,28 @@ def generate_certificate(request):
     img = Image.open(template_path)
     draw = ImageDraw.Draw(img)
 
-    # Specify the font and size for the text overlay
-    font_size = 60
+    # Define font sizes for different parts of the certificate
+    name_font_size = 60
+    percentage_font_size = 40
     font_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/Roboto-Medium.ttf'  # Replace with the path to your font file
-    font = ImageFont.truetype(font_path, font_size)
+    # Load fonts with different sizes
+    name_font = ImageFont.truetype(font_path, name_font_size)
+    percentage_font = ImageFont.truetype(font_path, percentage_font_size)
 
     # Overlay the user's name onto the certificate
     name_position = (780, 680)  # Adjust the position as needed(horizontal,vertical)
     uppercase_name = user.get_full_name().upper()
-    draw.text(name_position, uppercase_name, fill="black", font=font)
+    draw.text(name_position, uppercase_name, fill="black", font=name_font)
 
-    # Retrieve the latest project associated with the user
-    latest_project = UploadedFile.objects.filter(student=user, project_language='html').latest('id')
+    # Position to display the percentage
+    percentage_position = (1100, 900)
+    percentage_text = f' {total_percentage:}%'
+    draw.text(percentage_position, percentage_text, fill="black", font=percentage_font)
 
-    # Convert project name to uppercase
-    uppercase_project_name = latest_project.project_name.upper()
-
-    # Overlay the latest project name onto the certificate
-    project_name_position = (780, 970)  # Adjust the position as needed
-    draw.text(project_name_position, uppercase_project_name, fill="black", font=font)
-
-    # You can add more overlay text or images as needed
-    #     # Save the modified image to BytesIO
     img_byte_array = BytesIO()
     img.save(img_byte_array, format='PNG')
-    # Send the image as response
-    response.write(img_byte_array.getvalue())
+    # Save the modified image to the response
+    img.save(response, format='PNG')
     return response
 
 
@@ -259,7 +285,23 @@ def generate_certificate(request):
 def send_certificate_email(request):
     # Your existing code for sending the certificate via email
     user = request.user
+    # Calculate total scores for Basic, Intermediate, and Advanced sections
+    basichtml_score = \
+        TestResult.objects.filter(user=user, section__startswith='BasicHTML').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
+    intermediatehtml_score = \
+        TestResult.objects.filter(user=user, section__startswith='IntermediateHTML').aggregate(
+            total_score=Sum('score'))[
+            'total_score'] or 0
+    advancedhtml_score = \
+        TestResult.objects.filter(user=user, section__startswith='AdvancedHTML').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
 
+    # Calculate total score and percentage
+    total_score = basichtml_score + intermediatehtml_score + advancedhtml_score
+    # total_questions = TestResult.objects.filter(user=user).count()  # Assuming each test has equal weight
+    total_percentage = int((total_score / 30) * 100)
+    print(total_score)
     # Load the existing certificate PNG template
     template_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/htmlcertificate.png'  # Replace with the path to your font file
 
@@ -267,25 +309,24 @@ def send_certificate_email(request):
     img = Image.open(template_path)
     draw = ImageDraw.Draw(img)
 
-    # Specify the font and size for the text overlay
-    font_size = 60
+    # Define font sizes for different parts of the certificate
+    name_font_size = 60
+    percentage_font_size = 40
+
     font_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/Roboto-Medium.ttf'  # Replace with the path to your font file
-    font = ImageFont.truetype(font_path, font_size)
+    # Load fonts with different sizes
+    name_font = ImageFont.truetype(font_path, name_font_size)
+    percentage_font = ImageFont.truetype(font_path, percentage_font_size)
 
     # Overlay the user's name onto the certificate
     name_position = (780, 680)  # Adjust the position as needed
     uppercase_name = user.get_full_name().upper()
-    draw.text(name_position, uppercase_name, fill="black", font=font)
+    draw.text(name_position, uppercase_name, fill="black", font=name_font)
 
-    # Retrieve the latest project associated with the user
-    latest_project = UploadedFile.objects.filter(student=user, project_language='html').latest('id')
-
-    # Convert project name to uppercase
-    uppercase_project_name = latest_project.project_name.upper()
-
-    # Overlay the latest project name onto the certificate
-    project_name_position = (780, 970)  # Adjust the position as needed
-    draw.text(project_name_position, uppercase_project_name, fill="black", font=font)
+    # Position to display the percentage
+    percentage_position = (1100, 900)
+    percentage_text = f' {total_percentage:}%'
+    draw.text(percentage_position, percentage_text, fill="black", font=percentage_font)
 
     # Save the modified image to BytesIO
     img_byte_array = BytesIO()
@@ -295,7 +336,7 @@ def send_certificate_email(request):
     email = EmailMessage(
         'Your Certificate',
         'Congratulations! You have successfully generated your certificate.',
-        'sumodkanthcs@gmail.com',  # Replace with your email address
+        settings.EMAIL_HOST_USER,  # Replace with your email address
         [user.email],  # Send to the authenticated user's email address
     )
     # Attach the certificate to the email
@@ -323,7 +364,7 @@ def generate_pythoncertificate(request):
     advanced_score = \
         TestResult.objects.filter(user=user, section__startswith='Advanced').aggregate(total_score=Sum('score'))[
             'total_score'] or 0
-
+    print(basic_score, intermediate_score, advanced_score)
     # Calculate total score and percentage
     total_score = basic_score + intermediate_score + advanced_score
     # total_questions = TestResult.objects.filter(user=user).count()  # Assuming each test has equal weight
@@ -340,29 +381,24 @@ def generate_pythoncertificate(request):
     img = Image.open(template_path)
     draw = ImageDraw.Draw(img)
 
-    # Specify the font and size for the text overlay
-    font_size = 60
-    font_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/Roboto-Medium.ttf'  # Replace with the path to your font file
-    font = ImageFont.truetype(font_path, font_size)
+    # Define font sizes for different parts of the certificate
+    name_font_size = 60
+    percentage_font_size = 40
 
-    # # Position to display the percentage
-    # percentage_position = (780, 750)
-    # percentage_text = f' {total_percentage:}%'
-    # draw.text(percentage_position, percentage_text, fill="black", font=font)
+    font_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/Roboto-Medium.ttf'  # Replace with the path to your font file
+    # Load fonts with different sizes
+    name_font = ImageFont.truetype(font_path, name_font_size)
+    percentage_font = ImageFont.truetype(font_path, percentage_font_size)
 
     # Overlay the user's name onto the certificate
     name_position = (780, 680)  # Adjust the position as needed(horizontal,vertical)
     uppercase_name = user.get_full_name().upper()
-    draw.text(name_position, uppercase_name, fill="black", font=font)
-    # Retrieve the latest project associated with the user
-    latest_project = UploadedFile.objects.filter(student=user, project_language='python').latest('id')
+    draw.text(name_position, uppercase_name, fill="black", font=name_font)
 
-    # Convert project name to uppercase
-    uppercase_project_name = latest_project.project_name.upper()
-
-    # Overlay the latest project name onto the certificate
-    project_name_position = (780, 970)  # Adjust the position as needed
-    draw.text(project_name_position, uppercase_project_name, fill="black", font=font)
+    # Position to display the percentage
+    percentage_position = (1100, 900)
+    percentage_text = f' {total_percentage:}%'
+    draw.text(percentage_position, percentage_text, fill="black", font=percentage_font)
 
     # You can add more overlay text or images as needed
     #     # Save the modified image to BytesIO
@@ -392,7 +428,6 @@ def send_pythoncertificate_email(request):
     # total_questions = TestResult.objects.filter(user=user).count()  # Assuming each test has equal weight
     total_percentage = int((total_score / 30) * 100)
     print(total_score)
-
     # Load the existing certificate PNG template
     template_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/pythoncertificate.png'  # Replace with the path to your font file
 
@@ -400,25 +435,23 @@ def send_pythoncertificate_email(request):
     img = Image.open(template_path)
     draw = ImageDraw.Draw(img)
 
-    # Specify the font and size for the text overlay
-    font_size = 60
+    # Define font sizes for different parts of the certificate
+    name_font_size = 60
+    percentage_font_size = 40
     font_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/Roboto-Medium.ttf'  # Replace with the path to your font file
-    font = ImageFont.truetype(font_path, font_size)
+    name_font = ImageFont.truetype(font_path, name_font_size)
+    percentage_font = ImageFont.truetype(font_path, percentage_font_size)
 
     # Overlay the user's name onto the certificate
     name_position = (780, 680)  # Adjust the position as needed
     uppercase_name = user.get_full_name().upper()
-    draw.text(name_position, uppercase_name, fill="black", font=font)
+    draw.text(name_position, uppercase_name, fill="black", font=name_font)
 
-    # Retrieve the latest project associated with the user
-    latest_project = UploadedFile.objects.filter(student=user, project_language='python').latest('id')
+    # Position to display the percentage
+    percentage_position = (1100, 900)
+    percentage_text = f' {total_percentage:}%'
+    draw.text(percentage_position, percentage_text, fill="black", font=percentage_font)
 
-    # Convert project name to uppercase
-    uppercase_project_name = latest_project.project_name.upper()
-
-    # Overlay the latest project name onto the certificate
-    project_name_position = (780, 970)  # Adjust the position as needed
-    draw.text(project_name_position, uppercase_project_name, fill="black", font=font)
     # Save the modified image to BytesIO
     img_byte_array = BytesIO()
     img.save(img_byte_array, format='PNG')
@@ -427,7 +460,7 @@ def send_pythoncertificate_email(request):
     email = EmailMessage(
         'Your Certificate',
         'Congratulations! You have successfully generated your certificate.',
-        'sumodkanthcs@gmail.com',  # Replace with your email address
+        settings.EMAIL_HOST_USER,  # Replace with your email address
         [user.email],  # Send to the authenticated user's email address
     )
     # Attach the certificate to the email
@@ -446,7 +479,21 @@ def send_pythoncertificate_email(request):
 def generate_phpcertificate(request):
     # Your existing code for generating the certificate
     user = request.user
+    basicphp_score = \
+        TestResult.objects.filter(user=user, section__startswith='BasicPHP').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
+    intermediatephp_score = \
+        TestResult.objects.filter(user=user, section__startswith='IntermediatePHP').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
+    advancedphp_score = \
+        TestResult.objects.filter(user=user, section__startswith='AdvancedPHP').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
 
+    # Calculate total score and percentage
+    total_score = basicphp_score + intermediatephp_score + advancedphp_score
+    # total_questions = TestResult.objects.filter(user=user).count()  # Assuming each test has equal weight
+    total_percentage = int((total_score / 30) * 100)
+    print(total_score)
     # Load the existing certificate PNG template
     template_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/phpcertificate.png'  # Replace with the path to your font file
 
@@ -458,25 +505,25 @@ def generate_phpcertificate(request):
     img = Image.open(template_path)
     draw = ImageDraw.Draw(img)
 
-    # Specify the font and size for the text overlay
-    font_size = 60
+    # Define font sizes for different parts of the certificate
+    name_font_size = 60
+    percentage_font_size = 40
     font_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/Roboto-Medium.ttf'  # Replace with the path to your font file
-    font = ImageFont.truetype(font_path, font_size)
+    # Load fonts with different sizes
+    name_font = ImageFont.truetype(font_path, name_font_size)
+    percentage_font = ImageFont.truetype(font_path, percentage_font_size)
 
     # Overlay the user's name onto the certificate
     name_position = (780, 680)  # Adjust the position as needed(horizontal,vertical)
     uppercase_name = user.get_full_name().upper()
-    draw.text(name_position, uppercase_name, fill="black", font=font)
-    # Retrieve the latest project associated with the user
-    latest_project = UploadedFile.objects.filter(student=user, project_language='php').latest('id')
+    draw.text(name_position, uppercase_name, fill="black", font=name_font)
 
-    # Convert project name to uppercase
-    uppercase_project_name = latest_project.project_name.upper()
+    # Position to display the percentage
+    percentage_position = (1100, 900)
+    percentage_text = f' {total_percentage:}%'
+    draw.text(percentage_position, percentage_text, fill="black", font=percentage_font)
 
-    # Overlay the latest project name onto the certificate
-    project_name_position = (780, 970)  # Adjust the position as needed
-    draw.text(project_name_position, uppercase_project_name, fill="black", font=font)
-    #     # Save the modified image to BytesIO
+    # Save the modified image to BytesIO
     img_byte_array = BytesIO()
     img.save(img_byte_array, format='PNG')
     # Save the modified image to the response
@@ -488,7 +535,21 @@ def generate_phpcertificate(request):
 def send_phpcertificate_email(request):
     # Your existing code for sending the certificate via email
     user = request.user
+    basicphp_score = \
+        TestResult.objects.filter(user=user, section__startswith='BasicPHP').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
+    intermediatephp_score = \
+        TestResult.objects.filter(user=user, section__startswith='IntermediatePHP').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
+    advancedphp_score = \
+        TestResult.objects.filter(user=user, section__startswith='AdvancedPHP').aggregate(total_score=Sum('score'))[
+            'total_score'] or 0
 
+    # Calculate total score and percentage
+    total_score = basicphp_score + intermediatephp_score + advancedphp_score
+    # total_questions = TestResult.objects.filter(user=user).count()  # Assuming each test has equal weight
+    total_percentage = int((total_score / 30) * 100)
+    print(total_score)
     # Load the existing certificate PNG template
     template_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/phpcertificate.png'  # Replace with the path to your font file
 
@@ -496,24 +557,23 @@ def send_phpcertificate_email(request):
     img = Image.open(template_path)
     draw = ImageDraw.Draw(img)
 
-    # Specify the font and size for the text overlay
-    font_size = 60
+    # Define font sizes for different parts of the certificate
+    name_font_size = 60
+    percentage_font_size = 40
     font_path = 'C:/Projects/Learning/Personalized-E-Learning/accounts/static/images/Roboto-Medium.ttf'  # Replace with the path to your font file
-    font = ImageFont.truetype(font_path, font_size)
+    # Load fonts with different sizes
+    name_font = ImageFont.truetype(font_path, name_font_size)
+    percentage_font = ImageFont.truetype(font_path, percentage_font_size)
 
     # Overlay the user's name onto the certificate
     name_position = (780, 680)  # Adjust the position as needed
     uppercase_name = user.get_full_name().upper()
-    draw.text(name_position, uppercase_name, fill="black", font=font)
-    # Retrieve the latest project associated with the user
-    latest_project = UploadedFile.objects.filter(student=user, project_language='php').latest('id')
+    draw.text(name_position, uppercase_name, fill="black", font=name_font)
 
-    # Convert project name to uppercase
-    uppercase_project_name = latest_project.project_name.upper()
-
-    # Overlay the latest project name onto the certificate
-    project_name_position = (780, 970)  # Adjust the position as needed
-    draw.text(project_name_position, uppercase_project_name, fill="black", font=font)
+    # Position to display the percentage
+    percentage_position = (1100, 900)
+    percentage_text = f' {total_percentage:}%'
+    draw.text(percentage_position, percentage_text, fill="black", font=percentage_font)
 
     # Save the modified image to BytesIO
     img_byte_array = BytesIO()
@@ -523,7 +583,7 @@ def send_phpcertificate_email(request):
     email = EmailMessage(
         'Your Certificate',
         'Congratulations! You have successfully generated your certificate.',
-        'sumodkanthcs@gmail.com',  # Replace with your email address
+        settings.EMAIL_HOST_USER,  # Replace with your email address
         [user.email],  # Send to the authenticated user's email address
     )
     # Attach the certificate to the email
@@ -632,3 +692,47 @@ def download_project(request, project_id):
         response = HttpResponse(f.read(), content_type="application/force-download")
         response['Content-Disposition'] = 'attachment; filename=%s' % project.file.name.split('/')[-1]
         return response
+
+
+# def job_listings(request):
+#     name = request.user
+#     print(name.email)
+#     jobs = Placement.objects.all()
+#     applied = JobApplication.objects.filter(email=name.email).exists
+#     return render(request, 'job_listings.html', {'jobs': jobs, 'applied': applied})
+
+def job_listings(request):
+    user = request.user
+    jobs = Placement.objects.all()
+
+    # Ensure user has an email
+    user_email = getattr(user, 'email', None)
+    applied_jobs = JobApplication.objects.filter(email=user_email).values_list('job_id',
+                                                                               flat=True) if user_email else []
+
+    return render(request, 'job_listings.html', {'jobs': jobs, 'applied_jobs': applied_jobs})
+
+def apply_for_job(request, job_id):
+    job = get_object_or_404(Placement, id=job_id)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        resume = request.FILES.get('resume')
+        name = request.POST.get('name')
+
+        if email and phone and resume:
+            application = JobApplication(job=job, email=email, phone=phone, resume=resume, name=name)
+            application.save()
+            return redirect('job_listings')
+        else:
+            errors = {}
+            if not name:
+                errors['name'] = 'Name is required'
+            if not email:
+                errors['email'] = 'Email is required'
+            if not phone:
+                errors['phone'] = 'Phone number is required'
+            if not resume:
+                errors['resume'] = 'Resume is required'
+            return JsonResponse({'success': False, 'errors': errors})
+    return redirect('job_listings')

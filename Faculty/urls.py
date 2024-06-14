@@ -11,6 +11,8 @@ urlpatterns = [
     path('delete_video/<int:video_id>/', views.delete_video, name='delete_video'),
     path('comments/', views.comments, name='comments'),
     path('videos/<int:video_id>/', views.video_comments, name='video_comments'),
+    path('view_projects/', views.view_projects, name='view_projects'),
+    path('projects/<int:project_id>/review/', review_project, name='review_project'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

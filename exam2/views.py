@@ -1,10 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from accounts.forms import FeedbackForm, ProjectUploadForm
+from accounts.models import CourseDB, CourseRegistration,UploadedFile,Payment
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from Faculty.models import Video, Comment, Like
 from django.db.models import Count
 from exam.models import TestResult, CorrectAnswers
+from django.contrib import messages
+from datetime import datetime, timedelta
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 import random
 from django.views.generic import TemplateView
 from accounts.models import CustUser
@@ -983,3 +988,82 @@ def toggle_like_html(request, video_id):
         else:
             Like.objects.create(video=video, user=user)
     return redirect('watch_html_videos')
+
+def coursereghtml(request):
+    user_email = request.user.email
+    registrations = CourseRegistration.objects.filter(course__course_name="HTML", email=user_email)
+    course = CourseDB.objects.get(course_name="HTML")
+    complete = UploadedFile.objects.filter(project_language="HTML")
+
+    days_left = None
+    if registrations.exists():
+        registration = registrations.first()
+        if registration.end_date:
+            days_left = (registration.end_date - datetime.now().date()).days
+    context = {
+        'course': course,
+        'registrations': registrations,
+        'days_left': days_left,
+        'complete': complete
+    }
+
+    return render(request, 'coursereghtml.html', context)
+
+
+def register_course_html(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        course_id = request.POST.get('course_id')
+
+        course = get_object_or_404(CourseDB, pk=course_id)
+
+        # Calculate the end date based on the duration
+        try:
+            duration_weeks = int(course.duration.split()[0])
+        except (ValueError, IndexError):
+            # Handle the case where the duration is not a valid number of weeks
+            return redirect('coursereghtml')  # Redirect to an error page or show a message
+
+        start_date = datetime.now().date()
+        end_date = start_date + timedelta(weeks=duration_weeks)
+
+        CourseRegistration.objects.create(
+            course=course,
+            name=name,
+            email=email,
+            start_date=start_date,
+            end_date=end_date
+        )
+        return redirect('htmlintro')  # Redirect to a success page
+    else:
+        return redirect('coursereghtml')
+
+def process_payment_html(request):
+    user_email = request.user.email
+    if request.method == 'POST':
+        card_type = request.POST.get('card_type')
+        cardholder_name = request.POST.get('cardholder_name')
+        card_number = request.POST.get('card_number')
+        expiration_date = request.POST.get('expiration_date')
+        cvv = request.POST.get('cvv')
+        amount = request.POST.get('payable_amount')
+        course = request.POST.get('course')
+
+        # Save payment details to the database
+        payment = Payment.objects.create(
+            card_type=card_type,
+            cardholder_name=cardholder_name,
+            card_number=card_number,
+            expiration_date=expiration_date,
+            cvv=cvv,
+            amount=amount,
+            course=course,
+            email=user_email
+        )
+
+        messages.success(request, "Payment successfully")
+        # Redirect to a success page or any other page
+        return redirect('htmlcertificate')
+
+    return HttpResponse("Method not allowed", status=405)

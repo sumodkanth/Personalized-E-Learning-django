@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'exam2',
     'exam3',
     'Compiler',
-    'Faculty'
+    'Faculty',
+    'HR'
 ]
 
 MIDDLEWARE = [

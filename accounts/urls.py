@@ -34,5 +34,8 @@ urlpatterns =[
     path('contactus/',Contact,name="contact"),
     path('project_list/', project_list, name='project_list'),
     path('uploadmain/', upload_project4, name='upload_projectmain'),
+    path('job-listings/', job_listings, name='job_listings'),
+
+    path('apply/<int:job_id>/', apply_for_job, name='apply_for_job'),
 
 ]

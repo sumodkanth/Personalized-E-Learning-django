@@ -298,7 +298,7 @@
 
             // Send user message to server
             $.ajax({
-                url: '{% url "chatbot" %}',
+                url: '',
                 type: 'POST',
                 data: {input_text: inputText},
                 success: function(response) {

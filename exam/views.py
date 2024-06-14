@@ -3,10 +3,15 @@ from django.views.generic import TemplateView
 import random
 from django.contrib.auth.decorators import login_required
 from .models import *
+from accounts.models import CourseDB, CourseRegistration, UploadedFile, Payment
 from Faculty.models import Video, Comment, Like
 from django.db.models import Count
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from random import sample
+from django.contrib import messages
+from datetime import datetime, timedelta
+from django.utils import timezone
+from django.shortcuts import render, redirect, get_object_or_404
 import random
 import json
 
@@ -976,3 +981,101 @@ def toggle_like(request, video_id):
         else:
             Like.objects.create(video=video, user=user)
     return redirect('watch_python_videos')
+
+
+def courseregpython(request):
+    user_email = request.user.email
+    registrations = CourseRegistration.objects.filter(course__course_name="Python", email=user_email)
+    course = CourseDB.objects.get(course_name="Python")
+    complete = UploadedFile.objects.filter(project_language="Python")
+
+    days_left = None
+    if registrations.exists():
+        registration = registrations.first()
+        if registration.end_date:
+            days_left = (registration.end_date - datetime.now().date()).days
+    context = {
+        'course': course,
+        'registrations': registrations,
+        'days_left': days_left,
+        'complete': complete
+    }
+
+    return render(request, 'courseregpython.html', context)
+
+
+@login_required
+def register_course(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        course_id = request.POST.get('course_id')
+
+        course = get_object_or_404(CourseDB, pk=course_id)
+
+        # Calculate the end date based on the duration
+        try:
+            duration_weeks = int(course.duration.split()[0])
+        except (ValueError, IndexError):
+            # Handle the case where the duration is not a valid number of weeks
+            return redirect('courseregpython')  # Redirect to an error page or show a message
+
+        start_date = datetime.now().date()
+        end_date = start_date + timedelta(weeks=duration_weeks)
+
+        CourseRegistration.objects.create(
+            course=course,
+            name=name,
+            email=email,
+            start_date=start_date,
+            end_date=end_date
+        )
+        return redirect('pythonintro')  # Redirect to a success page
+    else:
+        return redirect('courseregpython')
+
+
+def process_payment(request):
+    user_email = request.user.email
+    if request.method == 'POST':
+        card_type = request.POST.get('card_type')
+        cardholder_name = request.POST.get('cardholder_name')
+        card_number = request.POST.get('card_number')
+        expiration_date = request.POST.get('expiration_date')
+        cvv = request.POST.get('cvv')
+        amount = request.POST.get('payable_amount')
+        course = request.POST.get('course')
+
+        # Save payment details to the database
+        payment = Payment.objects.create(
+            card_type=card_type,
+            cardholder_name=cardholder_name,
+            card_number=card_number,
+            expiration_date=expiration_date,
+            cvv=cvv,
+            amount=amount,
+            course=course,
+            email=user_email
+        )
+
+        messages.success(request, "Payment successfully")
+        # Redirect to a success page or any other page
+        return redirect('pythoncertificate')
+
+    return HttpResponse("Method not allowed", status=405)
+
+
+def puzzle_game_view(request):
+    return render(request, 'puzzle.html')
+
+class Main(TemplateView):
+    template_name='index.html'
+
+class GuessTheAnimal(TemplateView):
+    template_name='GuessTheAnimal.html'
+
+class Math(TemplateView):
+    template_name='maths.html'
+
+class Memory(TemplateView):
+    template_name='memory.html'

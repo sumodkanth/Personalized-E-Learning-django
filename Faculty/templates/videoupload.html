@@ -90,9 +90,8 @@
                     <label for="course">Course:</label>
                     <select id="course" name="course" required>
                         <option value="">Select Course</option>
-                        <option value="Python">Python</option>
-                        <option value="PHP">PHP</option>
-                        <option value="HTML">HTML</option>
+                        <option value="{{request.user.Course}}">{{request.user.Course}}</option>
+
                     </select>
                 </div>
                 <div class="form-group">

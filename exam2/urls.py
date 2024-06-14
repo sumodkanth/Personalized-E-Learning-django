@@ -19,6 +19,9 @@ urlpatterns = [
     path('watch-python-videos/', watch_html_videos, name='watch_html_videos'),
     path('add_comment/<int:video_id>/', add_comment_html, name='add_comment_html'),
     path('toggle_like/<int:video_id>/', toggle_like_html, name='toggle_like_html'),
+    path('coursereghtml/', coursereghtml, name='coursereghtml'),
+    path('register_html/', register_course_html, name='register_course_html'),
+    path('process-payment_html/', process_payment_html, name='process_payment_html'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -159,6 +159,28 @@
             padding: 10px;
             cursor: pointer;
         }
+              @keyframes colorChange {
+            0% {
+                color: rgb(255, 0, 0); /* Red */
+            }
+            25% {
+                color: rgb(0, 255, 0); /* Green */
+            }
+            50% {
+                color: rgb(0, 0, 255); /* Blue */
+            }
+            75% {
+                color: rgb(255, 255, 0); /* Yellow */
+            }
+            100% {
+                color: rgb(255, 0, 0); /* Red */
+            }
+        }
+
+        .career-link {
+            text-decoration: inherit;
+            animation: colorChange 5s infinite;
+        }
 
   </style>
   <body>
@@ -178,51 +200,53 @@
 
             </div>
             <ul class="nav-links">
-                    <li><a  href="{% url 'pro' %}" style="text-decoration: none;color: inherit;">Profile</a></li>
+                    <li><a  href="{% url 'pro' %}" style="text-decoration:  inherit;">Profile</a></li>
 
-                    <li> <a href="{% url 'pythonintro' %}" style="text-decoration: none;color: inherit; ">Python</a></li>
-
-
-
-
-                    <li><button class="dropbtn" > <a  href="{% url 'htmlintro' %}" style="text-decoration: none;color: inherit;">HTML</a></button></li>
+                    <li> <a href="{% url 'courseregpython' %}" style="text-decoration:  inherit; ">Python</a></li>
 
 
 
 
-                    <li><a  href="{% url 'phpintro' %}" style="text-decoration: none;color: inherit;">PHP</a></li>
+                    <li> <a  href="{% url 'coursereghtml' %}" style="text-decoration: inherit;">HTML</a></li>
+
+
+
+
+                    <li><a  href="{% url 'courseregphp' %}" style="text-decoration:  inherit;">PHP</a></li>
 
 
                 <div class="dropdown">
-                <li><a   href="#" style="text-decoration: none;color: inherit;">Projects</a></li>
+                <li><a   href="#" style="text-decoration: inherit;">Projects</a></li>
                     <div class="dropdown-content">
 <!--                        <a href="{% url 'upload_projectmain' %}">Upload Project</a>-->
                         <a href="{% url 'project_list' %}">View Projects</a>
                     </div>
                 </div>
-                <li><a   href="{% url 'ProgressCard' %}" style="text-decoration: none;color: inherit;">Progress Report</a></li>
+                <li><a   href="{% url 'ProgressCard' %}" style="text-decoration:  inherit;">Progress Report</a></li>
 
                <div class="dropdown">
-                   <li><a href="#" style="text-decoration: none;color: inherit;">CERTIFICATE</a></li>
+                   <li><a href="#" style="text-decoration:  inherit;">CERTIFICATE</a></li>
                     <div class="dropdown-content">
-                        {% for language in project_languages %}
-                            {% if language == 'python' %}
+                    {% for file in uploaded_files %}
+                        {% if file.score is not None and file.score >= 7.0 %}
+                            {% if file.project_language == 'Python' %}
                                 <a href="{% url 'pythoncertificate' %}">PYTHON</a>
-                            {% elif language == 'html' %}
+                            {% elif file.project_language == 'HTML' %}
                                 <a href="{% url 'htmlcertificate' %}">HTML</a>
-                            {% elif language == 'php' %}
+                            {% elif file.project_language == 'PHP' %}
                                 <a href="{% url 'phpcertificate' %}">PHP</a>
                             {% endif %}
-                        {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                     </div>
                 </div>
 
                 
+                <li><a   href="{% url 'job_listings' %}" class="career-link">Careers</a></li>
 
 
-
-                <li><a   href="{% url 'feedback' %}" style="text-decoration: none;color: inherit;">Feedback</a></li>
-                <li><a   href="{% url 'contact' %}" style="text-decoration: none;color: inherit;">Contact</a></li>
+                <li><a   href="{% url 'feedback' %}" style="text-decoration:  inherit;">Feedback</a></li>
+                <li><a   href="{% url 'contact' %}" style="text-decoration:  inherit;">Contact</a></li>
                 <li><a href="{% url 'logout' %}"><span class="material-symbols-outlined" style="color: red;">logout</span></a></li>
 
 

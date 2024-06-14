@@ -20,6 +20,10 @@ urlpatterns = [
     path('watch-php-videos/', watch_php_videos, name='watch_php_videos'),
     path('add_comment_php/<int:video_id>/', add_comment_php, name='add_comment_php'),
     path('toggle_like_php/<int:video_id>/', toggle_like_php, name='toggle_like_php'),
+    path('courseregphp/', courseregphp, name='courseregphp'),
+    path('register_php/', register_course_php, name='register_course_php'),
+    path('process-payment-php/', process_payment_php, name='process_payment_php'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

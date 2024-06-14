@@ -1,5 +1,4 @@
   <!DOCTYPE html>
-  <!-- Coding By CodingNepal - codingnepalweb.com -->
   <html lang="en">
     <head>
       <meta charset="UTF-8" />
@@ -7,12 +6,8 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
      <title>Faculty</title>
       <!-- CSS -->
-<!--      <link rel="stylesheet" href="css/style.css" />-->
       <!-- Boxicons CSS -->
-      <link
-        href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
-        rel="stylesheet"
-      />
+      <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/>
       <style>
 /* Google Fonts - Poppins */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
@@ -147,7 +142,7 @@ nav.open ~ .overlay {
             <a href="{% url 'facultyindex' %}" style=" text-decoration: none;">
 
           <span class="logo-name">Faculty-</span>
-                <span class="logo-name">{{ request.user }}</span>
+                <span class="logo-name">{{ request.user.Course}}: {{request.user}}</span>
             </a>
         </div>
         <div class="sidebar">
@@ -193,12 +188,12 @@ nav.open ~ .overlay {
 <!--                  <span class="link">Likes</span>-->
 <!--                </a>-->
 <!--              </li>-->
-<!--              <li class="list">-->
-<!--                <a href="#" class="nav-link">-->
-<!--                  <i class="bx bx-folder-open icon"></i>-->
-<!--                  <span class="link">Files</span>-->
-<!--                </a>-->
-<!--              </li>-->
+              <li class="list">
+                <a href="{% url 'view_projects' %}" class="nav-link">
+                  <i class="bx bx-folder-open icon"></i>
+                  <span class="link">Project Files</span>
+                </a>
+              </li>
               <li class="list">
                   <a href="{% url 'index' %}" class="nav-link">
                       <i class="bx bx-video-plus icon"></i>

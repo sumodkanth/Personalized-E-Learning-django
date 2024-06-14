@@ -25,6 +25,15 @@
             object-fit: cover;
             z-index: -1;
         }
+        .links-container {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .links-container a {
+          text-decoration: none; /* Optional: to style the links */
+          /* You can add more styling here as needed */
+        }
     </style>
   </head>
   <body>
@@ -63,15 +72,14 @@
                   <div>
                       <button class="btn btn-block bg-info">LogIn</button>
                   </div>
-                  <div class="form-bottom " >
-
-                    <p class="not-registered">Dont have an account? 
-                      <br><a href="{% url 'reg' 'student' %}">Student Register</a><br>
-
-                      <a href="{% url 'reg' 'faculty' %}">Faculty Register</a></p>
-                      
-                    <a href="{% url 'resetpwd' %}">Forgot password?</a></p>
-                  </div>
+                    <div class="form-bottom">
+                      <p class="not-registered">Don't have an account?</p>
+                      <div class="links-container">
+                        <a href="{% url 'reg' 'student' %}">Student Register</a>
+                          <a href="{% url 'reg' 'hr' %}">HR Register</a>
+                        <a href="{% url 'resetpwd' %}">Forgot password?</a>
+                      </div>
+                    </div>
                  
                 </form>
               </div>

@@ -30,6 +30,7 @@ urlpatterns = [
     path('Compiler/', include("Compiler.urls")),
     path('',LoginView.as_view(),name='log'),
     path('Faculty/', include("Faculty.urls")),
+    path('HR/', include("HR.urls")),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

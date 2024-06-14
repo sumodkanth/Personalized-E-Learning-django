@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from datetime import timedelta
 
 
 # Create your models here.
@@ -12,18 +13,21 @@ class CustUser(AbstractUser):
         ('Female', 'Female'),
         ('Others', 'Others')
     )
+    COURSE_CHOICES = [
+        ('Python', 'Python'),
+        ('HTML', 'HTML'),
+        ('PHP', 'PHP'),  # SELECTING COURSE
+    ]
     gender = models.CharField(max_length=100, choices=options, null=True, default='Male')
     age = models.IntegerField(null=True)
-    is_student = models.BooleanField(null=True,blank=True,default=False)
-    is_faculty = models.BooleanField(null=True,blank=True,default=False)
+    Course = models.CharField(max_length=10, choices=COURSE_CHOICES, null=True, blank=True)
+    is_student = models.BooleanField(null=True, blank=True, default=False)
+    is_faculty = models.BooleanField(null=True, blank=True, default=False)
+    is_hr = models.BooleanField(null=True, blank=True, default=False)
     is_active_basic = models.BooleanField(default=False, null=True, blank=True)
     is_active_inter = models.BooleanField(default=False, null=True, blank=True)
     is_active_adv = models.BooleanField(default=False, null=True, blank=True)
     is_active_coding = models.BooleanField(default=False, null=True, blank=True)
-
-
-class pdfnotes(models.Model):
-    pdff = models.FileField(upload_to="notes")
 
 
 class UploadedFile(models.Model):
@@ -33,6 +37,7 @@ class UploadedFile(models.Model):
     project_language = models.CharField(max_length=50)
     git_link = models.URLField()
     project_description = models.TextField()
+    score = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return self.project_name
@@ -48,3 +53,62 @@ class Feedback(models.Model):
         return self.name
 
 
+class CourseDB(models.Model):
+    course_id = models.AutoField(primary_key=True)
+    course_name = models.CharField(max_length=255, null=True, blank=True)
+    duration = models.CharField(max_length=50, null=True, blank=True)  # Duration in weeks
+    description = models.TextField()
+    image = models.ImageField(upload_to='course_images/', null=True, blank=True)
+
+    def __str__(self):
+        return self.course_name
+
+
+class CourseRegistration(models.Model):
+    course = models.ForeignKey(CourseDB, related_name='registrations', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField()
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.start_date and not self.end_date:
+            duration_weeks = int(self.course.duration.split()[0])
+            self.end_date = self.start_date + timedelta(weeks=duration_weeks)
+        super().save(*args, **kwargs)
+
+
+class Payment(models.Model):
+    card_type = models.CharField(max_length=50)
+    cardholder_name = models.CharField(max_length=100)
+    card_number = models.CharField(max_length=16)
+    expiration_date = models.CharField(max_length=7)
+    cvv = models.CharField(max_length=3)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    course = models.CharField(max_length=20, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+
+
+class Placement(models.Model):
+
+    company_name = models.CharField(max_length=100, blank=True, null=True)
+    job_title = models.CharField(max_length=100, blank=True, null=True)
+    job_description = models.TextField( blank=True, null=True)
+    date_posted = models.DateField(auto_now_add=True)
+    image_icon = models.ImageField(upload_to='placement_icons/', blank=True, null=True)
+    location = models.CharField(max_length=200, blank=True, null=True)
+    qualification = models.CharField(max_length=200, blank=True, null=True)
+    skills = models.CharField(max_length=200, blank=True, null=True)
+
+    def __str__(self):
+        return self.job_title
+
+
+class JobApplication(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+    job = models.ForeignKey(Placement, on_delete=models.CASCADE)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    resume = models.FileField(upload_to='resumes/')
+    date_applied = models.DateTimeField(auto_now_add=True)
