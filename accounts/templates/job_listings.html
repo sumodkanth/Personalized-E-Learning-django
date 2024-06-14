@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Listings</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHqT3b3lK2aZr2/2LvJ4Z0fMR2qFZCJ+mrD20ks6vM7tQ2MLQUA4I+h9Fx3XHlqlOHf4N9iw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f2ef;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgb(124,123,123);
+            background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);
+            color: white;
+            overflow: hidden;
+            padding: 20px;
+            line-height: 2;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            font-size: 17px;
+            text-decoration: none;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .navbar h2:hover {
+            color: red;
+        }
+
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .sidebar {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #0073b1;
+            font-size: 16px;
+        }
+
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            flex: 3;
+        }
+
+        .job-listing {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            padding: 20px;
+        }
+
+        .job-listing img {
+            max-width: 60px;
+            max-height: 60px;
+            border-radius: 4px;
+            margin-right: 20px;
+        }
+
+        .job-details {
+            flex: 1;
+        }
+
+        .job-details h2 {
+            margin: 0 0 10px;
+            font-size: 20px;
+            color: #0073b1;
+        }
+
+        .job-details p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .job-details .more-content {
+            display: none;
+        }
+
+        .apply-button, .show-more-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0073b1;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .apply-button:hover, .show-more-button:hover {
+            background-color: #0056b3;
+        }
+
+        .show-more-button i {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+                padding: 0 10px;
+            }
+            .sidebar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            .job-listing {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .job-listing img {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: none;
+            border-radius: 8px;
+            width: 30%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal-content h2 {
+            margin-top: 0;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content form label {
+            margin: 10px 0 5px;
+        }
+        .modal-content form input[type="text"],
+        .modal-content form input[type="email"],
+        .modal-content form input[type="tel"],
+        .modal-content form input[type="file"] {
+            padding: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+        .modal-content form button[type="submit"] {
+            padding: 10px 15px;
+            background-color: #0073b1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .modal-content form button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<section id="one">
+    <nav class="navbar">
+        <div class="nav-logo">
+             <a href="{% url 'h' %}">
+                 <h2>E-Learning</h2></a>
+        </div>
+    </nav>
+</section>
+    <div class="main-container">
+<!--        <div class="sidebar">-->
+<!--            <h2>Job Categories</h2>-->
+<!--            <ul>-->
+<!--                <li><a href="#">Technology</a></li>-->
+<!--                <li><a href="#">Finance</a></li>-->
+<!--                <li><a href="#">Marketing</a></li>-->
+<!--                <li><a href="#">Design</a></li>-->
+<!--                <li><a href="#">Healthcare</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+        <div class="content">
+            {% for job in jobs %}
+            <div class="job-listing">
+                {% if job.image_icon %}
+                <img src="{{ job.image_icon.url }}" alt="{{ job.company_name }} logo">
+                {% endif %}
+                <div class="job-details">
+                    <h2>{{ job.job_title }}</h2>
+                    <p><strong>Company:</strong> {{ job.company_name }}</p>
+                    <div class="short-content">
+                        <p><strong>Location:</strong> {{ job.location }}</p>
+                        <p><strong>Qualification:</strong> {{ job.qualification }}</p>
+                    </div>
+                    <div class="more-content">
+                        <p><strong>Skills:</strong> {{ job.skills }}</p>
+                        <p><strong>Description:</strong> {{ job.job_description }}</p>
+                        <p><strong>Posted date:</strong> {{ job.date_posted }}</p>
+                        <p>{{job.id}}</p>
+                    </div>
+
+                    <a href="javascript:void(0);" style="text-decoration: inherit;" onclick="toggleMoreContent(this)">
+                        <i class="fas fa-chevron-down"></i>Show More
+                    </a>
+                {% if job.id in applied_jobs %}
+                    <button class="btn btn-success mr-2 btn-rounded" disabled>Applied</button>
+                {% else %}
+                    <a href="javascript:void(0);" class="apply-button" onclick="applyForJob('{{ job.id }}')">Apply</a>
+                {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Modal HTML -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Apply for Job</h2>
+        <form id="applyForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="placement_id" id="placement_id">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"  pattern="[A-Za-z\s]+" title="Please enter a valid name (only alphabets and spaces are allowed)." required oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '')"><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required><br>
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" name="phone" pattern="\d{10}" title="Please enter a valid 10-digit phone number." maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required><br>
+            <label for="resume">Resume:</label>
+            <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required><br>
+            <button type="submit">Submit Application</button>
+        </form>
+    </div>
+</div>
+
+    <script>
+    function toggleModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "block";
+    }
+
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+
+    function toggleMoreContent(button) {
+        var moreContent = button.previousElementSibling;
+        if (moreContent.style.display === "none" || moreContent.style.display === "") {
+            moreContent.style.display = "block";
+            button.innerHTML = '<i class="fas fa-chevron-up"></i>Show Less';
+        } else {
+            moreContent.style.display = "none";
+            button.innerHTML = '<i class="fas fa-chevron-down"></i>Show More';
+        }
+    }
+
+    function applyForJob(jobId) {
+        document.getElementById("placement_id").value = jobId;
+        var form = document.getElementById('applyForm');
+        form.action = "{% url 'apply_for_job' 0 %}".replace('0', jobId);
+        toggleModal();
+    }
+
+    // Close the modal when the user clicks on the close button
+    document.querySelector('.close').onclick = function() {
+        closeModal();
+    }
+
+    // Close the modal when the user clicks outside of the modal
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+    </script>
+</body>
+</html>

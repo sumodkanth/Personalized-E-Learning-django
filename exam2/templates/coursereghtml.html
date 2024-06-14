@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Course Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px; /* Adjusted padding */
+        }
+        .course-details-container {
+            border-radius: 5px;
+            box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .course-details {
+            padding-left: 20px; /* Adjusted padding */
+        }
+        .section {
+            background-color: #e9e9e9; /* Added background color */
+            border-radius: 8px; /* Added border radius */
+            margin-bottom: 20px; /* Added margin bottom for spacing */
+            padding: 20px; /* Added padding */
+            border: 1px solid #000; /* Added border with black color */
+        }
+        .section2 {
+            padding:20px;
+            text-align: center;
+            background: linear-gradient(to right, #135985, #81d8d0);
+            color: #fff;
+        }
+
+        .section2 .container {
+            display: flex;
+
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .section2 .course-details {
+            flex: 1;
+            max-width: 50%;
+            padding: 0 20px;
+
+        }
+
+        .section2 .registration-form {
+            flex: 1;
+            max-width: 30%;
+
+        }
+
+        .section2 h2 {
+            margin-bottom: 10px;
+        }
+
+        .section2 p {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .section2 img {
+            max-width: 60%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .section2 form input[type="text"],
+        .section2 form input[type="email"],
+        .section2 form input[type="submit"] {
+            width: 50%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .section2 form input[type="submit"] {
+            background-color: #e50914;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .section2 form input[type="submit"]:hover {
+            background-color: #cc0812;
+        }
+        h2, h3 {
+            margin: 10px 0;
+            padding: 0 20px;
+
+        }
+        p {
+            margin: 10px 0;
+            padding: 0 20px;
+        }
+        .course-image img {
+            display: block;
+            width: 100%; /* Adjusted image width for responsiveness */
+            height: auto; /* Adjusted image height for responsiveness */
+            border-radius: 8px;
+            margin: 0 auto 20px;
+        }
+        .registration-form {
+
+            margin: 20px auto;
+            background-color: transparent;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .registration-form input[type="text"],
+        .registration-form input[type="email"],
+        .registration-form input[type="submit"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .registration-form input[type="submit"] {
+            background-color: #e50914;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .registration-form input[type="submit"]:hover {
+            background-color: #cc0812;
+        }
+        .btn {
+    background-color: #e50914; /* Red color */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn:hover {
+    background-color: #cc0812; /* Darker red color on hover */
+}
+
+.btn-red {
+    background-color: #e50914; /* Red color */
+}
+
+.btn-red:hover {
+    background-color: #cc0812; /* Darker red color on hover */
+}
+        .navbar {
+            background: rgb(124,123,123);
+            background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);
+            color: white;
+            overflow: hidden;
+            height: 60px;
+            padding: 20px ; /* Adjust navbar padding */
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            font-size: 17px;
+            text-decoration: none;
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Media Queries */
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 10px; /* Adjusted padding */
+            }
+            .course-details {
+                padding-left: 10px; /* Adjusted padding */
+            }
+            .course-image img {
+                height: 300px; /* Adjusted image height for smaller screens */
+            }
+            .registration-form {
+                width: 90%;
+            }
+            .section2 .container {
+            flex-direction: column;
+            }
+            .section2 .course-details,
+            .section2 .registration-form {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<section id="one">
+    <nav class="navbar">
+        <div class="nav-logo">
+             <a href="{% url 'h' %}"><h2>E-Learning</h2></a>
+            <div class="hamburger">
+                <a href="#"><i class="far fa-moon white"></i></a>
+                <a href="#"><i class="fas fa-bars"></i></a>
+            </div>
+        </div>
+    </nav>
+</section>
+<div class="section2">
+    <div class="container">
+        <div class="course-details">
+            <h2>{{ course.course_name }} for beginners</h2><br>
+            <p><strong>Description:</strong> <span style="font-size:18px;">{{ course.description }}</span></p>
+            <p><strong>Course Duration:</strong> <span style="font-size:18px;">{{ course.duration }} weeks</span></p>
+        </div>
+        <div class="registration-form">
+            {% if not registrations %}
+            <h3>Enroll Now</h3>
+            <img src="{{ course.image.url }}" alt="{{ course.course_name }}">
+
+            <form action="{% url 'register_course_html' %}" method="post" onsubmit="return checkEmail();">
+                {% csrf_token %}
+                <input type="text" name="name" placeholder="Your Name" pattern="[A-Za-z\s]+" title="Please enter a valid name (only alphabets and spaces are allowed)." required><br>
+                <input type="email" id="email" name="email" placeholder="Your Email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required><br>
+                <input type="hidden" name="course_id" value="{{ course.course_id }}">
+                <input type="submit" value="Register">
+            </form>
+            {% else %}
+            <img src="{{ course.image.url }}" alt="{{ course.course_name }}">
+                {% if not complete %}
+                {% if days_left is not None %}
+
+                <p style="text-align: center;">Days left to complete the course: {{ days_left }} days</p>
+                <a href="{% url 'htmlintro' %}" class="btn btn-red">Go to course</a>
+                {% else %}
+                <p style="text-align: center;">Course duration ended</p>
+
+                {% endif %}
+                {% else %}
+
+                <p style="text-align: center;">Course completed</p>
+                <a href="{% url 'htmlintro' %}" class="btn btn-red">Go to course</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="course-details-container">
+
+
+<div class="course-details">
+    <div class="course-info ">
+        <div class="course-info course-info-transition course-info-visible"></div>
+
+            <div class="section">
+                <p><strong>What you'll learn:</strong></p>
+                <ul>
+                    <li>Basic structure of HTML documents</li>
+                    <li>HTML elements and tags</li>
+                    <li>Creating links and anchors</li>
+                    <li>Working with images and multimedia</li>
+                    <li>Form creation and input types</li>
+                </ul>
+            </div>
+            <div class="section">
+                <p><strong>Course content:</strong></p>
+                <p>This course covers the essentials of HTML (Hypertext Markup Language), the standard markup language for creating web pages.</p>
+            </div>
+            <div class="section">
+                <p><strong>Requirements:</strong></p>
+                <ul>
+                    <li>No prior knowledge of HTML required</li>
+                    <li>A computer with a text editor and web browser</li>
+                </ul>
+            </div>
+            <div class="section">
+                <p><strong>Who this course is for:</strong></p>
+                <p>Anyone interested in learning how to create web pages using HTML.</p>
+            </div>
+            <div class="section">
+                <p><strong>Learning Outcomes:</strong></p>
+                <ul>
+                    <li>Understand the structure and syntax of HTML</li>
+                    <li>Create well-formed HTML documents</li>
+                    <li>Insert links, images, and multimedia content into web pages</li>
+                    <li>Design and implement web forms for user input</li>
+                </ul>
+            </div>
+            <div class="section">
+                <p><strong>Assessment Methods:</strong></p>
+                <p>Practical exercises, quizzes, and a final project</p>
+            </div>
+            <div class="section">
+                <p><strong>Additional Resources:</strong></p>
+                <ul>
+                    <li>Recommended Book: "HTML and CSS: Design and Build Websites" by Jon Duckett</li>
+                    <li>Online Resource: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML">MDN Web Docs: HTML</a></li>
+                </ul>
+            </div>
+
+
+    </div>
+</div>
+
+    </div>
+</div>
+<!-- Registration Form -->
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.course-info').removeClass('course-info-transition');
+        setTimeout(function() {
+            $('.course-info').addClass('course-info-transition');
+        }, 100); // Delay added to ensure the transition effect works
+        // Toggle visibility
+        $('.course-info').toggleClass('course-info-visible');
+    });
+// Function to check if the entered email matches the authenticated email
+function checkEmail() {
+    // Get the authenticated email from the server-side
+    var authenticatedEmail = "{{ request.user.email }}"; // Assuming the authenticated user is available in the context and has an email attribute
+
+    // Get the entered email from the form
+    var enteredEmail = document.getElementById("email").value;
+
+    // Check if the emails match
+    if (authenticatedEmail !== enteredEmail) {
+        // Emails don't match, display an error message
+        alert("Entered email does not match the authenticated email.");
+        return false; // Prevent form submission
+    }
+    // Emails match, allow form submission
+    return true;
+}
+</script>
+</html>

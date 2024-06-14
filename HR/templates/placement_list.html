@@ -1,0 +1,116 @@
+{% extends 'hrindex.html' %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            margin: 20px;
+            padding-top: 60px;
+            padding-left: 240px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .action-buttons a, .action-buttons button {
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+            transition: background-color 0.3s, color 0.3s;
+            display: inline-block;
+        }
+        .edit-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .edit-button:hover {
+            background-color: #45a049;
+        }
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+        }
+        .delete-button:hover {
+            background-color: #e53935;
+        }
+    </style>
+
+    <div class="container">
+        <h1>Placement List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Job Title</th>
+                    <th>Job Description</th>
+                    <th>Date Posted</th>
+                    <th>Location</th>
+                    <th>Qualification</th>
+                    <th>Skills</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for placement in placements %}
+                <tr>
+                    <td>{{ placement.company_name }}</td>
+                    <td>{{ placement.job_title }}</td>
+                    <td>{{ placement.job_description }}</td>
+                    <td>{{ placement.date_posted }}</td>
+                    <td>{{ placement.location }}</td>
+                    <td>{{ placement.qualification }}</td>
+                    <td>{{ placement.skills }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'edit_placement' placement.id %}" class="edit-button">Edit</a>
+                            <button type="button" class="delete-button" onclick="confirmDelete(event, {{ placement.id }})">Delete</button>
+                            <form id="delete-form-{{ placement.id }}" action="{% url 'delete_placement' placement.id %}" method="post" style="display:none;">
+                                {% csrf_token %}
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function confirmDelete(event, placementId) {
+            event.preventDefault();
+            if (confirm("Are you sure you want to delete this placement?")) {
+                document.getElementById('delete-form-' + placementId).submit();
+            }
+        }
+    </script>
+{% endblock %}

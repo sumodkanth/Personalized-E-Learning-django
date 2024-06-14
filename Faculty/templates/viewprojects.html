@@ -1,0 +1,67 @@
+{% extends 'facultyindex.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaded Projects</title>
+    <style>
+        body{
+        padding-top: 90px;
+        padding-left: 240px;
+        padding-right: 20px;
+        }
+        table {
+
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+        }
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Uploaded Projects</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Project Name</th>
+<!--                <th>Project Language</th>-->
+                <th>Git Link</th>
+                <th>Project Description</th>
+                <th>File</th>
+                <th>score</th>
+                <th>Review</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.student.username }}</td>
+                <td>{{ project.project_name }}</td>
+<!--                <td>{{ project.project_language }}</td>-->
+                <td><a href="{{ project.git_link }}" target="_blank">GitHub</a></td>
+                <td>{{ project.project_description }}</td>
+                <td><a href="{{ project.file.url }}" download>Download</a></td>
+                <td>{{ project.score }}</td>
+                <td><a href="{% url 'review_project' project.id %}">Review</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+{% endblock %}

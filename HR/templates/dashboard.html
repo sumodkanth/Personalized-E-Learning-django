@@ -1,0 +1,76 @@
+{% extends 'hrindex.html' %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body{
+    font-family:'Arial', sans-serif;
+    background-color: #f4f4f4;
+    padding-top:90px;
+    padding-left:240px;
+    margin:0;
+    color:#333;
+    }
+    .container{
+    max-width:1500px;
+    margin: 0 auto;
+    background:#fff;
+    padding:20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    }
+            h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+</style>
+<body>
+<div class="container">
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Job Title</th>
+        <th>Company name</th>
+        <th>Location</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Resume</th>
+        <th>Date Applied</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for application in applications  %}
+    <tr>
+                    <td>{{ application.name }}</td>
+                    <td>{{ application.job.job_title }}</td>
+                    <td>{{ application.job.company_name }}</td>
+                    <td>{{ application.job.location }}</td>
+                    <td>{{ application.email }}</td>
+                    <td>{{ application.phone }}</td>
+        <td><a href=" {{application.resume.url}}">View Resume</a></td>
+        <td>{{application.date_applied}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+    </div>
+</body>
+{% endblock %}
