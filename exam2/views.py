@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from accounts.forms import FeedbackForm, ProjectUploadForm
-from accounts.models import CourseDB, CourseRegistration,UploadedFile,Payment
+from accounts.models import CourseDB, CourseRegistration, UploadedFile, Payment
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from Faculty.models import Video, Comment, Like
 from django.db.models import Count
@@ -989,12 +989,16 @@ def toggle_like_html(request, video_id):
             Like.objects.create(video=video, user=user)
     return redirect('watch_html_videos')
 
+
 def coursereghtml(request):
     user_email = request.user.email
-    registrations = CourseRegistration.objects.filter(course__course_name="HTML", email=user_email)
+    registrations = CourseRegistration.objects.filter(course_id__course_name="HTML", email=user_email)
     course = CourseDB.objects.get(course_name="HTML")
     complete = UploadedFile.objects.filter(project_language="HTML")
-
+    try:
+        payed = Payment.objects.filter(course=course, email=user_email)
+    except Payment.DoesNotExist:
+        payed = None
     days_left = None
     if registrations.exists():
         registration = registrations.first()
@@ -1004,7 +1008,8 @@ def coursereghtml(request):
         'course': course,
         'registrations': registrations,
         'days_left': days_left,
-        'complete': complete
+        'complete': complete,
+        'payed': payed
     }
 
     return render(request, 'coursereghtml.html', context)
@@ -1029,15 +1034,16 @@ def register_course_html(request):
         end_date = start_date + timedelta(weeks=duration_weeks)
 
         CourseRegistration.objects.create(
-            course=course,
+            course_id=course,
             name=name,
             email=email,
             start_date=start_date,
             end_date=end_date
         )
-        return redirect('htmlintro')  # Redirect to a success page
+        return redirect('coursereghtml')  # Redirect to a success page
     else:
         return redirect('coursereghtml')
+
 
 def process_payment_html(request):
     user_email = request.user.email
@@ -1064,6 +1070,10 @@ def process_payment_html(request):
 
         messages.success(request, "Payment successfully")
         # Redirect to a success page or any other page
-        return redirect('htmlcertificate')
+        return redirect('coursereghtml')
 
     return HttpResponse("Method not allowed", status=405)
+
+
+def puzzle_game_html(request):
+    return render(request, 'puzzle2.html')

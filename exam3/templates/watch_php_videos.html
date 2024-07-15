@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Python Introduction</title>
+    <title>PHP Tutorials</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
         .navbar {
@@ -11,8 +12,8 @@
             background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);
             color: white;
             overflow: hidden;
-            padding: 20px; /* Adjust navbar padding */
-            line-height: 2; /* Adjust navbar height */
+            padding: 20px;
+            line-height: 2;
         }
 
         .navbar a {
@@ -29,7 +30,6 @@
             color: black;
         }
 
-        /* Additional CSS specific to this page */
         .container {
             padding: 20px;
         }
@@ -37,7 +37,7 @@
         .video-list {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px; /* Adjust the gap between video items */
+            gap: 20px;
             margin-top: 30px;
         }
 
@@ -67,10 +67,10 @@
         }
 
         .comments-section {
-            max-height: 200px; /* Set a fixed height for the comment section */
-            overflow-y: auto; /* Enable vertical scrollbar */
-            margin-top: 10px; /* Adjust top margin */
-            display: none; /* Hide comment section by default */
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+            display: none;
         }
 
         .comment {
@@ -113,37 +113,62 @@
         .comment-form input[type="submit"]:hover {
             background-color: #0056b3;
         }
+
+        .video-item video[disabled] {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .progress-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .progress-container p {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .progress-bar {
+            height: 20px;
+        }
     </style>
 </head>
 <body>
 <section id="one">
     <nav class="navbar">
         <div class="nav-logo">
-             <a href="{% url 'phpintro' %}"><h2>E-Learning</h2></a>
-            <div class="hamburger">
-                <a href="#"><i class="far fa-moon white"></i></a>
-                <a href="#"><i class="fas fa-bars"></i></a>
-            </div>
+            <a href="{% url 'phpintro' %}"><h2>E-Learning</h2></a>
         </div>
     </nav>
 </section>
 <div class="container">
     <h3 style="text-align:center">PHP Tutorials</h3>
+    <div class="progress-container">
+        <p>Progress:</p>
+        <div class="progress">
+            <div id="progress-bar" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
     <div class="video-list">
         {% for video in videos %}
         <div class="video-item">
-            <video width="100%" muted controls>
+            <video id="video-{{ video.id }}" width="100%" muted controls {% if not forloop.first %}disabled{% endif %}>
                 <source src="{{ video.video_file.url }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <h2 class="video-title">{{ video.title }}</h2>
             <p>Total Likes: {{ video.likes.count }}</p>
-            <form action="{% url 'toggle_like_php' video_id=video.id %}" method="post">
+            <!-- Form to mark video as watched -->
+            <form id="watch-form-{{ video.id }}" action="{% url 'watch_php_videos' %}" method="post">
                 {% csrf_token %}
-                <input type="submit" value="Like">
+                <input type="hidden" name="video_id" value="{{ video.id }}">
+                <input type="hidden" name="course" value="{{ video.course }}">
+                <input type="hidden" name="watched" value="false">
+                <input type="submit" style="display: none;" id="submit-{{ video.id }}" value="Mark as Watched">
             </form>
             <p><span>Description:</span> {{ video.description }}</p>
-            <p><span>Uploaded by:</span> {{ video.faculty }}</p>
+            <p><span>Author:</span> {{ video.faculty }}</p>
             <p><span>Uploaded at:</span> {{ video.uploaded_at }}</p>
             <button class="toggle-comments">View Comments</button>
             <div class="comments-section">
@@ -166,6 +191,61 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const videoItems = document.querySelectorAll('.video-item');
+        const progressBar = document.getElementById('progress-bar');
+        let completedVideos = 0;
+
+        function updateProgressBar() {
+            const totalVideos = videoItems.length;
+            const progressPercentage = (completedVideos / totalVideos) * 100;
+            progressBar.style.width = progressPercentage + '%';
+            progressBar.setAttribute('aria-valuenow', progressPercentage);
+        }
+
+        videoItems.forEach(function(item, index) {
+            const video = item.querySelector('video');
+            const form = item.querySelector('form');
+            const submitBtn = item.querySelector('input[type="submit"]');
+
+            video.addEventListener('ended', function() {
+                completedVideos++;
+                updateProgressBar();
+                form.querySelector('input[name="watched"]').value = 'true';
+                submitBtn.click();
+                if (index + 1 < videoItems.length) {
+                    videoItems[index + 1].querySelector('video').removeAttribute('disabled');
+                }
+            });
+        });
+
+        document.querySelectorAll('form').forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const formData = new FormData(form);
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Video Watched!',
+                            text: 'The video has been successfully marked as watched.',
+                            showConfirmButton: true,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+
         document.querySelectorAll('.toggle-comments').forEach(function(button) {
             button.addEventListener('click', function() {
                 const commentsSection = this.nextElementSibling;

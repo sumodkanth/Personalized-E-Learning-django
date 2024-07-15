@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Word Scramble Game</title>
+    <title>PHP Word Scramble Game</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -12,7 +12,8 @@
             padding: 0;
             color: #333;
         }
-                .navbar {
+
+        .navbar {
             background: rgb(124,123,123);
             background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);
             color: white;
@@ -53,7 +54,6 @@
             margin: 20px auto;
 
         }
-
         .title {
             border-bottom: 4px dashed #333;
             margin-bottom: 20px;
@@ -167,13 +167,13 @@
 <section id="one">
     <nav class="navbar">
         <div class="nav-logo">
-             <a href="{% url 'pythonintro' %}">
+             <a href="{% url 'phpintro' %}">
                  <h2>E-Learning</h2></a>
         </div>
     </nav>
 </section>
     <div class="root">
-        <h2 class="title">Python Word Scramble Game</h2>
+        <h2 class="title">PHP Word Scramble Game</h2>
         <div id="scrambled">
             <h2 id="scrambleWord">Word</h2>
             <p id="hint"></p>
@@ -204,21 +204,25 @@
 
     <script>
         const words = [
-            "python", "variable", "function", "list", "tuple", "dictionary", "string", "integer",
-            "float", "boolean", "loop", "if", "else", "elif", "while", "for",
-            "break", "continue", "return", "class", "method", "object", "module", "package",
-            "import", "exception", "try", "except", "finally", "raise", "assert", "global",
-            "local", "lambda", "decorator", "inheritance", "polymorphism", "encapsulation", "iterator",
-            "generator"
+            "php", "variable", "function", "array", "string", "integer", "float", "boolean",
+            "class", "object", "method", "property", "interface", "namespace", "include", "require",
+            "echo", "print", "foreach", "while", "for", "if", "else", "elseif",
+            "switch", "case", "break", "continue", "return", "try", "catch", "finally",
+            "throw", "exception", "global", "static", "const", "define", "include_once", "require_once"
+
         ];
 
         const hints = [
-            "High-level programming language", "Used to store data", "A block of code that performs a specific task",
-            "Ordered and changeable collection", "Ordered and unchangeable collection", "Unordered and changeable collection", "A sequence of characters", "A whole number",
-            "A number with a decimal point", "A true or false value", "Iterates over items in a sequence", "Executes code based on a condition", "Executes code if the condition is false", "Executes code if the previous conditions are false and the current condition is true", "Executes code while a specified condition is true", "Iterates over a sequence of items",
-            "Stops the loop before it has completed all iterations", "Skips the current iteration and continues with the next iteration", "Exits a function and returns a value", "Defines a blueprint for creating objects", "A function associated with an object", "An instance of a class", "A file containing Python definitions and statements", "A directory of Python modules",
-            "Used to include modules in Python", "Handles errors in Python", "Handles exceptions, runs regardless of whether the exception occurred or not", "Handles exceptions, runs if no error occurred", "Handles exceptions, runs after try block, regardless of the result", "Raises an exception", "Checks if a condition is true", "Declares a global variable", "Declares a local variable",
-            "Creates an anonymous function", "Modifies functions or classes", "Allows one class to inherit characteristics from another class", "Allows for objects of different classes to be treated as objects of a parent class", "Binds data and functions into a single unit", "Provides a way to access elements of a collection sequentially", "Returns a stream of values"
+            "Server-side scripting language", "Used to store data", "A block of code that can be reused",
+            "Stores multiple values in a single variable", "A sequence of characters", "A whole number", "A number with a decimal point", "A true or false value",
+            "Defines a new type of object", "An instance of a class", "A function associated with an object", "Data associated with an object",
+            "Defines a contract for classes to implement", "Organizes code into logical groups", "Used to include and evaluate files", "Used to include and evaluate files, but stops execution if file is not found",
+            "Outputs data to the screen", "Outputs data to the screen", "Loops through elements in an array or iterable object", "Loops through a block of code as long as a specified condition is true",
+            "Loops through a block of code a specified number of times", "Executes code if a specified condition is true", "Executes code if a specified condition is false", "Executes code if the previous conditions are false and the current condition is true",
+            "Executes code block based on a condition", "Defines a specific action once a condition is fulfilled", "Stops the execution of the current loop", "Skips the current iteration of a loop and continues with the next iteration",
+            "Exits a function and returns a value", "Executes code and catches exceptions", "Executes code after try and catch blocks, regardless of the result", "Throws an exception",
+            "Represents an error", "Declares a global variable", "Declares a static method or property for a class", "Declares a constant",
+            "Defines a constant", "Includes and evaluates a specified file only once", "Includes and evaluates a specified file only once"
         ];
 
         let displayWord = "";

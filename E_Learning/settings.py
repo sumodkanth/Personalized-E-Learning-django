@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'exam3',
     'Compiler',
     'Faculty',
-    'HR'
+    'HR',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -118,6 +119,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 import os
+from celery import Celery
+
+# celery settings
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Kolkata '
 
 STATIC_URL = 'static/'
 
@@ -131,7 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.CustUser'
-
 # Email
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

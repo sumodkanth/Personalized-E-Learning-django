@@ -2,7 +2,7 @@ from django.db import models
 
 from django.db import models
 from django.contrib.auth.models import User
-from accounts.models import CustUser
+from accounts.models import CustUser, CourseDB
 
 
 class TestResult(models.Model):
@@ -20,7 +20,7 @@ class TestResult(models.Model):
     )
     section = models.CharField(max_length=100, choices=options, default='Basic')
     score = models.IntegerField()
-
+    course_id = models.ForeignKey(CourseDB, on_delete=models.CASCADE, null=True, blank=True)
     date_taken = models.DateTimeField(auto_now_add=True)
     is_active_fields = models.BooleanField(default=False, null=True, blank=True)
 

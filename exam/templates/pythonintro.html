@@ -299,7 +299,7 @@
             <br>
             <div class="vstack gap-3">
                 <div class="p-2"><a href="{% url 'basic' %}">Basic Section</a></div>
-                <div class="p-2"><a href="{% url 'game' %}">Games</a></div>
+                <div class="p-2"><a href="{% url 'puzzle_game' %}">Game</a></div>
                 {% for i in data %}
                     {% if i.section == 'Basic' and i.score > 7 %}
 

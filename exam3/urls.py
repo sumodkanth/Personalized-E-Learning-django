@@ -23,6 +23,7 @@ urlpatterns = [
     path('courseregphp/', courseregphp, name='courseregphp'),
     path('register_php/', register_course_php, name='register_course_php'),
     path('process-payment-php/', process_payment_php, name='process_payment_php'),
+    path('puzzle_game_php/', puzzle_game_php, name='puzzle3')
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

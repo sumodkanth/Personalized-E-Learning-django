@@ -319,6 +319,7 @@ PHP (Hypertext Preprocessor) is a widely-used open-source server-side scripting 
 <br>
         <div class="vstack gap-3">
             <div class="p-2"><a href="{% url 'basicphp' %}">Basic Section</a></div>
+            <div class="p-2"><a href="{% url 'puzzle3' %}">Game</a></div>
             {% for i in data %}
                 {% if i.section == 'BasicPHP' and i.score > 7 %}
                     <div class="p-2"><a href="{% url 'interphp' %}">Intermediate</a></div>                  

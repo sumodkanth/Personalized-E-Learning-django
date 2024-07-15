@@ -213,15 +213,21 @@ def send_certificate_email(request):
 
 
 def htmlcertificate(request):
-    return render(request, 'htmlcertificate.html')
+    user_email = request.user.email
+    payed = Payment.objects.filter(course="HTML", email=user_email)
+    return render(request, 'htmlcertificate.html',{'payed':payed})
 
 
 def pythoncertificate(request):
-    return render(request, 'pythoncertificate.html')
+    user_email = request.user.email
+    payed = Payment.objects.filter(course="Python", email=user_email)
+    return render(request, 'pythoncertificate.html',{'payed':payed})
 
 
 def phpcertificate(request):
-    return render(request, 'phpcertificate.html')
+    user_email = request.user.email
+    payed = Payment.objects.filter(course="PHP", email=user_email)
+    return render(request, 'phpcertificate.html',{'payed':payed})
 
 
 @login_required

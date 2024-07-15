@@ -985,10 +985,13 @@ def toggle_like(request, video_id):
 
 def courseregpython(request):
     user_email = request.user.email
-    registrations = CourseRegistration.objects.filter(course__course_name="Python", email=user_email)
     course = CourseDB.objects.get(course_name="Python")
+    registrations = CourseRegistration.objects.filter(course_id__course_name="Python", email=user_email)
     complete = UploadedFile.objects.filter(project_language="Python")
-
+    try:
+        payed = Payment.objects.filter(course=course, email=user_email)
+    except Payment.DoesNotExist:
+        payed = None
     days_left = None
     if registrations.exists():
         registration = registrations.first()
@@ -998,13 +1001,13 @@ def courseregpython(request):
         'course': course,
         'registrations': registrations,
         'days_left': days_left,
-        'complete': complete
+        'complete': complete,
+        'payed': payed
     }
 
     return render(request, 'courseregpython.html', context)
 
 
-@login_required
 def register_course(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -1024,13 +1027,13 @@ def register_course(request):
         end_date = start_date + timedelta(weeks=duration_weeks)
 
         CourseRegistration.objects.create(
-            course=course,
+            course_id=course,
             name=name,
             email=email,
             start_date=start_date,
             end_date=end_date
         )
-        return redirect('pythonintro')  # Redirect to a success page
+        return redirect('courseregpython')  # Redirect to a success page
     else:
         return redirect('courseregpython')
 
@@ -1060,22 +1063,10 @@ def process_payment(request):
 
         messages.success(request, "Payment successfully")
         # Redirect to a success page or any other page
-        return redirect('pythoncertificate')
+        return redirect('courseregpython')
 
     return HttpResponse("Method not allowed", status=405)
 
 
 def puzzle_game_view(request):
     return render(request, 'puzzle.html')
-
-class Main(TemplateView):
-    template_name='index.html'
-
-class GuessTheAnimal(TemplateView):
-    template_name='GuessTheAnimal.html'
-
-class Math(TemplateView):
-    template_name='maths.html'
-
-class Memory(TemplateView):
-    template_name='memory.html'

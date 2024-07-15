@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Word Scramble Game</title>
+    <title>HTML Word Scramble Game</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -12,7 +12,8 @@
             padding: 0;
             color: #333;
         }
-                .navbar {
+
+        .navbar {
             background: rgb(124,123,123);
             background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);
             color: white;
@@ -167,13 +168,13 @@
 <section id="one">
     <nav class="navbar">
         <div class="nav-logo">
-             <a href="{% url 'pythonintro' %}">
+             <a href="{% url 'htmlintro' %}">
                  <h2>E-Learning</h2></a>
         </div>
     </nav>
 </section>
     <div class="root">
-        <h2 class="title">Python Word Scramble Game</h2>
+        <h2 class="title">HTML Word Scramble Game</h2>
         <div id="scrambled">
             <h2 id="scrambleWord">Word</h2>
             <p id="hint"></p>
@@ -204,21 +205,27 @@
 
     <script>
         const words = [
-            "python", "variable", "function", "list", "tuple", "dictionary", "string", "integer",
-            "float", "boolean", "loop", "if", "else", "elif", "while", "for",
-            "break", "continue", "return", "class", "method", "object", "module", "package",
-            "import", "exception", "try", "except", "finally", "raise", "assert", "global",
-            "local", "lambda", "decorator", "inheritance", "polymorphism", "encapsulation", "iterator",
-            "generator"
+            "html", "element", "attribute", "tag", "doctype", "head", "body", "title",
+            "meta", "link", "script", "style", "div", "span", "header", "footer",
+            "nav", "section", "article", "aside", "form", "input", "button", "label",
+            "table", "thead", "tbody", "tfoot", "tr", "td", "th", "ul", "ol", "li",
+            "img", "a", "python", "function", "variable", "loop"
         ];
 
         const hints = [
-            "High-level programming language", "Used to store data", "A block of code that performs a specific task",
-            "Ordered and changeable collection", "Ordered and unchangeable collection", "Unordered and changeable collection", "A sequence of characters", "A whole number",
-            "A number with a decimal point", "A true or false value", "Iterates over items in a sequence", "Executes code based on a condition", "Executes code if the condition is false", "Executes code if the previous conditions are false and the current condition is true", "Executes code while a specified condition is true", "Iterates over a sequence of items",
-            "Stops the loop before it has completed all iterations", "Skips the current iteration and continues with the next iteration", "Exits a function and returns a value", "Defines a blueprint for creating objects", "A function associated with an object", "An instance of a class", "A file containing Python definitions and statements", "A directory of Python modules",
-            "Used to include modules in Python", "Handles errors in Python", "Handles exceptions, runs regardless of whether the exception occurred or not", "Handles exceptions, runs if no error occurred", "Handles exceptions, runs after try block, regardless of the result", "Raises an exception", "Checks if a condition is true", "Declares a global variable", "Declares a local variable",
-            "Creates an anonymous function", "Modifies functions or classes", "Allows one class to inherit characteristics from another class", "Allows for objects of different classes to be treated as objects of a parent class", "Binds data and functions into a single unit", "Provides a way to access elements of a collection sequentially", "Returns a stream of values"
+            "Markup Language", "Basic building block of HTML", "Provides additional information about an element",
+            "Used to define elements in HTML", "Declaration to define document type and version",
+            "Contains meta-information about the document", "Contains the contents of an HTML document",
+            "Defines the title of the document", "Provides metadata about the HTML document", "Used to link external resources",
+            "Used to define client-side JavaScript", "Used to define CSS within HTML", "Generic container element",
+            "Generic inline container", "Represents introductory content", "Represents the footer of a document",
+            "Represents a section with navigation links", "Represents a standalone section", "Represents an independent piece of content",
+            "Represents content aside from the main content", "Represents a section for user input",
+            "Represents an input control", "Represents a clickable button", "Represents a caption for an item in a user interface",
+            "Represents tabular data", "Represents the header of a table", "Represents the body of a table",
+            "Represents the footer of a table", "Represents a row in a table", "Represents a cell in a table",
+            "Represents a header cell in a table", "Represents an unordered list", "Represents an ordered list",
+            "Represents a list item", "Represents an image", "Represents a hyperlink", "A programming language", "A block of reusable code", "Stores data temporarily", "Repeats a block of code"
         ];
 
         let displayWord = "";

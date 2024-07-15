@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import CustUser, Feedback, UploadedFile, CourseDB, CourseRegistration, Placement,JobApplication
-from Faculty.models import Video, Comment, Like
+from .models import CustUser, Feedback, UploadedFile, CourseDB, CourseRegistration, Placement,JobApplication,Payment
+from Faculty.models import Video, Comment,WatchHistory
 
 # Register your models here.
 
@@ -13,3 +13,5 @@ admin.site.register(CourseDB)
 admin.site.register(CourseRegistration)
 admin.site.register(Placement)
 admin.site.register(JobApplication)
+admin.site.register(Payment)
+admin.site.register(WatchHistory)

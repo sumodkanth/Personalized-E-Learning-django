@@ -3,14 +3,16 @@ import random
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from accounts.models import CourseDB, CourseRegistration,UploadedFile,Payment
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from accounts.models import CourseDB, CourseRegistration, UploadedFile, Payment
 from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.http import HttpResponseRedirect
-from Faculty.models import Video, Comment, Like
+from Faculty.models import Video, Comment, Like, WatchHistory
 from django.db.models import Count
+from django.views.decorators.http import require_POST
 
 php_questions = [
     {  # 1
@@ -849,8 +851,6 @@ import random
 from django.views.generic import TemplateView
 
 
-
-
 def basicphp_section(request):
     if request.method == 'POST':
         random_questions = request.session.get('shuffled_questions')
@@ -1099,9 +1099,6 @@ def advancedphp_section(request):
     return render(request, 'advanced_php.html', {'random_questions': random_questions})
 
 
-
-
-
 class Intermediatelearn(TemplateView):
     template_name = 'intermediatephp_learn.html'
 
@@ -1128,9 +1125,29 @@ class phpintro(TemplateView):
         return context
 
 
-def watch_php_videos(request):
-    videos = Video.objects.filter(course="PHP").annotate(like_count=Count('likes')).order_by('-uploaded_at')
+# def watch_php_videos(request):
+#     videos = Video.objects.filter(course="PHP").annotate(like_count=Count('likes')).order_by('-uploaded_at')
+#
+#     return render(request, 'watch_php_videos.html', {'videos': videos})
 
+
+@login_required
+def watch_php_videos(request):
+    if request.method == 'POST':
+        video_id = request.POST.get('video_id')
+        courses = request.POST.get('course')
+        print(courses)
+        watched = request.POST.get('watched')
+
+        if video_id and watched == 'true':
+            print('done')
+            video = get_object_or_404(Video, id=video_id)
+            print(video)
+            course = CourseDB.objects.get(course_name=courses)
+            print(course)
+            WatchHistory.objects.get_or_create(user=request.user, video_id=video, course_id=course)
+
+    videos = Video.objects.filter(course="PHP").annotate(like_count=Count('likes')).order_by('-uploaded_at')
     return render(request, 'watch_php_videos.html', {'videos': videos})
 
 
@@ -1154,11 +1171,16 @@ def toggle_like_php(request, video_id):
             Like.objects.create(video=video, user=user)
     return redirect('watch_php_videos')
 
+
 def courseregphp(request):
     user_email = request.user.email
     course = CourseDB.objects.get(course_name="PHP")
-    registrations = CourseRegistration.objects.filter(course__course_name="PHP", email=user_email)
+    registrations = CourseRegistration.objects.filter(course_id__course_name="PHP", email=user_email)
     complete = UploadedFile.objects.filter(project_language="PHP")
+    try:
+        payed = Payment.objects.filter(course=course, email=user_email)
+    except Payment.DoesNotExist:
+        payed = None
 
     days_left = None
     if registrations.exists():
@@ -1169,7 +1191,8 @@ def courseregphp(request):
         'course': course,
         'registrations': registrations,
         'days_left': days_left,
-        'complete': complete
+        'complete': complete,
+        'payed': payed
     }
     return render(request, 'courseregphp.html', context)
 
@@ -1187,21 +1210,23 @@ def register_course_php(request):
             duration_weeks = int(course.duration.split()[0])
         except (ValueError, IndexError):
             # Handle the case where the duration is not a valid number of weeks
-            return redirect('courseregphp')  # Redirect to an error page or show a message
+            return redirect('courseregphp')
 
         start_date = datetime.now().date()
         end_date = start_date + timedelta(weeks=duration_weeks)
 
         CourseRegistration.objects.create(
-            course=course,
+            course_id=course,
             name=name,
             email=email,
             start_date=start_date,
             end_date=end_date
         )
-        return redirect('phpintro')  # Redirect to a success page
+        return redirect('courseregphp')  # Redirect to a success page
     else:
         return redirect('courseregphp')
+
+
 def process_payment_php(request):
     user_email = request.user.email
     if request.method == 'POST':
@@ -1227,6 +1252,10 @@ def process_payment_php(request):
 
         messages.success(request, "Payment successfully")
         # Redirect to a success page or any other page
-        return redirect('phpcertificate')
+        return redirect('courseregphp')
 
     return HttpResponse("Method not allowed", status=405)
+
+
+def puzzle_game_php(request):
+    return render(request, 'puzzle3.html')

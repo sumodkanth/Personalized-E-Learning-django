@@ -4,6 +4,7 @@ from .forms import ReplyForm
 from .models import Video, Comment, Like
 from accounts.models import UploadedFile
 
+
 # Create your views here.
 def facultyindex(request):
     user = request.user
@@ -83,7 +84,7 @@ def video_comments(request, video_id):
 def view_projects(request):
     user = request.user
     projects = UploadedFile.objects.filter(project_language=user.Course)
-    return render(request, 'viewprojects.html',{'projects': projects})
+    return render(request, 'viewprojects.html', {'projects': projects})
 
 
 def review_project(request, project_id):
