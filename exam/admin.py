@@ -4,4 +4,3 @@ from .models import *
 
 
 admin.site.register(TestResult)
-admin.site.register(CorrectAnswers)

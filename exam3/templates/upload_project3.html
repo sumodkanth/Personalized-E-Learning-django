@@ -137,15 +137,19 @@
         {% csrf_token %}
         <!-- Display sample questions -->
         <label for="sample_question">Select a Sample Question:</label>
-        <select id="sample_question" name="sample_question">
+        <select id="sample_question" name="sample_question" onchange="toggleCustomQuestion()">
             <option value="" selected disabled>Select a Sample Question</option>
             <option value="Question 1">Question 1: Create a basic blog application where users can register, log in, create, edit, and delete posts.</option>
             <option value="Question 2">Question 2: Build a contact management system where users can add, edit, and delete contacts.</option>
             <option value="Question 3">Question 3: Develop a small e-commerce platform where users can browse products, add them to a shopping cart, and proceed to checkout.</option>
             <option value="Question 4">Question 4: Develop a system for managing recipes where users can add, edit, and delete recipes.</option>
             <option value="Question 5">Question 5: Create a system for managing student records where administrators can add, edit, and delete student information.</option>
+            <option value="custom">Custom Question</option>
         </select>
-
+            <div id="custom_question_container" style="display:none;">
+                <label for="custom_question">Enter your custom question:</label>
+                <input type="text" id="custom_question" name="custom_question">
+            </div>
         <label for="id_project_name">Project Name:</label>
         {{ form.project_name }}
 
@@ -156,13 +160,13 @@
         <label>Project coding Language:</label>
 
         <input type="radio" id="python" name="project_language" value="Python">
-        <label for="python">Python</label>
+        <label for="Python">Python</label>
 
-        <input type="radio" id="html" name="project_language" value="html">
-        <label for="html">HTML</label>
+        <input type="radio" id="html" name="project_language" value="HTML">
+        <label for="HTML">HTML</label>
 
-        <input type="radio" id="php" name="project_language" value="php">
-        <label for="php">PHP</label>
+        <input type="radio" id="php" name="project_language" value="PHP">
+        <label for="PHP">PHP</label>
         <br><br>
 
         <label for="id_git_link">Git Link:</label>
@@ -177,4 +181,16 @@
 
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
+<script>
+function toggleCustomQuestion() {
+    const select = document.getElementById('sample_question');
+    const customQuestionContainer = document.getElementById('custom_question_container');
+
+    if (select.value === 'custom') {
+        customQuestionContainer.style.display = 'block';
+    } else {
+        customQuestionContainer.style.display = 'none';
+    }
+}
+</script>
 </html>

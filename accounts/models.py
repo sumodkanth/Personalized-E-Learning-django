@@ -14,11 +14,12 @@ class CustUser(AbstractUser):
     COURSE_CHOICES = [
         ('Python', 'Python'),
         ('HTML', 'HTML'),
-        ('PHP', 'PHP'),  # SELECTING COURSE
+        ('PHP', 'PHP'),
+        ('None', 'None')# SELECTING COURSE
     ]
     gender = models.CharField(max_length=100, choices=options, null=True, default='Male')
     age = models.IntegerField(null=True)
-    Course = models.CharField(max_length=10, choices=COURSE_CHOICES, null=True, blank=True)
+    Course = models.CharField(max_length=10, choices=COURSE_CHOICES, default='None', null=True, blank=True)
     is_student = models.BooleanField(null=True, blank=True, default=False)
     is_faculty = models.BooleanField(null=True, blank=True, default=False)
     is_hr = models.BooleanField(null=True, blank=True, default=False)
@@ -52,7 +53,7 @@ class CourseDB(models.Model):
 
 class CourseRegistration(models.Model):
     course_id = models.ForeignKey(CourseDB, related_name='registrations', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, null=True, blank=True)
+    name = models.CharField(max_length=25, null=True, blank=True)
     email = models.EmailField()
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)

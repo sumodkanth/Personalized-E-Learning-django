@@ -728,14 +728,15 @@ def basichtml_section(request):
 
         if total_marks:
             save_correct_answers(request.user, correct_answers, "BasicHTML")
-            test_result = TestResult.objects.filter(user=request.user, section="BasicHTML").first()
+            course = CourseDB.objects.get(course_name="HTML")
+            test_result = TestResult.objects.filter(user=request.user, section="BasicHTML",course_id=course).first()
             if test_result:
                 if total_marks > test_result.score:
                     test_result.score = total_marks
                     test_result.save()
             else:
                 # Assuming request.user is the user ID
-                TestResult.objects.create(user=request.user, score=total_marks, section="BasicHTML")
+                TestResult.objects.create(user=request.user, score=total_marks, section="BasicHTML",course_id=course)
             return render(request, 'basic_html.html', {
                 'random_questions': random_questions,
                 'total_marks': total_marks,
@@ -804,13 +805,14 @@ def intermediatehtml_section(request):
             # TestResult.objects.create(user=request.user, score=total_marks,section="IntermediateHTML")
         if total_marks:
             save_correct_answers1(request.user, correct_answers, "IntermediateHTML")
-            test_result = TestResult.objects.filter(user=request.user, section="IntermediateHTML").first()
+            course = CourseDB.objects.get(course_name="HTML")
+            test_result = TestResult.objects.filter(user=request.user, section="IntermediateHTML",course_id=course).first()
             if test_result:
                 if total_marks > test_result.score:
                     test_result.score = total_marks
                     test_result.save()
             else:
-                TestResult.objects.create(user=request.user, score=total_marks, section="IntermediateHTML")
+                TestResult.objects.create(user=request.user, score=total_marks, section="IntermediateHTML",course_id=course)
             return render(request, 'intermediate_html.html', {
                 'random_questions': random_questions,
                 'total_marks': total_marks,
@@ -892,13 +894,14 @@ def advancedhtml_section(request):
             print(total_marks)
             # TestResult.objects.create(user=request.user, score=total_marks,section="AdvancedHTML")
         if total_marks:
-            test_result = TestResult.objects.filter(user=request.user, section="AdvancedHTML").first()
+            course = CourseDB.objects.get(course_name="HTML")
+            test_result = TestResult.objects.filter(user=request.user, section="AdvancedHTML", course_id=course).first()
             if test_result:
                 if total_marks > test_result.score:
                     test_result.score = total_marks
                     test_result.save()
             else:
-                TestResult.objects.create(user=request.user, score=total_marks, section="AdvancedHTML")
+                TestResult.objects.create(user=request.user, score=total_marks, section="AdvancedHTML", course_id=course)
             return render(request, 'advanced_html.html', {
                 'random_questions': random_questions,
                 'total_marks': total_marks,

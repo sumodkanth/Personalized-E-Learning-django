@@ -1,89 +1,118 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>Login Page</title>
     {% load static %}
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/log.css' %}">
-    <link rel="stylesheet" href="{% static 'js/log.js' %}">
-    <style>
-          .bg-video video{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-        }
-        .links-container {
-          display: flex;
-          justify-content: space-between;
-        }
 
-        .links-container a {
-          text-decoration: none; /* Optional: to style the links */
-          /* You can add more styling here as needed */
-        }
+    <style>
+      .bg-video video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -10;
+      }
+
+      .form-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        z-index: 1;
+      }
+
+      .login-register {
+        background: linear-gradient(135deg,#0cf0a4,#ceeded);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-header img {
+        display: block;
+        margin: 0 auto 20px;
+        width: 100px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .form-bottom .not-registered {
+        margin: 0;
+      }
+
+      .links-container {
+        display: flex;
+        gap: 10px;
+      }
+
+      .links-container a {
+        text-decoration: none;
+        color: #17a2b8;
+      }
     </style>
   </head>
   <body>
-      {% load static %}
-           <div class="bg-video">
-              <!-- Replace 'video.mp4' with your video file -->
-              <video autoplay muted  id="video-bg">
-                  <source src="{% static 'video/bghome.mp4' %}" type="video/mp4">
-                  Your browser does not support the video tag.
-              </video>
-          </div>
-          <div class="formwarp">
-            <div class="login-register">
-              <div class="login form">
-                <form action="" method="post">
-                  {% csrf_token %}
-                  {% if error %}
-                  <script>
-                      alert("Invalid credentials");
-                  </script>
-                  {% endif %}
+    <div class="bg-video">
+      <video autoplay muted loop id="video-bg">
+        <source src="{% static 'video/bghome.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="form-wrap">
+      <div class="login-register">
+        <div class="login form">
+          <form action="" method="post">
+            {% csrf_token %}
+            {% if error %}
+            <script>
+              alert("Invalid credentials");
+            </script>
+            {% endif %}
 
-                  <div class="form-header">
-                    <img src="{% static 'images/demo.png' %}" alt="logo">
-                  </div>
-                  <div class="form-group">
-                    <label for="username">Username </label>
-                    {{form.username.error}}
-                    {{form.username}}
-                  </div>
-                  <div class="form-group">
-                    <label for="password">Password</label>
-                    {{form.password.error}}
-                    {{form.password}}
-                  </div>
-                  <div>
-                      <button class="btn btn-block bg-info">LogIn</button>
-                  </div>
-                    <div class="form-bottom">
-                      <p class="not-registered">Don't have an account?</p>
-                      <div class="links-container">
-                        <a href="{% url 'reg' 'student' %}">Student Register</a>
-                          <a href="{% url 'reg' 'hr' %}">HR Register</a>
-                        <a href="{% url 'resetpwd' %}">Forgot password?</a>
-                      </div>
-                    </div>
-                 
-                </form>
+            <div class="form-header">
+              <img src="{% static 'images/demo.png' %}" alt="logo">
+            </div>
+            <div class="form-group">
+              <label for="username">Username</label>
+              {{form.username.error}}
+              {{form.username}}
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              {{form.password.error}}
+              {{form.password}}
+            </div>
+            <div>
+              <button type="submit" class="btn btn-block bg-info text-white">Log In</button>
+            </div>
+            <div class="form-bottom">
+              <p class="not-registered">Don't have an account?</p>
+              <div class="links-container">
+                <a href="{% url 'reg' 'student' %}">Student Register</a>
+                <a href="{% url 'resetpwd' %}">Forgot password?</a>
               </div>
             </div>
-          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4xF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
 </html>

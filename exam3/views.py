@@ -886,14 +886,16 @@ def basicphp_section(request):
             # TestResult.objects.create(user=request.user, score=total_marks,section="BasicPHP")
         if total_marks:
             save_correct_answers(request.user, correct_answers, "BasicPHP")
-
-            test_result = TestResult.objects.filter(user=request.user.id, section="BasicPHP").first()
+            course = CourseDB.objects.get(course_name="PHP")
+            print('Yes')
+            print(course)
+            test_result = TestResult.objects.filter(user=request.user.id, section="BasicPHP", course_id=course).first()
             if test_result:
                 if total_marks > test_result.score:
                     test_result.score = total_marks
                     test_result.save()
             else:
-                TestResult.objects.create(user=request.user, score=total_marks, section="BasicPHP")
+                TestResult.objects.create(user=request.user, score=total_marks, section="BasicPHP", course_id=course)
             return render(request, 'basic_php.html', {
                 'random_questions': random_questions,
                 'total_marks': total_marks,
@@ -970,13 +972,14 @@ def intermediatephp_section(request):
             # TestResult.objects.create(user=request.user, score=total_marks,section="IntermediatePHP")
         if total_marks:
             save_correct_answers1(request.user, correct_answers, "Basic")
-            test_result = TestResult.objects.filter(user=request.user, section="IntermediatePHP").first()
+            course = CourseDB.objects.get(course_name="PHP")
+            test_result = TestResult.objects.filter(user=request.user, section="IntermediatePHP", course_id=course).first()
             if test_result:
                 if total_marks > test_result.score:
                     test_result.score = total_marks
                     test_result.save()
             else:
-                TestResult.objects.create(user=request.user, score=total_marks, section="IntermediatePHP")
+                TestResult.objects.create(user=request.user, score=total_marks, section="IntermediatePHP", course_id= course)
             return render(request, 'intermediate_php.html', {
                 'random_questions': random_questions,
                 'total_marks': total_marks,
@@ -1070,14 +1073,14 @@ def advancedphp_section(request):
             print(total_marks)
             # TestResult.objects.create(user=request.user, score=total_marks,section="AdvancedPHP")
         if total_marks:
-
-            test_result = TestResult.objects.filter(user=request.user, section="AdvancedPHP").first()
+            course = CourseDB.objects.get(course_name="PHP")
+            test_result = TestResult.objects.filter(user=request.user, section="AdvancedPHP",course_id= course).first()
             if test_result:
                 if total_marks > test_result.score:
                     test_result.score = total_marks
                     test_result.save()
             else:
-                TestResult.objects.create(user=request.user, score=total_marks, section="AdvancedPHP")
+                TestResult.objects.create(user=request.user, score=total_marks, section="AdvancedPHP", course_id=course)
             return render(request, 'advanced_php.html', {
                 'random_questions': random_questions,
                 'total_marks': total_marks,

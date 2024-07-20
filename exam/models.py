@@ -25,7 +25,7 @@ class TestResult(models.Model):
     is_active_fields = models.BooleanField(default=False, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.user.username}'s Test Result for {self.section} section"
+        return f"{self.user.username}'s Result in {self.section} {self.course_id}"
 
 
 class CorrectAnswers(models.Model):

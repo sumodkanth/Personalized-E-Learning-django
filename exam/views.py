@@ -745,13 +745,14 @@ def basic_section(request):
 
         if total_marks:
             save_correct_answers(request.user, correct_answers, "Basic")
-            test_result = TestResult.objects.filter(user=request.user, section="Basic").first()
+            course= CourseDB.objects.get(course_name="Python")
+            test_result = TestResult.objects.filter(user=request.user, section="Basic",course_id=course).first()
             if test_result:
                 if total_marks > test_result.score:
                     test_result.score = total_marks
                     test_result.save()
             else:
-                test = TestResult.objects.create(user=request.user, score=total_marks, section="Basic")
+                test = TestResult.objects.create(user=request.user, score=total_marks, section="Basic", course_id=course)
             return render(request, 'basic.html', {
                 'random_questions': random_questions,
                 'total_marks': total_marks,
@@ -820,13 +821,14 @@ def intermediate_section(request):
             print(total_marks)
         if total_marks:
             save_correct_answers1(request.user, correct_answers, "Intermediate")
-            test_result = TestResult.objects.filter(user=request.user, section="Intermediate").first()
+            course = CourseDB.objects.get(course_name="Python")
+            test_result = TestResult.objects.filter(user=request.user, section="Intermediate", course_id= course).first()
             if test_result:
                 if total_marks > test_result.score:
                     test_result.score = total_marks
                     test_result.save()
             else:
-                TestResult.objects.create(user=request.user, score=total_marks, section="Intermediate")
+                TestResult.objects.create(user=request.user, score=total_marks, section="Intermediate",course_id=course)
             return render(request, 'intermediate.html', {
                 'random_questions': random_questions,
                 'total_marks': total_marks,
@@ -903,13 +905,14 @@ def advanced_section(request):
             percentage = (total_marks / max_marks) * 100 if max_marks > 0 else 0
 
         if total_marks:
-            test_result = TestResult.objects.filter(user=request.user, section="Advanced").first()
+            course = CourseDB.objects.get(course_name="Python")
+            test_result = TestResult.objects.filter(user=request.user, section="Advanced", course_id=course).first()
             if test_result:
                 if total_marks > test_result.score:
                     test_result.score = total_marks
                     test_result.save()
             else:
-                TestResult.objects.create(user=request.user, score=total_marks, section="Advanced")
+                TestResult.objects.create(user=request.user, score=total_marks, section="Advanced", course_id=course)
 
             return render(request, 'advanced.html', {
                 'random_questions': random_questions,

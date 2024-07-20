@@ -215,19 +215,19 @@ def send_certificate_email(request):
 def htmlcertificate(request):
     user_email = request.user.email
     payed = Payment.objects.filter(course="HTML", email=user_email)
-    return render(request, 'htmlcertificate.html',{'payed':payed})
+    return render(request, 'htmlcertificate.html', {'payed': payed})
 
 
 def pythoncertificate(request):
     user_email = request.user.email
     payed = Payment.objects.filter(course="Python", email=user_email)
-    return render(request, 'pythoncertificate.html',{'payed':payed})
+    return render(request, 'pythoncertificate.html', {'payed': payed})
 
 
 def phpcertificate(request):
     user_email = request.user.email
     payed = Payment.objects.filter(course="PHP", email=user_email)
-    return render(request, 'phpcertificate.html',{'payed':payed})
+    return render(request, 'phpcertificate.html', {'payed': payed})
 
 
 @login_required
@@ -717,6 +717,7 @@ def job_listings(request):
                                                                                flat=True) if user_email else []
 
     return render(request, 'job_listings.html', {'jobs': jobs, 'applied_jobs': applied_jobs})
+
 
 def apply_for_job(request, job_id):
     job = get_object_or_404(Placement, id=job_id)
