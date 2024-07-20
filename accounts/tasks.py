@@ -3,7 +3,8 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from datetime import timedelta
 from .models import CustUser
-from django.conf import settings
+# from django.conf import settings
+from E_Learning import settings
 
 @shared_task
 def send_login_reminder():
@@ -24,8 +25,8 @@ def send_login_reminder():
         )
 
 
-@shared_task
-def send_test_message():
+@shared_task(bind=True)
+def send_test_message(self):
     # Fetch all students for testing
     students = CustUser.objects.filter(is_student=True)
     print(students)

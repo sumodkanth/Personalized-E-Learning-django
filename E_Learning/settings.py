@@ -155,10 +155,13 @@ from datetime import timedelta
 
 CELERY_BEAT_SCHEDULE = {
     'send-login-reminder-every-day': {
-        'task': 'learning_app.tasks.send_login_reminder',
+        'task': 'accounts.tasks.send_login_reminder',
         'schedule': timedelta(days=1),  # Adjust the interval as needed
     },
 }
 # pip install celery redis
 # celery -A E_Learning.celery worker --loglevel=info
 # celery -A E_Learning.celery beat --loglevel=info
+#python manage.py shell
+#from accounts.tasks import send_test_message
+#send_test_message.delay()
