@@ -62,8 +62,9 @@
 
       .links-container a {
         text-decoration: none;
-        color: #266ec7;
+        color: #000;
       }
+
 
       .bg-img {
         position: fixed;
@@ -136,7 +137,7 @@
               <button type="submit" class="btn btn-block bg-info text-white">Log In</button>
             </div>
             <div class="form-bottom">
-              <p class="not-registered">Don't have an account?</p>
+              <p class="not-registered" style="color:white">Don't have an account?</p>
               <div class="links-container">
                 <a href="{% url 'reg' 'student' %}">Student Register</a>
                 <a href="{% url 'resetpwd' %}">Forgot password?</a>

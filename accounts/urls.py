@@ -39,7 +39,7 @@ urlpatterns = [
     path('uploadmain/', upload_project4, name='upload_projectmain'),
     path('job-listings/', job_listings, name='job_listings'),
     path('sendmail/', send_test_message_all, name='sendmail'),
-
+    path('schedulemail/', schedule_mail, name='schedulemail'),
     path('apply/<int:job_id>/', apply_for_job, name='apply_for_job'),
 
 ]

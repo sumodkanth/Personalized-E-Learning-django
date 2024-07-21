@@ -747,8 +747,15 @@ def apply_for_job(request, job_id):
 
 #
 from accounts.tasks import send_test_message
+from django_celery_beat.models import PeriodicTask, CrontabSchedule
 
 
 def send_test_message_all(request):
     send_test_message.delay()
     return HttpResponse('Sent')
+
+
+def schedule_mail(request):
+    schedule, created = CrontabSchedule.objects.get_or_create(hour=16, minute=30)
+    task = PeriodicTask.objects.create(crontab=schedule, name='schedule_mail_task'+'1', task='accunts.tasks.send_test_message')
+    return HttpResponse('Done')

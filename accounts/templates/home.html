@@ -305,45 +305,52 @@
 
 
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="sree"
+  agent-id="b02a4952-8418-44cc-a1ed-b5cd65701bd1"
+  language-code="en"
+></df-messenger>
 
-<script>
-    $(document).ready(function() {
-        // Handling form submission for chat
-        $('#chatForm').submit(function(event) {
-            event.preventDefault();
-            var inputText = $('#inputText').val();
-            if (inputText.trim() === '') return;
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        // Handling form submission for chat-->
+<!--        $('#chatForm').submit(function(event) {-->
+<!--            event.preventDefault();-->
+<!--            var inputText = $('#inputText').val();-->
+<!--            if (inputText.trim() === '') return;-->
 
-            // Display user message
-            $('#chatBox').append('<div class="user-message"><p>' + inputText + '</p></div>');
-            $('#inputText').val('');
-            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+<!--            // Display user message-->
+<!--            $('#chatBox').append('<div class="user-message"><p>' + inputText + '</p></div>');-->
+<!--            $('#inputText').val('');-->
+<!--            $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);-->
 
-            // Send user message to server
-            $.ajax({
-                url: '',
-                type: 'POST',
-                data: {input_text: inputText},
-                success: function(response) {
-                    // Display bot response
-                    $('#chatBox').append('<div class="bot-message"><p>' + response.response + '</p></div>');
-                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        });
+<!--            // Send user message to server-->
+<!--            $.ajax({-->
+<!--                url: '',-->
+<!--                type: 'POST',-->
+<!--                data: {input_text: inputText},-->
+<!--                success: function(response) {-->
+<!--                    // Display bot response-->
+<!--                    $('#chatBox').append('<div class="bot-message"><p>' + response.response + '</p></div>');-->
+<!--                    $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);-->
+<!--                },-->
+<!--                error: function(xhr, status, error) {-->
+<!--                    console.error(error);-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
 
-        // Handling the toggle of the chat widget
-        const openChatBtn = document.getElementById('open-chat-btn');
-        const chatContainer = document.getElementById('chat-container');
+<!--        // Handling the toggle of the chat widget-->
+<!--        const openChatBtn = document.getElementById('open-chat-btn');-->
+<!--        const chatContainer = document.getElementById('chat-container');-->
 
-        openChatBtn.addEventListener('click', function() {
-            chatContainer.style.display = chatContainer.style.display === 'block' ? 'none' : 'block';
-        });
-    });
-</script>
+<!--        openChatBtn.addEventListener('click', function() {-->
+<!--            chatContainer.style.display = chatContainer.style.display === 'block' ? 'none' : 'block';-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 </body>
 </html>

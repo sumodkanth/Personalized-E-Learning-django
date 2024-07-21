@@ -3,91 +3,164 @@
   <head>
     <title>{% if val == 'student' %}Student Registration{% elif val == 'faculty' %}Faculty Registration{% else %}Registration{% endif %}</title>
     {% load static %}
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+      .bg-video video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -10;
+      }
+
+      .form-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        z-index: 1;
+
+      }
+
+      .login-register {
+        background: rgba(255, 255, 255, 0.1); /* Transparent background */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+      }
+
+      .form-header img {
+        display: block;
+        margin: 0 auto 20px;
+        width: 100px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .form-bottom .already-registered {
+        margin: 0;
+      }
+
+      .links-container {
+        display: flex;
+        gap: 10px;
+      }
+
+      .links-container a {
+        text-decoration: none;
+        color: #000;
+      }
+
+      .bg-img {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      .bg-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .input-group-append {
+        cursor: pointer;
+      }
+
+      .invalid-feedback {
+        display: block;
+        color: red;
+      }
+
+      .error-message {
+        color: red;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-img">
+      <img src="{% static 'images/bg2.jpg' %}" alt="Background Image">
+    </div>
+    <!-- <div class="bg-video">
+      <video autoplay muted loop id="video-bg">
+        <source src="{% static 'video/bghome.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div> -->
+    <div class="form-wrap">
+      <div class="login-register">
+        <div class="login form">
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-header">
+              <img src="{% static 'images/demo.png' %}" alt="logo">
+              <h4>{% if val == 'student' %}Student Registration{% elif val == 'faculty' %}Faculty Registration{% else %}Registration{% endif %}</h4>
+            </div>
+            {% for field in form %}
+              {% for error in field.errors %}
+                <div class="error-message">
+                  {{ error }}
+                </div>
+              {% endfor %}
+            {% endfor %}
+            <div class="form-group">
+              <label for="id_first_name">First Name</label>
+              {{ form.first_name }}
+            </div>
+            <div class="form-group">
+              <label for="id_last_name">Last Name</label>
+              {{ form.last_name }}
+            </div>
+            <div class="form-group">
+              <label for="id_username">Username</label>
+              {{ form.username }}
+            </div>
+            <div class="form-group">
+              <label for="id_email">Email</label>
+              {{ form.email }}
+            </div>
+            <div class="form-group">
+              <label for="id_password1">Password</label>
+              {{ form.password1 }}
+            </div>
+            <div class="form-group">
+              <label for="id_password2">Confirm Password</label>
+              {{ form.password2 }}
+            </div>
+            <div>
+              <button type="submit" class="btn btn-block bg-info text-white">Submit</button>
+            </div>
+            <div class="form-bottom">
+              <p class="already-registered">Already have an account? <a href="{% url 'log' %}" style="color:black;">Login</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/log.css' %}">
-    <link rel="stylesheet" href="{% static 'js/log.js' %}">
-  </head>
-  <body>
-    {% load static %}
-      <div class="formwarp">
-  <div class="login-register">
-    <div class="login form">
-      
-    
-      <!--   register form   -->
-      
-      <form action="" method="post">
-        {% csrf_token %}
-        <div class="form-header">
-          <img src="{% static 'images/demo.png' %}" alt="logo">
-           <h4>{% if val == 'student' %}Student Registration{% elif val == 'faculty' %}Faculty Registration{% else %}Registration{% endif %}</h4>
-          <!-- <img src="https://assets.codepen.io/1584356/codepen.png" alt="logo"> -->
-        </div>
-        {% for field in form %}
-        {% for error in field.errors %}
-            <div class="error-message">
-                {{ error }}
-            </div>
-        {% endfor %}
-    {% endfor %}
-    <div class="form-group">
-      <label>First Name</label>
-      <!-- <input type="fullname" id="fullname" placeholder="Full Name"> -->
-      {{form.first_name.error}}
-      {{form.first_name}}
-    </div>
-    <div class="form-group">
-      <label>Last Name</label>
-      <!-- <input type="fullname" id="fullname" placeholder="Full Name"> -->
-      {{form.last_name.error}}
-      {{form.last_name}}
-    </div>
-        <div class="form-group">
-          <label>Username</label>
-          <!-- <input type="fullname" id="fullname" placeholder="Full Name"> -->
-          {{form.username.error}}
-          {{form.username}}
-        </div>
-        <div class="form-group">
-          <label >Email</label>
-          <!-- <input type="email" id="email" placeholder="Username or Email"> -->
-          {{form.email.error}}
-          {{form.email}}
-        </div>
-        <div class="form-group">
-          <label >Password</label>
-          <!-- <input type="password" id="password" placeholder="Password"> -->
-          {{form.password1.error}}
-          {{form.password1}}
-        </div>
-        <div class="form-group">
-          <label >Password</label>
-          <!-- <input type="password" id="password" placeholder="Password"> -->
-          {{form.password2.error}}
-          {{form.password2}}
-        </div>
-        <div>
-          <button class="btn btn-block btn-info">Submit</button>
-        </div>
-        <div class="form-bottom">
-          <p class="already-registered">Alredy have an account? <a href="{% url 'log' %}">Login</a></p>
-        </div>
-      </form>
-
-    </div>
-    
-    
-  </div>
-</div>
-    
   </body>
 </html>
