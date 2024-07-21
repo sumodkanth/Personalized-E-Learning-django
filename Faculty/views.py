@@ -97,3 +97,6 @@ def review_project(request, project_id):
         return redirect('view_projects')
 
     return render(request, 'review_project.html', {'project': project})
+
+def onlineclass(request):
+    return render(request, 'onlineclass.html')

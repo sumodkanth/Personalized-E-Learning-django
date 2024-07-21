@@ -13,6 +13,7 @@ urlpatterns = [
     path('videos/<int:video_id>/', views.video_comments, name='video_comments'),
     path('view_projects/', views.view_projects, name='view_projects'),
     path('projects/<int:project_id>/review/', review_project, name='review_project'),
+    path('onlineclass/', views.onlineclass, name='onlineclass'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
