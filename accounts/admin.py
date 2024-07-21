@@ -14,4 +14,4 @@ admin.site.register(CourseRegistration)
 admin.site.register(Placement)
 admin.site.register(JobApplication)
 admin.site.register(Payment)
-admin.site.register(WatchHistory)
+
