@@ -204,45 +204,12 @@
 
         videoItems.forEach(function(item, index) {
             const video = item.querySelector('video');
-            const form = item.querySelector('form');
-            const submitBtn = item.querySelector('input[type="submit"]');
-
             video.addEventListener('ended', function() {
                 completedVideos++;
                 updateProgressBar();
-                form.querySelector('input[name="watched"]').value = 'true';
-                submitBtn.click();
                 if (index + 1 < videoItems.length) {
                     videoItems[index + 1].querySelector('video').removeAttribute('disabled');
                 }
-            });
-        });
-
-        document.querySelectorAll('form').forEach(function(form) {
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-
-                const formData = new FormData(form);
-                fetch(form.action, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Video Watched!',
-                            text: 'The video has been successfully marked as watched.',
-                            showConfirmButton: true,
-                            allowOutsideClick: false,
-                            allowEscapeKey: false
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
             });
         });
 

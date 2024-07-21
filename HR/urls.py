@@ -4,7 +4,7 @@ from django.conf import settings
 from HR import views
 from django.conf.urls.static import static
 urlpatterns = [
-    path('HRindex/', views.HR_index, name='HRindex'),
+    path('HRindex/', views.applications_list, name='HRindex'),
     path('add-placement/', views.add_placement, name='add_placement'),
     path('placements/', views.placement_list, name='placement_list'),
     path('placements/edit/<int:placement_id>/', views.edit_placement, name='edit_placement'),

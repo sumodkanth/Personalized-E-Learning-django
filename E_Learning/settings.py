@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'Compiler',
     'Faculty',
     'HR',
+    'django_celery_results',
     'django_celery_beat',
 ]
 
@@ -146,21 +147,25 @@ EMAIL_HOST_PASSWORD = 'khqy sxno eswk dynu'
 
 # CELERY
 from datetime import timedelta
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-CELERY_BEAT_SCHEDULE = {
-    'send-login-reminder-every-day': {
-        'task': 'accounts.tasks.send_login_reminder',
-        'schedule': timedelta(days=1),  # Adjust the interval as needed
-    },
-}
+#
+# CELERY_BEAT_SCHEDULE = {
+#     'send-login-reminder-every-day': {
+#         'task': 'accounts.tasks.send_login_reminder',
+#         'schedule': timedelta(days=1),  # Adjust the interval as needed
+#     },
+# }
 
 # celery settings
-CELERY_BROKER_URL = 'redis://localhost:6379/0'  # or your Redis URL
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # or your Redis URL
+# CELERY_BROKER_URL = 'redis://localhost:6379/0'  # or your Redis URL
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'django-db'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'  # or your Redis URL
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata '
+CELERY_ENABLE_UTC = False
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # pip install celery redis
 # celery -A E_Learning.celery worker --loglevel=info
@@ -171,3 +176,4 @@ CELERY_TIMEZONE = 'Asia/Kolkata '
 
 
 #celery -A E_Learning.celery worker --pool=solo -l info
+#celery -A E_Learning beat -l info

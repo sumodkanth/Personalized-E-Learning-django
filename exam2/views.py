@@ -948,6 +948,7 @@ class htmlintro(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['data'] = TestResult.objects.filter(user=self.request.user)
+        context['uploaded_files'] = UploadedFile.objects.filter(project_language="HTML", student=self.request.user)
         return context
 
 
@@ -997,7 +998,7 @@ def coursereghtml(request):
     user_email = request.user.email
     registrations = CourseRegistration.objects.filter(course_id__course_name="HTML", email=user_email)
     course = CourseDB.objects.get(course_name="HTML")
-    complete = UploadedFile.objects.filter(project_language="HTML")
+    complete = UploadedFile.objects.filter(project_language="HTML", student=request.user)
     try:
         payed = Payment.objects.filter(course=course, email=user_email)
     except Payment.DoesNotExist:

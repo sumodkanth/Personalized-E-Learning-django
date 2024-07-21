@@ -292,7 +292,7 @@
 
             </ol>
             </div>
-
+            {% if not uploaded_files %}
             <div class="center-align">
                 <a href="{% url 'basic' %}" class="btn btn-danger col-3 mx-auto" tabindex="-1" role="button" aria-disabled="true">Click here to START TEST</a>
             </div>
@@ -314,6 +314,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
+            {% endif %}
 
     </div>
 <!--            <div id="chat-container" class="chat-container" style="display: block;"> &lt;!&ndash; Set to block by default &ndash;&gt;-->

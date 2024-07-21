@@ -313,6 +313,7 @@ PHP (Hypertext Preprocessor) is a widely-used open-source server-side scripting 
 
             </p>
         </div>
+            {% if not uploaded_files %}
             <div class="center-align">
                 <a href="{% url 'basicphp' %}" class="btn btn-danger col-3 mx-auto" tabindex="-1" role="button" aria-disabled="true">Click here to START TEST</a>
             </div>
@@ -334,6 +335,7 @@ PHP (Hypertext Preprocessor) is a widely-used open-source server-side scripting 
             {% endfor %}
     
         </div>
+            {% endif %}
 
 <!--        {% if data.section != 'BasicPHP' and i.score < 7 %}-->
 <!--        <div class="p-2"><a href="#">Intermediate</a></div>-->

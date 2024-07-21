@@ -955,8 +955,21 @@ class pythonintro(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['data'] = TestResult.objects.filter(user=self.request.user)
+        context['test_results'] = TestResult.objects.filter(user=self.request.user)
+        context['uploaded_files'] = UploadedFile.objects.filter(project_language="Python", student=self.request.user)
         return context
+
+
+# def pythonintro(request):
+#     test_results = TestResult.objects.filter(user=request.user)
+#     uploaded_files = UploadedFile.objects.filter(project_language="Python", student=request.user)
+#     print(uploaded_files)
+#     context = {
+#         'test_results': test_results,
+#         'uploaded_files': uploaded_files,
+#     }
+#
+#     return render(request, 'pythonintro.html', context)
 
 
 def watch_python_videos(request):
@@ -990,7 +1003,7 @@ def courseregpython(request):
     user_email = request.user.email
     course = CourseDB.objects.get(course_name="Python")
     registrations = CourseRegistration.objects.filter(course_id__course_name="Python", email=user_email)
-    complete = UploadedFile.objects.filter(project_language="Python")
+    complete = UploadedFile.objects.filter(project_language="Python", student=request.user)
     try:
         payed = Payment.objects.filter(course=course, email=user_email)
     except Payment.DoesNotExist:
@@ -1000,6 +1013,7 @@ def courseregpython(request):
         registration = registrations.first()
         if registration.end_date:
             days_left = (registration.end_date - datetime.now().date()).days
+    print(payed,complete,days_left)
     context = {
         'course': course,
         'registrations': registrations,

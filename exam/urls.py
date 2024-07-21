@@ -16,7 +16,6 @@ urlpatterns = [
     path('advanced_learning/',advanced_text_material, name='a_learn'),
     
     path('upload/', upload_project, name='upload_project'),
-    path('project_list/', project_list, name='project_list'),
     path('download/<int:project_id>/', download_project, name='download_project'),
     path('watch-python-videos/', watch_python_videos, name='watch_python_videos'),
     path('add_comment/<int:video_id>/', add_comment, name='add_comment'),

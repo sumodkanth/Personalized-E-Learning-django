@@ -1124,6 +1124,7 @@ class phpintro(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['data'] = TestResult.objects.filter(user=self.request.user)
+        context['uploaded_files'] = UploadedFile.objects.filter(project_language="PHP", student=self.request.user)
         print(context['data'])
         return context
 
@@ -1136,19 +1137,19 @@ class phpintro(TemplateView):
 
 @login_required
 def watch_php_videos(request):
-    if request.method == 'POST':
-        video_id = request.POST.get('video_id')
-        courses = request.POST.get('course')
-        print(courses)
-        watched = request.POST.get('watched')
-
-        if video_id and watched == 'true':
-            print('done')
-            video = get_object_or_404(Video, id=video_id)
-            print(video)
-            course = CourseDB.objects.get(course_name=courses)
-            print(course)
-            WatchHistory.objects.get_or_create(user=request.user, video_id=video, course_id=course)
+    # if request.method == 'POST':
+    #     video_id = request.POST.get('video_id')
+    #     courses = request.POST.get('course')
+    #     print(courses)
+    #     watched = request.POST.get('watched')
+    #
+    #     if video_id and watched == 'true':
+    #         print('done')
+    #         video = get_object_or_404(Video, id=video_id)
+    #         print(video)
+    #         course = CourseDB.objects.get(course_name=courses)
+    #         print(course)
+    #         WatchHistory.objects.get_or_create(user=request.user, video_id=video, course_id=course)
 
     videos = Video.objects.filter(course="PHP").annotate(like_count=Count('likes')).order_by('-uploaded_at')
     return render(request, 'watch_php_videos.html', {'videos': videos})
@@ -1179,7 +1180,7 @@ def courseregphp(request):
     user_email = request.user.email
     course = CourseDB.objects.get(course_name="PHP")
     registrations = CourseRegistration.objects.filter(course_id__course_name="PHP", email=user_email)
-    complete = UploadedFile.objects.filter(project_language="PHP")
+    complete = UploadedFile.objects.filter(project_language="PHP",student=request.user)
     try:
         payed = Payment.objects.filter(course=course, email=user_email)
     except Payment.DoesNotExist:

@@ -247,6 +247,7 @@ HTML5 introduced semantic elements such as <strong>&lt;header&gt;</strong>, <str
                 </li>
             </ol><br>
             </div>
+            {% if not uploaded_files %}
             <div class="center-align">
                 <a href="{% url 'basichtml' %}" class="btn btn-danger col-3 mx-auto" tabindex="-1" role="button" aria-disabled="true">Click here to START TEST</a>
             </div>
@@ -270,6 +271,7 @@ HTML5 introduced semantic elements such as <strong>&lt;header&gt;</strong>, <str
         {% endfor %}
 
     </div>
+            {% endif %}
 
         </div>
     </div>

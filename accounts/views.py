@@ -685,11 +685,12 @@ def upload_project4(request):
     return render(request, 'upload_projectmain.html', {'form': form})  # Render the form template
 
 
+@login_required
 def project_list(request):
-    projects = UploadedFile.objects.all()
-
+    users=request.user
+    print(users)
+    projects = UploadedFile.objects.filter(student=users)
     return render(request, 'project_list.html', {'projects': projects})
-
 
 def download_project(request, project_id):
     project = get_object_or_404(UploadedFile, pk=project_id)
@@ -756,6 +757,6 @@ def send_test_message_all(request):
 
 
 def schedule_mail(request):
-    schedule, created = CrontabSchedule.objects.get_or_create(hour=16, minute=30)
-    task = PeriodicTask.objects.create(crontab=schedule, name='schedule_mail_task'+'1', task='accunts.tasks.send_test_message')
+    schedule, created = CrontabSchedule.objects.get_or_create(hour=20, minute=42)
+    task = PeriodicTask.objects.create(crontab=schedule, name='schedule_mail_task'+'3', timezone='Asia/Kolkata', task='accounts.tasks.send_test_message')
     return HttpResponse('Done')

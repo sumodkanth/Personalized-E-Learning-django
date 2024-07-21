@@ -14,7 +14,6 @@ urlpatterns = [
     path('advancedhtml_learning/',advanced_text_material,name='ahtml_learn'),
    
     path('upload2/', upload_project2, name='upload_project2'),
-    path('project_list/', project_list, name='project_list'),
     path('download/<int:project_id>/', download_project, name='download_project'),
     path('watch-html-videos/', watch_html_videos, name='watch_html_videos'),
     path('add_comment/<int:video_id>/', add_comment_html, name='add_comment_html'),
