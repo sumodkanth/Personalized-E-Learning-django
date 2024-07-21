@@ -6,6 +6,7 @@ from .models import CustUser
 # from django.conf import settings
 from E_Learning import settings
 
+
 @shared_task
 def send_login_reminder():
     # Define the time threshold for login reminders
@@ -23,17 +24,31 @@ def send_login_reminder():
             [student.email],
             fail_silently=False,
         )
+    return 'Daily Alert has send'
 
 
 @shared_task(bind=True)
 def send_test_message(self):
+    threshold_time = timezone.now() - timedelta(days=1)
     # Fetch all students for testing
-    students = CustUser.objects.filter(is_student=True)
+    students = CustUser.objects.filter(is_student=True, last_login__lt=threshold_time)
     print(students)
     for student in students:
         send_mail(
-            'Test Message',
-            'Hello {},\n\nThis is a test message from your e-learning system.'.format(student.username),
+            'Friendly Reminder: Log in to Your E-learning Account',
+                f"""Dear {student.username},
+    
+        We hope this message finds you well. We noticed that you haven't logged into your e-learning account recently. Keeping up with your learning is important, and we're here to support you every step of the way.
+
+        Please take a moment to log in to your account and continue your learning journey with us. If you have any questions or need assistance, feel free to reach out to our support team.
+
+        Best regards,
+        Your E-learning Team
+
+        ---
+        This is an automated message. Please do not reply to this email."""
+            .format(
+                student.username),
             settings.EMAIL_HOST_USER,
             [student.email],
             fail_silently=False,

@@ -743,3 +743,12 @@ def apply_for_job(request, job_id):
                 errors['resume'] = 'Resume is required'
             return JsonResponse({'success': False, 'errors': errors})
     return redirect('job_listings')
+
+
+#
+from accounts.tasks import send_test_message
+
+
+def send_test_message_all(request):
+    send_test_message.delay()
+    return HttpResponse('Sent')
