@@ -296,10 +296,13 @@
             <div class="center-align">
                 <a href="{% url 'basic' %}" class="btn btn-danger col-3 mx-auto" tabindex="-1" role="button" aria-disabled="true">Click here to START TEST</a>
             </div>
+            {% endif %}
             <br>
             <div class="vstack gap-3">
-                <div class="p-2"><a href="{% url 'basic' %}">Basic Section</a></div>
                 <div class="p-2"><a href="{% url 'puzzle_game' %}">Game</a></div>
+                {% if not uploaded_files %}
+                <div class="p-2"><a href="{% url 'basic' %}">Basic Section</a></div>
+
                 {% for i in data %}
                     {% if i.section == 'Basic' and i.score > 7 %}
 
@@ -313,8 +316,9 @@
                         <div class="p-2"><a href="{% url 'upload_project' %}">Project</a></div>
                     {% endif %}
                 {% endfor %}
+                {% endif %}
             </div>
-            {% endif %}
+
 
     </div>
 <!--            <div id="chat-container" class="chat-container" style="display: block;"> &lt;!&ndash; Set to block by default &ndash;&gt;-->
