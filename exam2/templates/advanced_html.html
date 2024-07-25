@@ -101,6 +101,16 @@
             padding: 20px;
             margin-bottom: 20px;
             }
+                                            #countdown {
+            position: fixed;
+            top: 100px;
+            right: 40px;
+            z-index: 9999;
+            background-color: rgba(245, 157, 122);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
        </style>
    </head>
    <body >
@@ -149,7 +159,7 @@
         </div>
 
         {% else  %}
-        <div id="alertMessage" class="alert warning mb-4">
+        <div id="alertMessage1" class="alert warning mb-4">
             <p class="message">You did not pass this section.</p>
             <p>Revise and try again to proceed.</p>
             <a href="{% url 'ahtml_learn' %}" class="next-section">Try Again</a>
@@ -159,7 +169,7 @@
     {% endif %}
 <!-- learning_app/templates/questions.html -->
 {% if total_marks is  None %}
-<form method="post" action="{% url 'advhtml' %}"class="mr-3">
+<form method="post" action="{% url 'advhtml' %}" class="mr-3" id="testForm">
     {% csrf_token %}
    
     {% for question_data in random_questions %}
@@ -183,6 +193,7 @@
         </div>
         <div class="col"></div>
     </div>
+                   <div id="countdown" ></div>
 </form>
 {% endif %}
 </div>

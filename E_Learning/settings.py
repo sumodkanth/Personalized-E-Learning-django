@@ -165,7 +165,10 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Kolkata '
-CELERY_ENABLE_UTC = False
+# CELERY_TASK_ACKS_LATE = True
+# CELERY_TASK_REJECT_ON_WORKER_LOST = True
+# CELERYD_PREFETCH_MULTIPLIER = 1
+CELERY_ENABLE_UTC = True
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # pip install celery redis

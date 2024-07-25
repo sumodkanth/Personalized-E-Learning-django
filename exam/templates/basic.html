@@ -141,6 +141,16 @@
             backdrop-filter: blur(5px); /* Apply blur effect */
             z-index: 9998; /* Ensure the overlay is behind the pop-up */
         }
+                            #countdown {
+            position: fixed;
+            top: 100px;
+            right: 40px;
+            z-index: 9999;
+            background-color: rgba(245, 157, 122);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
        </style>
    </head>
    <body >
@@ -184,53 +194,61 @@
 
 <!-- learning_app/templates/questions.html -->
 {% if total_marks is  None %}
-<form method="post" action="{% url 'basic' %}" class="mr-3">
+<form method="post" action="{% url 'basic' %}" class="mr-3"  id="testForm">
     {% csrf_token %}
 
     {% for question_data in random_questions %}
-     <script>
-        window.onload = function() {
-            // Display the pop-up window when the page loads
-            showPopup();
-        };
+                    <script>
+                        window.onload = function() {
+                            showPopup();
+                        };
 
-        function showPopup() {
-            // Define the content of the pop-up window
-            var popupContent = `
-                <div class="popup">
-                    <h2 style="text-align: center">Exam Instructions</h2>
-                    <p>Please read the following instructions carefully before starting the exam:</p>
-                    <ol>
-                        <li>Ensure you have a stable internet connection.</li>
-                        <li>Keep your environment quiet and distraction-free.</li>
-                        <li>There will be three levels of tests named Basic , Intermediate and Advanced.</li>
-                        <li>Minimum score to pass each level will be 8 marks.</li>
-                        <li>If you fail to pass in any level, corresponding study material will be displayed.</li>
-                        <li>You can retake the test again from the study material page.</li>
+                        function showPopup() {
+                            var popupContent = `
+                                <div class="popup">
+                                    <h2 style="text-align: center">Exam Instructions</h2>
+                                    <p>Please read the following instructions carefully before starting the exam:</p>
+                                    <ol>
+                                        <li>Ensure you have a stable internet connection.</li>
+                                        <li>Keep your environment quiet and distraction-free.</li>
+                                        <li>There will be three levels of tests named Basic, Intermediate and Advanced.</li>
+                                        <li>Minimum score to pass each level will be 8 marks.</li>
+                                        <li>If you fail to pass in any level, corresponding study material will be displayed.</li>
+                                        <li>You can retake the test again from the study material page.</li>
+                                    </ol>
+                                    <button onclick="closePopup()" style="width:90px;border-radius: 5px;">OK</button>
+                                </div>
+                                <div class="overlay"></div>
+                            `;
 
-                    </ol>
-                    <button onclick="closePopup()" style="width:90px;border-radius: 5px;">OK</button>
-                </div>
-                <div class="overlay"></div> <!-- Background overlay -->
-            `;
+                            var popupDiv = document.createElement('div');
+                            popupDiv.innerHTML = popupContent;
+                            document.body.appendChild(popupDiv);
+                        }
 
-            // Create a div element for the pop-up window
-            var popupDiv = document.createElement('div');
-            popupDiv.innerHTML = popupContent;
+                        function closePopup() {
+                            var popup = document.querySelector('.popup');
+                            popup.parentNode.removeChild(popup);
+                            var overlay = document.querySelector('.overlay');
+                            overlay.parentNode.removeChild(overlay);
+                            startTimer();
+                        }
 
-            // Append the pop-up window to the body of the HTML document
-            document.body.appendChild(popupDiv);
-        }
+                        function startTimer() {
+                            var timeLeft = 600;
+                            var timerInterval = setInterval(function() {
+                                timeLeft--;
+                                var minutes = Math.floor(timeLeft / 60);
+                                var seconds = timeLeft % 60;
+                                document.getElementById('countdown').innerText = minutes + 'm ' + seconds + 's';
 
-        function closePopup() {
-            // Remove the pop-up window and overlay from the DOM
-            var popup = document.querySelector('.popup');
-            popup.parentNode.removeChild(popup);
-            var overlay = document.querySelector('.overlay');
-            overlay.parentNode.removeChild(overlay);
-        }
-
-    </script>
+                                if (timeLeft === 0) {
+                                    clearInterval(timerInterval);
+                                    document.getElementById('testForm').submit();
+                                }
+                            }, 1000);
+                        }
+                    </script>
        <div class="mb-4" style="border: rgba(32, 32, 32, 0.501) solid 2px;border-radius: 0.75rem;padding: 20px; ">
             <h5>{{ forloop.counter }}: {{ question_data.question }}</h5>
             {% if question_data.code %}
@@ -248,154 +266,20 @@
     <div class="row">
         <div class="col"></div>
         <div class="col">
-            <input class="btn btn-block btn-info mt-3 mb-3" type="submit" name="check_answers" value="Submit" >
+            <input class="btn btn-block btn-info mt-3 mb-3" type="submit" name="check_answers" value="Submit"  >
         </div>
         <div class="col"></div>
     </div>
+                   <div id="countdown" ></div>
 </form>
 {% endif %}
 </div>
 
 </body>
+
 </html>
 
-<!-- learning_app/templates/questions.html -->
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Basic Test Section</title>-->
-<!--    <meta charset="utf-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>-->
-<!--    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,700,0,200" />-->
-<!--    <style>-->
-<!--        /* Your CSS styles here */-->
-<!--        body {-->
-<!--            padding-top: 80px; /* Adjust according to your navbar height */-->
-<!--        }-->
 
-<!--        .navbar {-->
-<!--            background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);-->
-<!--            font-size: 38px;-->
-<!--            font-weight: 300;-->
-<!--            font-family: "Raleway", sans-serif;-->
-<!--            color: white;-->
-<!--            box-shadow: 0 2px 4px rgba(0,0,0,0.1);-->
-<!--            position: fixed;-->
-<!--            top: 0;-->
-<!--            width: 100%;-->
-<!--            z-index: 1000;-->
-<!--        }-->
-
-<!--        .navbar h2 {-->
-<!--            margin-left: 20px;-->
-<!--        }-->
-
-<!--        .content {-->
-<!--            margin-top: 20px;-->
-<!--            padding: 0 20px;-->
-<!--        }-->
-
-<!--        .alert {-->
-<!--            padding: 10px;-->
-<!--            margin-bottom: 15px;-->
-<!--            border-radius: 5px;-->
-<!--        }-->
-
-<!--        .warning {-->
-<!--            background-color: #fff3cd;-->
-<!--            color: #856404;-->
-<!--            border: 1px solid #ffeeba;-->
-<!--        }-->
-
-<!--        .message {-->
-<!--            font-size: 18px;-->
-<!--            font-weight: bold;-->
-<!--        }-->
-
-<!--        .next-section {-->
-<!--            text-decoration: none;-->
-<!--            padding: 8px 20px;-->
-<!--            background-color: #dc3545;-->
-<!--            color: #fff;-->
-<!--            border-radius: 5px;-->
-<!--        }-->
-
-<!--        .questions-container {-->
-<!--            border: rgba(32, 32, 32, 0.501) solid 2px;-->
-<!--            border-radius: 0.75rem;-->
-<!--            padding: 20px;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--    {% load static %}-->
-<!--    <div class="navbar">-->
-<!--        <h2>Basic Test Section</h2>-->
-<!--        <a href="{% url 'pythonintro' %}" style="margin-left: auto; padding: 9px;"><span class="material-symbols-outlined">arrow_back</span></a>-->
-<!--    </div>-->
-
-<!--    <div class="content">-->
-<!--        {% if total_marks is not None %}-->
-<!--        <h3>Total Marks Obtained: {{ total_marks }}</h3>-->
-<!--        {% if total_marks > 7 %}-->
-<!--        <div class="alert success mb-4">-->
-<!--            <p class="message">You successfully passed this section!</p>-->
-<!--            <p>Attend the next section to continue.</p>-->
-<!--            <a href="{% url 'inter' %}" class="next-section">Go to Next Section</a>-->
-<!--        </div>-->
-<!--        {% else  %}-->
-<!--        <div class="alert warning mb-4">-->
-<!--            <p class="message">You did not pass this section.</p>-->
-<!--            <p>Revise and try again to proceed.</p>-->
-<!--            <a href="{% url 'b_learn' %}" class="next-section">Try Again</a>-->
-<!--        </div>-->
-<!--        {% endif %}-->
-<!--        {% endif %}-->
-
-<!--        {% if correct_answers %}-->
-<!--        <div class="questions-container">-->
-<!--            <h3>Correct Answers:</h3>-->
-<!--            <ol>-->
-<!--                {% for correct_answer in correct_answers %}-->
-<!--                <li>{{ correct_answer }}</li>-->
-<!--                {% endfor %}-->
-<!--            </ol>-->
-<!--        </div>-->
-<!--        {% endif %}-->
-
-<!--        {% if total_marks is None %}-->
-<!--        <form method="post" action="{% url 'basic' %}" class="mr-3">-->
-<!--            {% csrf_token %}-->
-<!--            {% for question_data in random_questions %}-->
-<!--            <div class="questions-container">-->
-<!--                <h5>{{ forloop.counter }}: {{ question_data.question }}</h5>-->
-<!--                {% if question_data.code %}-->
-<!--                <h6>{{ question_data.code }}</h6>-->
-<!--                {% endif %}-->
-<!--                {% for option in question_data.options %}-->
-<!--                <input type="radio" id="question_{{ forloop.parentloop.counter }}_{{ forloop.counter }}" name="question_{{ forloop.parentloop.counter }}" value="{{ option }}">-->
-<!--                <label for="question_{{ forloop.parentloop.counter }}_{{ forloop.counter }}">{{ option }}</label><br>-->
-<!--                {% endfor %}-->
-<!--            </div>-->
-<!--            {% endfor %}-->
-<!--            <div class="row">-->
-<!--                <div class="col"></div>-->
-<!--                <div class="col">-->
-<!--                    <input class="btn btn-block btn-info mt-3 mb-3" type="submit" name="check_answers" value="Submit">-->
-<!--                </div>-->
-<!--                <div class="col"></div>-->
-<!--            </div>-->
-<!--        </form>-->
-<!--        {% endif %}-->
-<!--    </div>-->
-<!--</body>-->
-<!--</html>-->
 
 
 

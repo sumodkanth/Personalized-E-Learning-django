@@ -142,6 +142,18 @@
             backdrop-filter: blur(5px); /* Apply blur effect */
             z-index: 9998; /* Ensure the overlay is behind the pop-up */
         }
+
+                    #countdown {
+            position: fixed;
+            top: 100px;
+            right: 40px;
+            z-index: 9999;
+            background-color: rgba(245, 157, 122);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
        </style>
    </head>
    <body >
@@ -182,11 +194,61 @@
     {% endif %}
 <!-- learning_app/templates/questions.html -->
 {% if total_marks is  None %}
-<form method="post" action="{% url 'basicphp' %}" class="mr-3">
+<form method="post" action="{% url 'basicphp' %}" class="mr-3" id="testForm">
     {% csrf_token %}
 
     {% for question_data in random_questions %}
-<!--        <input type="hidden" name="question_data" value="{{ random_questions }}">-->
+                    <script>
+                        window.onload = function() {
+                            showPopup();
+                        };
+
+                        function showPopup() {
+                            var popupContent = `
+                                <div class="popup">
+                                    <h2 style="text-align: center">Exam Instructions</h2>
+                                    <p>Please read the following instructions carefully before starting the exam:</p>
+                                    <ol>
+                                        <li>Ensure you have a stable internet connection.</li>
+                                        <li>Keep your environment quiet and distraction-free.</li>
+                                        <li>There will be three levels of tests named Basic, Intermediate and Advanced.</li>
+                                        <li>Minimum score to pass each level will be 8 marks.</li>
+                                        <li>If you fail to pass in any level, corresponding study material will be displayed.</li>
+                                        <li>You can retake the test again from the study material page.</li>
+                                    </ol>
+                                    <button onclick="closePopup()" style="width:90px;border-radius: 5px;">OK</button>
+                                </div>
+                                <div class="overlay"></div>
+                            `;
+
+                            var popupDiv = document.createElement('div');
+                            popupDiv.innerHTML = popupContent;
+                            document.body.appendChild(popupDiv);
+                        }
+
+                        function closePopup() {
+                            var popup = document.querySelector('.popup');
+                            popup.parentNode.removeChild(popup);
+                            var overlay = document.querySelector('.overlay');
+                            overlay.parentNode.removeChild(overlay);
+                            startTimer();
+                        }
+
+                        function startTimer() {
+                            var timeLeft = 600;
+                            var timerInterval = setInterval(function() {
+                                timeLeft--;
+                                var minutes = Math.floor(timeLeft / 60);
+                                var seconds = timeLeft % 60;
+                                document.getElementById('countdown').innerText = minutes + 'm ' + seconds + 's';
+
+                                if (timeLeft === 0) {
+                                    clearInterval(timerInterval);
+                                    document.getElementById('testForm').submit();
+                                }
+                            }, 1000);
+                        }
+                    </script>
        <div class="mb-4" style="border: rgba(32, 32, 32, 0.501) solid 2px;border-radius: 0.75rem;padding: 20px; ">
             <h5>{{ forloop.counter }}: {{ question_data.question }}</h5>
             {% if question_data.code %}
@@ -207,10 +269,12 @@
         </div>
         <div class="col"></div>
     </div>
+           <div id="countdown" ></div>
 </form>
 {% endif %}
 </div>
 
 </body>
+
 </html>
 

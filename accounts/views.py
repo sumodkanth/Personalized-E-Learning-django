@@ -757,6 +757,6 @@ def send_test_message_all(request):
 
 
 def schedule_mail(request):
-    schedule, created = CrontabSchedule.objects.get_or_create(hour=20, minute=42)
-    task = PeriodicTask.objects.create(crontab=schedule, name='schedule_mail_task'+'3', timezone='Asia/Kolkata', task='accounts.tasks.send_test_message')
+    schedule, created = CrontabSchedule.objects.get_or_create(hour=13, minute=24)
+    task = PeriodicTask.objects.create(crontab=schedule, name='schedule_mail_task'+'2', task='accounts.tasks.send_test_message')
     return HttpResponse('Done')

@@ -14,7 +14,7 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.beat_schedule = {
     'send-mail-every-day': {
         'task': 'accounts.tasks.send_test_message',
-        'schedule': crontab(hour=20, minute=22),
+        'schedule': crontab(hour=13, minute=20),
     }
 }
 

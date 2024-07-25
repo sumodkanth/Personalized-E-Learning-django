@@ -99,6 +99,16 @@
             padding: 20px;
             margin-bottom: 20px;
         }
+                                    #countdown {
+            position: fixed;
+            top: 100px;
+            right: 40px;
+            z-index: 9999;
+            background-color: rgba(245, 157, 122);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
        </style>
    </head>
    <body >
@@ -133,7 +143,7 @@
                     </ol>
         </div>
         {% else  %}
-        <div id="alertMessage" class="alert warning">
+        <div id="alertMessage1" class="alert warning">
             <p class="message">You did not pass this section.</p>
             <p>Revise and try again to proceed.</p>
             <a href="{% url 'ihtml_learn' %}" class="next-section">Try Again</a>
@@ -142,7 +152,7 @@
        {% endif %}
     {% endif %}
     {% if total_marks is  None %}
-<form method="post" action="{% url 'interhtml' %}">
+<form method="post" action="{% url 'interhtml' %}" id="testForm">
     {% csrf_token %}
     
     {% for question_data in random_questions %}
@@ -166,10 +176,32 @@
         </div>
         <div class="col"></div>
     </div>
+                   <div id="countdown" ></div>
 </form>
 {% endif %}
 </div>
 
 </body>
+<script>
+            // Countdown timer
+        var timeLeft = 600; // 10 minutes in seconds
+        var timerInterval;
+
+        function startTimer() {
+            timerInterval = setInterval(function() {
+                timeLeft--;
+                var minutes = Math.floor(timeLeft / 60);
+                var seconds = timeLeft % 60;
+                document.getElementById('countdown').innerText = minutes + 'm ' + seconds + 's';
+
+                if (timeLeft === 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('testForm').submit();
+                }
+            }, 1000);
+        }
+
+        startTimer();
+</script>
 </html>
 
